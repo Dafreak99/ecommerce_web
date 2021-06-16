@@ -1,0 +1,30 @@
+.list {
+  transition: 350ms all;
+  padding: 1rem 2rem;
+}
+
+.list:hover {
+  background: var(--chakra-colors-primary);
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.listActive {
+  background: var(--chakra-colors-primary);
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.link {
+  font-weight: bold;
+  padding: 1rem 2rem;
+}
+
+.icon {
+  margin-right: 1rem;
+}

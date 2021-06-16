@@ -1,0 +1,17 @@
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+.container {
+  width: 80vw;
+  margin: 0 auto;
+}
+
+.chakra-form-control {
+  margin-bottom: 1rem;
+}
