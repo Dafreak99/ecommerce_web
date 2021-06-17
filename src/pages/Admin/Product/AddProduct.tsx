@@ -28,7 +28,7 @@ import { useHistory } from "react-router-dom";
 
 type FormValues = {
   title: string;
-  description: string;
+  desciption: string;
   sku: string;
   image: string;
   video: string;
@@ -200,7 +200,7 @@ const AddProduct: React.FC<Props> = () => {
             <FormLabel>Description</FormLabel>
             <Textarea
               placeholder="Description"
-              {...register("description", { required: true })}
+              {...register("desciption", { required: true })}
             />
           </FormControl>
           <FormControl>

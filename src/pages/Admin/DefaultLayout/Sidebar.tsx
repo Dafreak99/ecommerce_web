@@ -51,7 +51,7 @@ const Sidebar: React.FC<Props> = () => {
   ];
 
   return (
-    <Box w="15vw" h="100vh" p="2rem">
+    <Box w="15vw" h="100vh" p="2rem 1.5rem">
       <Flex
         alignItems="center"
         mb="4rem"

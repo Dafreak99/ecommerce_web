@@ -4,6 +4,11 @@
   position: relative;
   overflow: hidden;
   padding: 2rem 3rem;
+  transition: 350ms all;
+}
+
+.product:hover {
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 .product__utils {

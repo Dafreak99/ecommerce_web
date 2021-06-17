@@ -14,29 +14,13 @@ import { AiFillStar, AiOutlineEye } from "react-icons/ai";
 import { MdAddShoppingCart, MdFavoriteBorder } from "react-icons/md";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getProducts } from "./productSlice";
+import { getProducts, productSelectors } from "./productSlice";
 import "./product.css";
 
 interface Props {}
 
 const Product: React.FC<Props> = () => {
-  const { list: products, status } = useAppSelector((state) => state.products);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getProducts());
-  }, []);
-
-  if (status === "pending") {
-    return (
-      <Box p="5rem 0">
-        <Heading fontSize="lg" color="blackAlpha.800" mb="2rem">
-          PRODUCTS
-        </Heading>
-        <Spinner />
-      </Box>
-    );
-  }
+  const products = useAppSelector(productSelectors.selectAll);
 
   return (
     <Box p="5rem 0">
@@ -44,12 +28,14 @@ const Product: React.FC<Props> = () => {
         PRODUCTS
       </Heading>
 
-      <Grid gridTemplateColumns="repeat(12,1fr)">
+      <Grid gridTemplateColumns="repeat(12,1fr)" gridGap="4rem">
         {products.map(({ _id, title, price, images }) => (
           <Link to={`/product/${_id}`} className="product">
             <Image
               src={images[0]}
               h="8rem"
+              margin="0 auto"
+              mb="1rem"
               objectFit="cover"
               objectPosition="center"
             />

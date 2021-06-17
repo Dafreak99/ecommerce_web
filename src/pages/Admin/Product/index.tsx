@@ -5,19 +5,23 @@ import { Table, Thead, Tbody, Tr, Th, Td, Image } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { FaTrash } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
-import { deleteProduct } from "../../../features/products/productSlice";
+import {
+  deleteProduct,
+  productSelectors,
+} from "../../../features/products/productSlice";
 interface Props {}
 
 const Product: React.FC<Props> = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const products = useAppSelector(productSelectors.selectAll);
 
-  const { list: products } = useAppSelector((state) => state.products);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
   const onHandleDelete = (id: string) => {
     dispatch(deleteProduct(id));
   };
+
+  console.log(products[0]);
 
   return (
     <Box>
@@ -27,7 +31,7 @@ const Product: React.FC<Props> = () => {
           textTransform="uppercase"
           bg="primary"
           color="#fff"
-          onClick={() => history.push("/admin/product-add")}
+          onClick={() => history.push("/admin/add-product")}
         >
           <Icon as={AiOutlinePlus} mr="0.5rem" /> Add product
         </Button>
@@ -41,26 +45,34 @@ const Product: React.FC<Props> = () => {
             <Th isNumeric>PRICE</Th>
             <Th isNumeric>QUANTITY</Th>
             <Th>STATUS</Th>
+            <Th>ACTIVE</Th>
             <Th></Th>
             <Th></Th>
           </Tr>
         </Thead>
         <Tbody>
           {products.map(
-            ({ title, price, images, status, quantity, _id }, i) => (
+            ({ title, price, images, status, quantity, is_active, _id }, i) => (
               <Tr key={i}>
                 <Td>{i + 1}</Td>
                 <Td>{title} </Td>
                 <Td>
                   <Image src={images[0]} w="50px" h="50px" objectFit="cover" />
                 </Td>
-                <Td isNumeric>{price}</Td>
+                <Td isNumeric>${price}</Td>
                 <Td isNumeric>{quantity}</Td>
                 <Td>
                   <Badge colorScheme="green">{status}</Badge>{" "}
                 </Td>
                 <Td>
-                  <Icon as={AiFillEdit} cursor="pointer" />
+                  <Badge colorScheme="purple">{is_active.toString()}</Badge>{" "}
+                </Td>
+                <Td>
+                  <Icon
+                    as={AiFillEdit}
+                    cursor="pointer"
+                    onClick={() => history.push(`/admin/edit-product/${_id}`)}
+                  />
                 </Td>
                 <Td>
                   <Icon

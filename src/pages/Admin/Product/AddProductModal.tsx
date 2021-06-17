@@ -32,7 +32,7 @@ interface Props {
 
 type FormValues = {
   title: string;
-  description: string;
+  desciption: string;
   sku: string;
   images: string[];
   videos: string[];
@@ -174,7 +174,7 @@ const AddProductModal: React.FC<Props> = ({ isOpen, onClose }) => {
               <FormLabel>Description</FormLabel>
               <Textarea
                 placeholder="Description"
-                {...register("description", { required: true })}
+                {...register("desciption", { required: true })}
               />
             </FormControl>
             <FormControl>

@@ -30,9 +30,7 @@ const AdminLayout: React.FC<Props> = () => {
 };
 
 const RightContent = () => {
-  /**
-   ** /admin
-   */
+  // Path will be '/admin'
   let { path } = useRouteMatch();
 
   return (

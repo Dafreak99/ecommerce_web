@@ -7,7 +7,7 @@ export interface Product {
   price: number;
   quantity: number;
   is_active: boolean;
-  category: string[];
+  category: Category[];
   promotion: null;
   specifications: {};
   _id: string;
