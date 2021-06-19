@@ -1,34 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Admin from "./pages/Admin";
-import Product from "./pages/Product";
-import { useAppDispatch } from "./app/hooks";
-import {
-  fetchComments,
-  commentSelectors,
-} from "./features/comments/commentSlice";
-import { useSelector } from "react-redux";
-import { RootState } from "./app/store";
+
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+
 import { getProducts } from "./features/products/productSlice";
+import {
+  categorySelectors,
+  getCategories,
+} from "./features/categories/categoriesSlice";
+
+import {
+  Home,
+  Admin,
+  Product,
+  ProductDetail,
+  Cart,
+  Search,
+  SignIn,
+} from "./pages";
 
 function App() {
-  // const dispatch = useAppDispatch();
-  // const total = useSelector(commentSelectors.selectTotal);
-  // const allComments = useSelector(commentSelectors.selectAll);
-  // const lastComment = useSelector((state: RootState) =>
-  //   commentSelectors.selectById(state, 10)
-  // );
-
-  // useEffect(() => {
-  //   dispatch(fetchComments());
-  // }, []);
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getProducts());
+    dispatch(getCategories());
   }, []);
+
+  const categories = useAppSelector(categorySelectors.selectAll);
 
   return (
     <Router>
@@ -36,9 +35,30 @@ function App() {
         <Route path="/" exact>
           <Home />
         </Route>
-        <Route path="/product/:id">
-          <Product />
+
+        <Route path="/signin" exact>
+          <SignIn />
         </Route>
+
+        {categories.map((category) => (
+          <Route path={`/${category.name.toLowerCase()}`}>
+            <Product />
+          </Route>
+        ))}
+
+        <Route path="/product/:id">
+          <ProductDetail />
+        </Route>
+
+        <Route path="/search/:params">
+          <Search />
+          {/* TODO: Continue search page */}
+        </Route>
+
+        <Route path="/cart">
+          <Cart />
+        </Route>
+
         <Route path="/admin">
           <Admin />
         </Route>

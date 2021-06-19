@@ -18,6 +18,7 @@ export interface Product {
   comments: [];
   avg_rate: null;
   is_commented: boolean;
+  cartQuantity: number;
 }
 
 export interface Category {

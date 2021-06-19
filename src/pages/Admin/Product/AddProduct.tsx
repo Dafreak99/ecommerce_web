@@ -21,7 +21,10 @@ import {
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { useEffect } from "react";
-import { getCategories } from "../../../features/categories/categoriesSlice";
+import {
+  categorySelectors,
+  getCategories,
+} from "../../../features/categories/categoriesSlice";
 import { AiOutlineCheck } from "react-icons/ai";
 import { createProduct } from "../../../features/products/productSlice";
 import { useHistory } from "react-router-dom";
@@ -52,7 +55,9 @@ const AddProduct: React.FC<Props> = () => {
     control,
     formState: { errors },
   } = useForm<FormValues>();
-  const { categories, status } = useAppSelector((state) => state.categories);
+
+  const categories = useAppSelector(categorySelectors.selectAll);
+
   const dispatch = useAppDispatch();
   const history = useHistory();
 

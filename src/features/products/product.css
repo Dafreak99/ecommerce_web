@@ -1,10 +1,13 @@
 .product {
-  grid-column: span 3;
   border-right: none;
   position: relative;
   overflow: hidden;
-  padding: 2rem 3rem;
   transition: 350ms all;
+}
+
+.product__link {
+  padding: 2rem 3rem;
+  display: block;
 }
 
 .product:hover {

@@ -1,10 +1,23 @@
 import React, { useRef, useState } from "react";
-import { Box, Flex, Button, Heading, Icon, Badge } from "@chakra-ui/react";
-import { AiFillEdit, AiOutlinePlus } from "react-icons/ai";
+import {
+  Box,
+  Flex,
+  Button,
+  Heading,
+  Icon,
+  Badge,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Select,
+} from "@chakra-ui/react";
+import { AiFillEdit, AiOutlinePlus, AiOutlineSearch } from "react-icons/ai";
 import { Table, Thead, Tbody, Tr, Th, Td, Image } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { FaTrash } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+
 import {
   deleteProduct,
   productSelectors,
@@ -21,8 +34,6 @@ const Product: React.FC<Props> = () => {
     dispatch(deleteProduct(id));
   };
 
-  console.log(products[0]);
-
   return (
     <Box>
       <Flex justify="space-between" alignItems="center" mb="2rem">
@@ -35,6 +46,25 @@ const Product: React.FC<Props> = () => {
         >
           <Icon as={AiOutlinePlus} mr="0.5rem" /> Add product
         </Button>
+      </Flex>
+      <Flex mb="1rem">
+        <InputGroup w="20rem" mr="1rem" bg="#fff">
+          <InputLeftElement
+            pointerEvents="none"
+            children={<Icon as={AiOutlineSearch} color="gray.300" />}
+          />
+          <Input placeholder="Search by title" />
+        </InputGroup>
+        <Select placeholder="Select category" bg="#fff" w="20rem">
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </Select>
+        <Select placeholder="Select status" bg="#fff" w="20rem">
+          <option value="option1">Selling</option>
+          <option value="option2">Pending</option>
+          <option value="option3">Sells</option>
+        </Select>
       </Flex>
       <Table variant="simple" bg="#fff">
         <Thead>
@@ -50,41 +80,48 @@ const Product: React.FC<Props> = () => {
             <Th></Th>
           </Tr>
         </Thead>
-        <Tbody>
+        <TransitionGroup component="tbody">
           {products.map(
             ({ title, price, images, status, quantity, is_active, _id }, i) => (
-              <Tr key={i}>
-                <Td>{i + 1}</Td>
-                <Td>{title} </Td>
-                <Td>
-                  <Image src={images[0]} w="50px" h="50px" objectFit="cover" />
-                </Td>
-                <Td isNumeric>${price}</Td>
-                <Td isNumeric>{quantity}</Td>
-                <Td>
-                  <Badge colorScheme="green">{status}</Badge>{" "}
-                </Td>
-                <Td>
-                  <Badge colorScheme="purple">{is_active.toString()}</Badge>{" "}
-                </Td>
-                <Td>
-                  <Icon
-                    as={AiFillEdit}
-                    cursor="pointer"
-                    onClick={() => history.push(`/admin/edit-product/${_id}`)}
-                  />
-                </Td>
-                <Td>
-                  <Icon
-                    as={FaTrash}
-                    cursor="pointer"
-                    onClick={() => onHandleDelete(_id)}
-                  />
-                </Td>
-              </Tr>
+              <CSSTransition key={_id} timeout={500} classNames="item">
+                <Tr key={i}>
+                  <Td>{i + 1}</Td>
+                  <Td>{title} </Td>
+                  <Td>
+                    <Image
+                      src={images[0]}
+                      w="50px"
+                      h="50px"
+                      objectFit="cover"
+                    />
+                  </Td>
+                  <Td isNumeric>${price}</Td>
+                  <Td isNumeric>{quantity}</Td>
+                  <Td>
+                    <Badge colorScheme="green">{status}</Badge>{" "}
+                  </Td>
+                  <Td>
+                    <Badge colorScheme="purple">{is_active.toString()}</Badge>{" "}
+                  </Td>
+                  <Td>
+                    <Icon
+                      as={AiFillEdit}
+                      cursor="pointer"
+                      onClick={() => history.push(`/admin/edit-product/${_id}`)}
+                    />
+                  </Td>
+                  <Td>
+                    <Icon
+                      as={FaTrash}
+                      cursor="pointer"
+                      onClick={() => onHandleDelete(_id)}
+                    />
+                  </Td>
+                </Tr>
+              </CSSTransition>
             )
           )}
-        </Tbody>
+        </TransitionGroup>
       </Table>
     </Box>
   );

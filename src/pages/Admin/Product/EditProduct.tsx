@@ -22,8 +22,6 @@ import {
 } from "@chakra-ui/react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { useEffect } from "react";
-import { getCategories } from "../../../features/categories/categoriesSlice";
 import { AiOutlineCheck } from "react-icons/ai";
 import {
   editProduct,
@@ -31,7 +29,7 @@ import {
 } from "../../../features/products/productSlice";
 import { useHistory, useParams } from "react-router-dom";
 import { RootState } from "../../../app/store";
-import { Product } from "../../../types";
+import { categorySelectors } from "../../../features/categories/categoriesSlice";
 
 type FormValues = {
   title: string;
@@ -60,12 +58,11 @@ const EditProduct: React.FC<Props> = () => {
     formState: { errors },
   } = useForm<FormValues>();
 
-  const { categories, status } = useAppSelector((state) => state.categories);
-
   const history = useHistory();
   const dispatch = useAppDispatch();
   const params = useParams<{ id: string }>();
 
+  const categories = useAppSelector(categorySelectors.selectAll);
   const product = useAppSelector((state: RootState) =>
     productSelectors.selectById(state, params.id)
   );

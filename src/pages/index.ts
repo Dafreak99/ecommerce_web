@@ -1,4 +1,9 @@
 import Admin from "./Admin";
 import Home from "./Home";
+import Cart from "./Cart";
+import Product from "./Product";
+import ProductDetail from "./ProductDetail";
+import Search from "./Search";
+import SignIn from "./SignIn";
 
-export { Admin, Home };
+export { Admin, Home, Cart, Product, ProductDetail, Search, SignIn };

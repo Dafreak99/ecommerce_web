@@ -23,7 +23,10 @@ import {
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { useEffect } from "react";
-import { getCategories } from "../../../features/categories/categoriesSlice";
+import {
+  categorySelectors,
+  getCategories,
+} from "../../../features/categories/categoriesSlice";
 
 interface Props {
   isOpen: boolean;
@@ -56,7 +59,9 @@ const AddProductModal: React.FC<Props> = ({ isOpen, onClose }) => {
     control,
     formState: { errors },
   } = useForm<FormValues>();
-  const { categories, status } = useAppSelector((state) => state.categories);
+
+  const categories = useAppSelector(categorySelectors.selectAll);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {

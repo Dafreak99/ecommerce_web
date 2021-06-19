@@ -17,16 +17,21 @@ import {
   Text,
   Thead,
   VStack,
+  Button,
 } from "@chakra-ui/react";
 import React from "react";
+import { AiFillHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { useHistory, useParams } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
+import { useCart } from "../../contexts/cartContext";
 import { productSelectors } from "../../features/products/productSlice";
+import { Product } from "../../types";
 
 interface Props {}
 
 const ProductBody: React.FC<Props> = () => {
+  const { addToCart } = useCart();
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
 
@@ -34,7 +39,9 @@ const ProductBody: React.FC<Props> = () => {
     productSelectors.selectById(state, id)
   );
 
-  console.log(product);
+  const onHandleAddToCart = (product: Product) => {
+    addToCart(product, 1);
+  };
 
   return (
     <Box minH="calc(100vh - 160px)">
@@ -84,9 +91,18 @@ const ProductBody: React.FC<Props> = () => {
                 </Box>
                 <Box>
                   <Text fontSize="xl" fontWeight="bold" color="gray.600">
-                    Category
+                    Category{" "}
+                    <Badge
+                      cursor="pointer"
+                      size="large"
+                      colorScheme="messenger"
+                      onClick={() =>
+                        history.push("/" + product.category[0].name)
+                      }
+                    >
+                      {product.category[0].name}
+                    </Badge>
                   </Text>
-                  <Badge>{product.category[0].name}</Badge>
                 </Box>
                 <Box>
                   <Text fontSize="xl" fontWeight="bold" color="gray.600">
@@ -111,6 +127,20 @@ const ProductBody: React.FC<Props> = () => {
                   </Table>
                 </Box>
               </VStack>
+              <Box mt="2rem">
+                <Button
+                  leftIcon={<AiOutlineShoppingCart />}
+                  onClick={() => onHandleAddToCart(product)}
+                  mr="1rem"
+                  bg="primary"
+                  color="#fff"
+                >
+                  Add to cart
+                </Button>
+                <Button leftIcon={<AiFillHeart />} bg="#f882b3" color="#ffff">
+                  Add to favorite
+                </Button>
+              </Box>
             </Box>
           </Grid>
         </>

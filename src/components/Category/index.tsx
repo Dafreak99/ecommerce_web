@@ -7,10 +7,14 @@ import styles from "./Category.module.css";
 
 import { Grid, Box, Text, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
+import { categorySelectors } from "../../features/categories/categoriesSlice";
 
 interface Props {}
 
 const Category: React.FC<Props> = () => {
+  const categories = useAppSelector(categorySelectors.selectAll);
+
   const data = [
     { src: cate1, name: "Computer" },
     { src: cate2, name: "Phone" },
@@ -20,10 +24,25 @@ const Category: React.FC<Props> = () => {
 
   return (
     <Box p="5rem 0">
-      <Grid gridTemplateColumns="repeat(4, 1fr)" gridGap="4rem">
-        {data.map(({ name, src }) => (
-          <Link to={`/${name}`} className={styles.category}>
-            <Image src={src} w="100px" h="100px" margin="auto" mb="1rem" />
+      <Grid
+        gridTemplateColumns={{ base: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
+        gridGap={{ base: "1rem", md: "2rem", xl: "4rem" }}
+      >
+        {categories.reverse().map(({ name, _id }, i) => (
+          <Link
+            to={{
+              pathname: `/${name.toLowerCase()}`,
+              state: _id,
+            }}
+            className={styles.category}
+          >
+            <Image
+              src={data[i].src}
+              w="100px"
+              h="100px"
+              margin="auto"
+              mb="1rem"
+            />
             <Text fontWeight="semibold">{name}</Text>
           </Link>
         ))}
