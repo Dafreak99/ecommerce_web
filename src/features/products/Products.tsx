@@ -1,18 +1,8 @@
-import {
-  Box,
-  Heading,
-  Grid,
-  Image,
-  Spinner,
-  Tooltip,
-  Text,
-  Icon,
-} from "@chakra-ui/react";
+import { Box, Heading, Grid } from "@chakra-ui/react";
 import React from "react";
 
 import { useAppSelector } from "../../app/hooks";
 import { productSelectors } from "./productSlice";
-import "./product.css";
 import Product from "../../components/Product";
 
 interface Props {}

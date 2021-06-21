@@ -2,11 +2,14 @@ import Category from "./Category";
 import Product from "./Product";
 import AddProduct from "./Product/AddProduct";
 import EditProduct from "./Product/EditProduct";
+import SignIn from "./SignIn";
+import Order from "./Order";
+import OrderDetail from "./Order/OrderDetail";
 
 const routes = [
   {
-    path: "/",
-    exact: true,
+    path: "/product",
+    exact: false,
     component: Product,
   },
   {
@@ -23,6 +26,15 @@ const routes = [
     path: "/category",
     exact: true,
     component: Category,
+  },
+  {
+    path: "/order",
+    exact: true,
+    component: Order,
+  },
+  {
+    path: "/order/:id",
+    component: OrderDetail,
   },
 ];
 

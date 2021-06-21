@@ -1,4 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  FormEvent,
+  useRef,
+  useState,
+} from "react";
 import {
   Box,
   Flex,
@@ -15,23 +21,64 @@ import { AiFillEdit, AiOutlinePlus, AiOutlineSearch } from "react-icons/ai";
 import { Table, Thead, Tbody, Tr, Th, Td, Image } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { FaTrash } from "react-icons/fa";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import {
   deleteProduct,
+  getProducts,
   productSelectors,
 } from "../../../features/products/productSlice";
+import { useEffect } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { categorySelectors } from "../../../features/categories/categoriesSlice";
 interface Props {}
 
+interface FormValues {
+  search: string;
+}
+
 const Product: React.FC<Props> = () => {
+  const { register, handleSubmit, control } = useForm<FormValues>();
+
   const products = useAppSelector(productSelectors.selectAll);
+  const categories = useAppSelector(categorySelectors.selectAll);
 
   const dispatch = useAppDispatch();
   const history = useHistory();
 
   const onHandleDelete = (id: string) => {
     dispatch(deleteProduct(id));
+  };
+
+  const location = useLocation();
+
+  useEffect(() => {
+    dispatch(getProducts(location.search));
+  }, [location]);
+
+  const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    changeURL(e.target.name, e.target.value);
+  };
+
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    changeURL("search", data.search);
+  };
+
+  const changeURL = (name: string, value: string) => {
+    const params = new URLSearchParams(location.search);
+
+    if (params.has(name)) {
+      params.delete(name);
+    }
+
+    if (value) {
+      params.append(name, value);
+    } else {
+      params.delete(name);
+    }
+
+    history.push(`/admin/product?${params.toString()}`);
   };
 
   return (
@@ -48,22 +95,38 @@ const Product: React.FC<Props> = () => {
         </Button>
       </Flex>
       <Flex mb="1rem">
-        <InputGroup w="20rem" mr="1rem" bg="#fff">
-          <InputLeftElement
-            pointerEvents="none"
-            children={<Icon as={AiOutlineSearch} color="gray.300" />}
-          />
-          <Input placeholder="Search by title" />
-        </InputGroup>
-        <Select placeholder="Select category" bg="#fff" w="20rem">
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+        <Box as="form" onSubmit={handleSubmit(onSubmit)}>
+          <InputGroup w="20rem" mr="1rem" bg="#fff">
+            <InputLeftElement
+              pointerEvents="none"
+              children={<Icon as={AiOutlineSearch} color="gray.300" />}
+            />
+            <Input placeholder="Search by title" {...register("search")} />
+          </InputGroup>
+        </Box>
+        <Select
+          placeholder="Select category"
+          bg="#fff"
+          w="20rem"
+          onChange={onChange}
+          name="category"
+        >
+          {categories.map((category) => (
+            <option value={category._id}>{category.name}</option>
+          ))}
         </Select>
-        <Select placeholder="Select status" bg="#fff" w="20rem">
-          <option value="option1">Selling</option>
-          <option value="option2">Pending</option>
-          <option value="option3">Sells</option>
+
+        <Select
+          name="status"
+          onChange={onChange}
+          placeholder="Select status"
+          bg="#fff"
+          w="20rem"
+        >
+          <option value="selling">Selling</option>
+          <option value="pending">Pending</option>
+          <option value="sales">Sales</option>
+          <option value="empty">Empty</option>
         </Select>
       </Flex>
       <Table variant="simple" bg="#fff">

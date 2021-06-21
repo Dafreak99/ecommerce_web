@@ -18,12 +18,13 @@ import {
   Search,
   SignIn,
 } from "./pages";
+import AdminRoute from "./helpers/AdminRoute";
+import AdminSignIn from "./pages/Admin/SignIn";
 
 function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getProducts());
     dispatch(getCategories());
   }, []);
 
@@ -52,16 +53,17 @@ function App() {
 
         <Route path="/search/:params">
           <Search />
-          {/* TODO: Continue search page */}
         </Route>
 
         <Route path="/cart">
           <Cart />
         </Route>
 
-        <Route path="/admin">
-          <Admin />
+        <Route path="/admin-signin">
+          <AdminSignIn />
         </Route>
+
+        <AdminRoute path="/admin" component={Admin} exact={false} />
       </Switch>
     </Router>
   );

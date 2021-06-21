@@ -7,15 +7,18 @@ import { Provider } from "react-redux";
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "./theme";
 import { CartProvider } from "./contexts/cartContext";
+import { AuthProvider } from "./contexts/authContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <CartProvider>
-        <ChakraProvider theme={theme}>
-          <App />
-        </ChakraProvider>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <ChakraProvider theme={theme}>
+            <App />
+          </ChakraProvider>
+        </CartProvider>
+      </AuthProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

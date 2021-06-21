@@ -7,13 +7,13 @@ import {
 import Axios from "../../helpers/axios";
 import { RootState } from "../../app/store";
 import { compareDesc } from "date-fns";
-import { idText } from "typescript";
+import AdAxios from "../../helpers/adminAxios";
 
 export const getCategories = createAsyncThunk(
   "categories/getCategories",
   async (_, thunkAPI) => {
     try {
-      let { data } = await Axios.get("categories/list");
+      let { data } = await Axios.get("/api/v1/categories/list");
       return data.docs;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -25,7 +25,7 @@ export const createCategory = createAsyncThunk(
   "categories/createCategory",
   async (body: {}, thunkAPI) => {
     try {
-      let { data } = await Axios.post("categories/create", body, {});
+      let { data } = await AdAxios.post("/api/v1/categories/create", body, {});
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -37,7 +37,11 @@ export const editCategory = createAsyncThunk(
   "categories/editCategories",
   async (params: { id: string; newObj: {} }, thunkAPI) => {
     try {
-      await Axios.put(`categories/update/${params.id}`, params.newObj, {});
+      await AdAxios.put(
+        `/api/v1/categories/update/${params.id}`,
+        params.newObj,
+        {}
+      );
       return {
         id: params.id,
         changes: params.newObj,
@@ -53,7 +57,7 @@ export const deleteCategory = createAsyncThunk(
   "categories/deleteCategory",
   async (id: string, thunkAPI) => {
     try {
-      await Axios.delete(`categories/${id}`, {});
+      await AdAxios.delete(`/api/v1/categories/${id}`, {});
 
       return {
         id,

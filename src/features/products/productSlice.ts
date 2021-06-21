@@ -7,26 +7,29 @@ import {
   isAnyOf,
 } from "@reduxjs/toolkit";
 import Axios from "../../helpers/axios";
+import AdAxios from "../../helpers/adminAxios";
 
 import { Product } from "./../../types";
 import { compareDesc } from "date-fns";
 
 export const getProducts = createAsyncThunk(
   "products/getProducts",
-  async (_, thunkAPI) => {
+  async (params: string, thunkAPI) => {
+    console.log("product params", params);
     try {
-      let { data } = await Axios.get("products/list");
+      let { data } = await Axios.get(`/api/v1/products/list${params}`);
       return data.docs;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
   }
 );
+
 export const createProduct = createAsyncThunk(
   "products/createProduct",
   async (body: {}, thunkAPI) => {
     try {
-      let { data } = await Axios.post("products/create", body, {});
+      let { data } = await AdAxios.post("/api/v1/products/create", body, {});
       return data;
     } catch (error) {
       console.log(error);
@@ -39,7 +42,11 @@ export const editProduct = createAsyncThunk(
   "products/editProduct",
   async (params: { id: string; newObj: {} }, thunkAPI) => {
     try {
-      await Axios.put(`products/update/${params.id}`, params.newObj, {});
+      await AdAxios.put(
+        `/api/v1/products/update/${params.id}`,
+        params.newObj,
+        {}
+      );
       return {
         id: params.id,
         changes: params.newObj,
@@ -55,7 +62,7 @@ export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
   async (id: string, thunkAPI) => {
     try {
-      await Axios.delete(`products/${id}`, {});
+      await AdAxios.delete(`/api/v1/products/${id}`, {});
 
       return {
         id,
@@ -70,7 +77,9 @@ export const getProductsByCategory = createAsyncThunk(
   "products/getProducts",
   async (categoryId: string, thunkAPI) => {
     try {
-      let { data } = await Axios.get(`products/list?category=${categoryId}`);
+      let { data } = await Axios.get(
+        `/api/v1/products/list?category=${categoryId}`
+      );
       return data.docs;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });

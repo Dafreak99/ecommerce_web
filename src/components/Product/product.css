@@ -29,10 +29,10 @@
   align-items: center;
   background: #fafafa;
   box-shadow: 0 4px 4px rgb(0 0 0 / 10%);
-  transform: translateX(100px);
+  transform: translateX(200px);
   transition: 350ms all;
   cursor: pointer;
-  color: #567cf5;
+  color: var(--chakra-colors-primary);
 }
 
 .product__icon:not(:last-child) {
@@ -47,11 +47,11 @@
 }
 
 .product:hover .product__icon {
-  transform: translateX(0);
+  transform: translateX(30%);
 }
 
 .product__icon:hover {
-  background-color: #567cf5;
+  background-color: var(--chakra-colors-primary);
   color: #fff;
 }
 

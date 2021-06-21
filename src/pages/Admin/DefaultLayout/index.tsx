@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { getProducts } from "../../../features/products/productSlice";
 import { useAppDispatch } from "../../../app/hooks";
 import { getCategories } from "../../../features/categories/categoriesSlice";
+import { getOrders } from "../../../features/orders/orderSlice";
 
 interface Props {}
 
@@ -17,7 +18,7 @@ const AdminLayout: React.FC<Props> = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getOrders());
     dispatch(getCategories());
   }, []);
 

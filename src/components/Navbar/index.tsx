@@ -1,9 +1,12 @@
-import React, { FormEventHandler } from "react";
+import React from "react";
 import { Box, Heading, Icon, Flex, Input, Image } from "@chakra-ui/react";
-import { AiFillShop, AiOutlineShoppingCart } from "react-icons/ai";
+import {
+  AiFillShop,
+  AiOutlineHeart,
+  AiOutlineShoppingCart,
+} from "react-icons/ai";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
-import logo from "../../images/logo-sm.png";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCart } from "../../contexts/cartContext";
 
@@ -56,12 +59,17 @@ const Navbar: React.FC<Props> = () => {
               />
             </form>
           </Box>
+          <Box ml="2rem" cursor="pointer" onClick={() => history.push("/cart")}>
+            <Icon as={AiOutlineHeart} boxSize="1.5rem" />
+          </Box>
+
           <Box
-            onClick={() => history.push("/cart")}
-            cursor="pointer"
+            ml="2rem"
             position="relative"
+            cursor="pointer"
+            onClick={() => history.push("/cart")}
           >
-            <Icon as={AiOutlineShoppingCart} ml="2rem" boxSize="1.5rem" />
+            <Icon as={AiOutlineShoppingCart} boxSize="1.5rem" />
             <Flex
               w="24px"
               h="24px"
@@ -77,8 +85,13 @@ const Navbar: React.FC<Props> = () => {
               {getTotalQuantity()}
             </Flex>
           </Box>
-          <Box onClick={() => history.push("/signin")} cursor="pointer">
-            <Icon as={FaRegUserCircle} ml="2rem" boxSize="1.5rem" />
+
+          <Box
+            ml="2rem"
+            cursor="pointer"
+            onClick={() => history.push("/signin")}
+          >
+            <Icon as={FaRegUserCircle} boxSize="1.5rem" />
           </Box>
         </Flex>
       </Flex>

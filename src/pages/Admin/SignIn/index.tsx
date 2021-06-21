@@ -13,8 +13,9 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, Redirect } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
+import Axios from "../../../helpers/axios";
 import axios from "axios";
-import { useAuth } from "../../contexts/authContext";
+import { useAuth } from "../../../contexts/authContext";
 
 interface Props {}
 
@@ -22,7 +23,7 @@ interface FormValues {
   email: string;
   password: string;
 }
-const SignIn: React.FC<Props> = () => {
+const AdminSignIn: React.FC<Props> = () => {
   const {
     register,
     handleSubmit,
@@ -31,16 +32,16 @@ const SignIn: React.FC<Props> = () => {
 
   const [error, setError] = useState<boolean>(false);
 
-  const { setToken, isLoggedIn } = useAuth();
+  const { setAdminToken, isAdminLoggedIn } = useAuth();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const res = await axios.post(
-        "http://45.118.134.105:3000/api/v2/public/auth/login",
+        "http://45.118.134.105:3000/api/v1/admin/login",
         data
       );
 
-      setToken(res.data.token);
+      setAdminToken(res.data.token);
     } catch (error) {
       console.log(error);
       setError(true);
@@ -50,8 +51,8 @@ const SignIn: React.FC<Props> = () => {
     }
   };
 
-  if (isLoggedIn()) {
-    return <Redirect to="/" />;
+  if (isAdminLoggedIn()) {
+    return <Redirect to="/admin/product" />;
   }
 
   return (
@@ -74,7 +75,7 @@ const SignIn: React.FC<Props> = () => {
         p="3rem 5rem"
       >
         <Heading mb="2rem" textAlign="center">
-          Sign In
+          Admin Sign In
         </Heading>
         {error && (
           <Box
@@ -118,17 +119,10 @@ const SignIn: React.FC<Props> = () => {
               Sign In
             </Button>
           </FormControl>
-
-          <Text textAlign="center" mt="2rem" fontStyle="italic">
-            Doesn't have an account yet ?{" "}
-            <Link to="/signup" style={{ fontWeight: "bold" }}>
-              Sign Up
-            </Link>
-          </Text>
         </Box>
       </Box>
     </Flex>
   );
 };
 
-export default SignIn;
+export default AdminSignIn;

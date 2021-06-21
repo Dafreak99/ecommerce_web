@@ -19,6 +19,7 @@ export interface Product {
   avg_rate: null;
   is_commented: boolean;
   cartQuantity: number;
+  quantity_order: number;
 }
 
 export interface Category {

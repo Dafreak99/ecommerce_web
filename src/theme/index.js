@@ -8,7 +8,6 @@ export const theme = extendTheme({
     heading: FONT,
   },
   colors: {
-    // primary: "#477ee2",
     primary: "#17c6aa",
   },
 });

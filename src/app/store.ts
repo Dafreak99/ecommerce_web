@@ -3,6 +3,8 @@ import counterSlice from "../features/counter/counterSlice";
 import productSlice from "../features/products/productSlice";
 import categoriesSlice from "../features/categories/categoriesSlice";
 import commentSlice from "../features/comments/commentSlice";
+import orderSlice from "../features/orders/orderSlice";
+import favoriteSlice from "../features/favorites/favoriteSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ export const store = configureStore({
     products: productSlice,
     categories: categoriesSlice,
     comments: commentSlice,
+    orders: orderSlice,
+    favorite: favoriteSlice,
   },
 });
 
