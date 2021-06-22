@@ -29,5 +29,16 @@ export interface Category {
   sub_category: [];
   createdAt: string;
   updatedAt: string;
-  __v: 0;
+}
+
+export interface Promotion {
+  desciption: string;
+  value: number;
+  is_active: boolean;
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  createdAt: string;
+  updatedAt: string;
 }

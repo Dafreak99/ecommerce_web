@@ -32,7 +32,7 @@ const Sidebar: React.FC<Props> = () => {
   const [index, setIndex] = useState<number>(0);
 
   const routes: any = {
-    undefined: 0,
+    product: 0,
     category: 1,
     order: 2,
     payment: 3,

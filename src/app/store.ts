@@ -5,6 +5,7 @@ import categoriesSlice from "../features/categories/categoriesSlice";
 import commentSlice from "../features/comments/commentSlice";
 import orderSlice from "../features/orders/orderSlice";
 import favoriteSlice from "../features/favorites/favoriteSlice";
+import promotionSlice from "../features/promotions/promotionSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     comments: commentSlice,
     orders: orderSlice,
     favorite: favoriteSlice,
+    promotions: promotionSlice,
   },
 });
 

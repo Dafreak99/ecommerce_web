@@ -20,9 +20,13 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Icon,
 } from "@chakra-ui/react";
 import React from "react";
+import { FaTrash } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+
 import { useCart } from "../../contexts/cartContext";
 import empty from "../../images/empty.svg";
 
@@ -31,7 +35,8 @@ interface Props {}
 const CartBody: React.FC<Props> = () => {
   const history = useHistory();
 
-  const { cart, updateQuantity, getTotalPrice } = useCart();
+  const { cart, updateQuantity, getTotalPrice, removeItemFromCart, emptyCart } =
+    useCart();
 
   const onChangeQuantity = (
     valueAsString: string,
@@ -81,9 +86,14 @@ const CartBody: React.FC<Props> = () => {
           </Flex>
         ) : (
           <Box>
-            <Heading fontSize="lg" color="gray.600">
-              Your items
-            </Heading>
+            <Flex justify="space-between" alignItems="center">
+              <Heading fontSize="lg" color="gray.600">
+                Your items
+              </Heading>
+              <Button variant="ghost" colorScheme="red" onClick={emptyCart}>
+                Empty Cart
+              </Button>
+            </Flex>
             <Box>
               <Table variant="simple" mt="4rem">
                 <Thead>
@@ -94,45 +104,57 @@ const CartBody: React.FC<Props> = () => {
                     <Th>Quantity</Th>
                     <Th isNumeric>Price</Th>
                     <Th isNumeric>Total</Th>
+                    <Th></Th>
                   </Tr>
                 </Thead>
-                <Tbody>
+                <TransitionGroup component="tbody">
                   {cart.map(
                     (
                       { title, price, cartQuantity, quantity, images, _id },
                       i
                     ) => (
-                      <Tr>
-                        <Td>{i + 1}</Td>
-                        <Td>{title}</Td>
-                        <Td>
-                          <Image src={images[0]} h="100px" />
-                        </Td>
+                      <CSSTransition key={_id} timeout={500} classNames="item">
+                        <Tr>
+                          <Td>{i + 1}</Td>
+                          <Td>{title}</Td>
+                          <Td>
+                            <Image src={images[0]} h="100px" />
+                          </Td>
 
-                        <Td isNumeric>
-                          <NumberInput
-                            size="md"
-                            maxW={24}
-                            defaultValue={cartQuantity}
-                            max={quantity}
-                            min={0}
-                            onChange={(str, num) =>
-                              onChangeQuantity(str, num, _id)
-                            }
-                          >
-                            <NumberInputField />
-                            <NumberInputStepper>
-                              <NumberIncrementStepper />
-                              <NumberDecrementStepper />
-                            </NumberInputStepper>
-                          </NumberInput>
-                        </Td>
-                        <Td isNumeric>${price}</Td>
-                        <Td isNumeric>${price * cartQuantity}</Td>
-                      </Tr>
+                          <Td isNumeric>
+                            <NumberInput
+                              size="md"
+                              maxW={24}
+                              defaultValue={cartQuantity}
+                              max={quantity}
+                              min={0}
+                              onChange={(str, num) =>
+                                onChangeQuantity(str, num, _id)
+                              }
+                            >
+                              <NumberInputField />
+                              <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                              </NumberInputStepper>
+                            </NumberInput>
+                          </Td>
+                          <Td isNumeric>${price}</Td>
+                          <Td isNumeric>${price * cartQuantity}</Td>
+                          <Td>
+                            <Icon
+                              as={FaTrash}
+                              boxSize="1.5rem"
+                              color="gray.600"
+                              cursor="pointer"
+                              onClick={() => removeItemFromCart(_id)}
+                            />
+                          </Td>
+                        </Tr>
+                      </CSSTransition>
                     )
                   )}
-                </Tbody>
+                </TransitionGroup>
                 <Tfoot>
                   <Tr>
                     <Td>Total Price</Td>
@@ -143,6 +165,7 @@ const CartBody: React.FC<Props> = () => {
                     <Td isNumeric fontWeight="bold">
                       ${getTotalPrice()}
                     </Td>
+                    <Td></Td>
                   </Tr>
                 </Tfoot>
               </Table>

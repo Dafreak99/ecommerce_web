@@ -39,3 +39,10 @@ html {
   opacity: 0;
   transition: opacity 500ms ease-in;
 }
+
+.rdrMonth {
+  width: 100% !important;
+}
+.rdrCalendarWrapper.rdrDateRangeWrapper {
+  width: 100%;
+}

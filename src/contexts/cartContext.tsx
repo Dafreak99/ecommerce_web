@@ -4,10 +4,11 @@ import { Product } from "../types";
 interface ContextProps {
   cart: Product[];
   addToCart: (product: Product, quantity: number) => void;
-  removeAllCart: () => void;
+  emptyCart: () => void;
   getTotalQuantity: () => number;
   getTotalPrice: () => number;
   updateQuantity: (id: string, quantity: number) => void;
+  removeItemFromCart: (id: string) => void;
 }
 
 const cartContext = createContext<ContextProps>({} as ContextProps);
@@ -38,7 +39,16 @@ const useProvideCart = () => {
     setCart(newCart);
   };
 
-  const removeAllCart = () => {
+  const removeItemFromCart = (id: string) => {
+    const newCart: Product[] = [...cart];
+
+    const items = newCart.filter((cartItem) => cartItem._id !== id);
+
+    setCart(items);
+  };
+
+  const emptyCart = () => {
+    setCart([]);
     localStorage.removeItem("cart");
   };
 
@@ -72,9 +82,10 @@ const useProvideCart = () => {
   return {
     cart,
     addToCart,
-    removeAllCart,
+    emptyCart,
     getTotalQuantity,
     getTotalPrice,
     updateQuantity,
+    removeItemFromCart,
   };
 };

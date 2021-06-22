@@ -12,7 +12,7 @@ const AdminRoute: React.FC<{
   return isAdminLoggedIn() ? (
     <Route path={props.path} exact={props.exact} component={props.component} />
   ) : (
-    <Redirect to="/admin-signin" />
+    <Redirect to="/admin" />
   );
 };
 export default AdminRoute;

@@ -41,7 +41,7 @@ const AddCategoryModal: React.FC<Props> = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent as="form" onSubmit={handleSubmit(onSubmit)}>
-        <ModalHeader>Add Category</ModalHeader>
+        <ModalHeader>Add New Category</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box>

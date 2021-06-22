@@ -59,12 +59,16 @@ const Navbar: React.FC<Props> = () => {
               />
             </form>
           </Box>
-          <Box ml="2rem" cursor="pointer" onClick={() => history.push("/cart")}>
+          <Box
+            ml="2rem"
+            cursor="pointer"
+            onClick={() => history.push("/favorite")}
+          >
             <Icon as={AiOutlineHeart} boxSize="1.5rem" />
           </Box>
 
           <Box
-            ml="2rem"
+            ml="1rem"
             position="relative"
             cursor="pointer"
             onClick={() => history.push("/cart")}
@@ -87,7 +91,7 @@ const Navbar: React.FC<Props> = () => {
           </Box>
 
           <Box
-            ml="2rem"
+            ml="3rem"
             cursor="pointer"
             onClick={() => history.push("/signin")}
           >

@@ -43,7 +43,6 @@ const AdminSignIn: React.FC<Props> = () => {
 
       setAdminToken(res.data.token);
     } catch (error) {
-      console.log(error);
       setError(true);
       setTimeout(() => {
         setError(false);

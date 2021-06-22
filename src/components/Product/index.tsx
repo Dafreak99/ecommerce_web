@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Image, Tooltip, Icon, Text } from "@chakra-ui/react";
 import { Product as ProductType } from "../../types";
 import { MdAddShoppingCart, MdFavoriteBorder } from "react-icons/md";
 import { AiFillStar, AiOutlineEye } from "react-icons/ai";
 import { Link, useHistory } from "react-router-dom";
+import { IoMdHeartDislike } from "react-icons/io";
 
 import "./product.css";
-
 import { useCart } from "../../contexts/cartContext";
 import { useAuth } from "../../contexts/authContext";
 import { useAppDispatch } from "../../app/hooks";
-import { addToFavorite } from "../../features/favorites/favoriteSlice";
+import {
+  addToFavorite,
+  removeFromFavorite,
+} from "../../features/favorites/favoriteSlice";
 
 interface Props {
   product: ProductType;
+  isRenderAsFavorite?: boolean;
 }
 
-const Product: React.FC<Props> = ({ product }) => {
+const Product: React.FC<Props> = ({ product, isRenderAsFavorite = false }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const { addToCart } = useCart();
@@ -34,6 +38,10 @@ const Product: React.FC<Props> = ({ product }) => {
     dispatch(addToFavorite(product));
   };
 
+  const onRemoveFromFavorite = (id: string) => {
+    dispatch(removeFromFavorite(id));
+  };
+
   return (
     <Box
       className="product"
@@ -41,28 +49,58 @@ const Product: React.FC<Props> = ({ product }) => {
     >
       <Link to={`/product/${product._id}`} className="product__link">
         <Box className="product__utils" onClick={(e) => e.preventDefault()}>
-          <Tooltip label="Add to cart" aria-label="A tooltip" placement="right">
-            <Box className="product__icon" onClick={() => onAddToCart(product)}>
-              <Icon as={MdAddShoppingCart} boxSize="1.5rem" color="" />
-            </Box>
-          </Tooltip>
-          <Tooltip
-            label="Add to favorite"
-            aria-label="A tooltip"
-            placement="right"
-          >
-            <Box
-              className="product__icon"
-              onClick={() => onAddToFavorite(product)}
-            >
-              <Icon as={MdFavoriteBorder} boxSize="1.5rem" />
-            </Box>
-          </Tooltip>
-          <Tooltip label="Quick view" aria-label="A tooltip" placement="right">
-            <Box className="product__icon">
-              <Icon as={AiOutlineEye} boxSize="1.5rem" />
-            </Box>
-          </Tooltip>
+          {isRenderAsFavorite ? (
+            <>
+              <Tooltip
+                label="Remove from favorite"
+                aria-label="A tooltip"
+                placement="right"
+              >
+                <Box
+                  className="product__icon"
+                  onClick={() => onRemoveFromFavorite(product._id)}
+                >
+                  <Icon as={IoMdHeartDislike} boxSize="1.5rem" color="" />
+                </Box>
+              </Tooltip>
+            </>
+          ) : (
+            <>
+              <Tooltip
+                label="Add to cart"
+                aria-label="A tooltip"
+                placement="right"
+              >
+                <Box
+                  className="product__icon"
+                  onClick={() => onAddToCart(product)}
+                >
+                  <Icon as={MdAddShoppingCart} boxSize="1.5rem" color="" />
+                </Box>
+              </Tooltip>
+              <Tooltip
+                label="Add to favorite"
+                aria-label="A tooltip"
+                placement="right"
+              >
+                <Box
+                  className="product__icon"
+                  onClick={() => onAddToFavorite(product)}
+                >
+                  <Icon as={MdFavoriteBorder} boxSize="1.5rem" />
+                </Box>
+              </Tooltip>
+              <Tooltip
+                label="Quick view"
+                aria-label="A tooltip"
+                placement="right"
+              >
+                <Box className="product__icon">
+                  <Icon as={AiOutlineEye} boxSize="1.5rem" />
+                </Box>
+              </Tooltip>
+            </>
+          )}
         </Box>
         <Image
           src={product.images[0]}

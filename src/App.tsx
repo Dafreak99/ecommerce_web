@@ -17,6 +17,7 @@ import {
   Cart,
   Search,
   SignIn,
+  Favorite,
 } from "./pages";
 import AdminRoute from "./helpers/AdminRoute";
 import AdminSignIn from "./pages/Admin/SignIn";
@@ -59,7 +60,11 @@ function App() {
           <Cart />
         </Route>
 
-        <Route path="/admin-signin">
+        <Route path="/favorite">
+          <Favorite />
+        </Route>
+
+        <Route path="/admin" exact>
           <AdminSignIn />
         </Route>
 

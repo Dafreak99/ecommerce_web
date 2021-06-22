@@ -2,9 +2,9 @@ import Category from "./Category";
 import Product from "./Product";
 import AddProduct from "./Product/AddProduct";
 import EditProduct from "./Product/EditProduct";
-import SignIn from "./SignIn";
 import Order from "./Order";
 import OrderDetail from "./Order/OrderDetail";
+import Promotion from "./Promotion";
 
 const routes = [
   {
@@ -35,6 +35,11 @@ const routes = [
   {
     path: "/order/:id",
     component: OrderDetail,
+  },
+  {
+    path: "/promotion",
+    exact: true,
+    component: Promotion,
   },
 ];
 
