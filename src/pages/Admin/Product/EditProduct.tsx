@@ -30,6 +30,7 @@ import {
 import { useHistory, useParams } from "react-router-dom";
 import { RootState } from "../../../app/store";
 import { categorySelectors } from "../../../features/categories/categoriesSlice";
+import BackButton from "../../../components/BackButton";
 
 type FormValues = {
   title: string;
@@ -63,7 +64,7 @@ const EditProduct: React.FC<Props> = () => {
   const params = useParams<{ id: string }>();
 
   const categories = useAppSelector(categorySelectors.selectAll);
-  const product = useAppSelector((state: RootState) =>
+  const product = useAppSelector((state) =>
     productSelectors.selectById(state, params.id)
   );
 
@@ -91,7 +92,7 @@ const EditProduct: React.FC<Props> = () => {
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
       <Flex justify="space-between" alignItems="center" mb="2rem">
-        <Heading color="gray.600">Edit Product</Heading>
+        <BackButton heading="Edit Product" />
         <Button
           type="submit"
           textTransform="uppercase"

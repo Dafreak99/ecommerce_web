@@ -18,8 +18,6 @@ import {
   NumberInputField,
   NumberInput,
   Grid,
-  Alert,
-  AlertIcon,
   useToast,
 } from "@chakra-ui/react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -44,7 +42,6 @@ type FormValues = {
 };
 
 const AddPromotionModal: React.FC<Props> = ({ isOpen, onClose }) => {
-  // const error = useAppSelector((state) => state.promotions.error);
   const toast = useToast();
   const [date, setDate] = useState([
     {

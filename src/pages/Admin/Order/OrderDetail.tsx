@@ -22,6 +22,7 @@ import { orderSelectors } from "../../../features/orders/orderSlice";
 import { useHistory, useParams } from "react-router-dom";
 import { RootState } from "../../../app/store";
 import { Product } from "../../../types";
+import BackButton from "../../../components/BackButton";
 interface Props {}
 
 const OrderDetail: React.FC<Props> = () => {
@@ -29,7 +30,7 @@ const OrderDetail: React.FC<Props> = () => {
 
   const params = useParams<{ id: string }>();
 
-  const order = useAppSelector((state: RootState) =>
+  const order = useAppSelector((state) =>
     orderSelectors.selectById(state, params.id)
   );
 
@@ -49,7 +50,7 @@ const OrderDetail: React.FC<Props> = () => {
     return (
       <Box>
         <Flex justify="space-between" alignItems="center" mb="2rem">
-          <Heading color="gray.600">Order Detail</Heading>
+          <BackButton heading="Order Detail" />
         </Flex>
         <Box
           p="2rem 3rem"
@@ -66,7 +67,7 @@ const OrderDetail: React.FC<Props> = () => {
   return (
     <Box>
       <Flex justify="space-between" alignItems="center" mb="2rem">
-        <Heading color="gray.600">Order Detail</Heading>
+        <BackButton heading="Order Detail" />
       </Flex>
       <Box
         p="2rem 3rem"

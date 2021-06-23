@@ -22,9 +22,11 @@ import {
 import React from "react";
 import { AiFillHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { useHistory, useParams } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
+import { useAuth } from "../../contexts/authContext";
 import { useCart } from "../../contexts/cartContext";
+import { addToFavorite } from "../../features/favorites/favoriteSlice";
 import { productSelectors } from "../../features/products/productSlice";
 import { Product } from "../../types";
 
@@ -33,14 +35,26 @@ interface Props {}
 const ProductBody: React.FC<Props> = () => {
   const { addToCart } = useCart();
   const history = useHistory();
+  const dispatch = useAppDispatch();
+  const { isLoggedIn } = useAuth();
+
   const { id } = useParams<{ id: string }>();
 
-  const product = useAppSelector((state: RootState) =>
+  const product = useAppSelector((state) =>
     productSelectors.selectById(state, id)
   );
 
   const onHandleAddToCart = (product: Product) => {
     addToCart(product, 1);
+  };
+
+  const onAddToFavorite = (product: Product) => {
+    console.log("eh");
+    if (!isLoggedIn()) {
+      history.push("/signin");
+    }
+
+    dispatch(addToFavorite(product));
   };
 
   return (
@@ -137,7 +151,12 @@ const ProductBody: React.FC<Props> = () => {
                 >
                   Add to cart
                 </Button>
-                <Button leftIcon={<AiFillHeart />} bg="#f882b3" color="#ffff">
+                <Button
+                  leftIcon={<AiFillHeart />}
+                  onClick={() => onAddToFavorite(product)}
+                  bg="#f882b3"
+                  color="#ffff"
+                >
                   Add to favorite
                 </Button>
               </Box>

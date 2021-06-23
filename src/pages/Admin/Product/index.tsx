@@ -50,7 +50,6 @@ const Product: React.FC<Props> = () => {
   const onHandleDelete = (id: string) => {
     dispatch(deleteProduct(id));
   };
-
   const location = useLocation();
 
   useEffect(() => {

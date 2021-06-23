@@ -42,3 +42,17 @@ export interface Promotion {
   createdAt: string;
   updatedAt: string;
 }
+export interface Comment {
+  rate: number;
+  _id: string;
+  product: string;
+  content: string;
+  user_id: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdditionalState {
+  status: string;
+  error: string | null;
+}

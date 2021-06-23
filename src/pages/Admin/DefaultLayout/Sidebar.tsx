@@ -8,7 +8,6 @@ import {
   ListItem,
   Text,
 } from "@chakra-ui/react";
-import { AiFillShop } from "react-icons/ai";
 import { Link, useHistory } from "react-router-dom";
 import { AiOutlinePercentage } from "react-icons/ai";
 import {
@@ -23,6 +22,7 @@ import { FiLogOut } from "react-icons/fi";
 
 import styles from "./Sidebar.module.css";
 import { useAuth } from "../../../contexts/authContext";
+import { SiShopware } from "react-icons/si";
 interface Props {}
 
 const Sidebar: React.FC<Props> = () => {
@@ -70,7 +70,7 @@ const Sidebar: React.FC<Props> = () => {
         flexDirection="column"
         onClick={() => history.push("/")}
       >
-        <Icon as={AiFillShop} boxSize="4rem" mr="0.5rem" />
+        <Icon as={SiShopware} boxSize="3rem" mb="0.5rem" color="primary" />
         <Heading color="gray.700" fontSize="3xl">
           Ecommerce
         </Heading>

@@ -1,10 +1,8 @@
-import { Promotion } from "./../../types";
+import { AdditionalState, Promotion } from "./../../types";
 import {
   createAsyncThunk,
   createEntityAdapter,
   createSlice,
-  PayloadAction,
-  ThunkAction,
 } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { compareDesc } from "date-fns";
@@ -74,12 +72,11 @@ export const removePromotion = createAsyncThunk(
   "promotions/removePromotion",
   async (id: string, thunkAPI) => {
     try {
-      await AdAxios.post(`/api/v1/promotion/${id}`);
+      await AdAxios.delete(`/api/v1/promotion/${id}`);
       return {
         id,
       };
     } catch (error) {
-      console.log(error.response.data.message);
       return thunkAPI.rejectWithValue({
         error: error.response.data.message[0].msg,
       });
@@ -95,7 +92,10 @@ const promotionsAdapter = createEntityAdapter({
 
 const promotionSlice = createSlice({
   name: "promotions",
-  initialState: promotionsAdapter.getInitialState({ status: "", error: "" }),
+  initialState: promotionsAdapter.getInitialState({
+    status: "idle",
+    error: null,
+  } as AdditionalState),
   reducers: {},
   extraReducers: (builder) => {
     // GET PROMOTIONS
@@ -104,55 +104,53 @@ const promotionSlice = createSlice({
     });
     builder.addCase(getPromotions.fulfilled, (state, { payload }) => {
       promotionsAdapter.setAll(state, payload);
-      state.status = "success";
+      state.status = "succeeded";
     });
     builder.addCase(getPromotions.rejected, (state, action) => {
-      state.status = action.error.message as string;
+      state.status = "failed";
+      state.error = action.error.message as string;
     });
 
     // CREATE PROMOTION
     builder.addCase(createPromotion.pending, (state, action) => {
       state.status = "loading";
-      state.error = "";
     });
     builder.addCase(createPromotion.fulfilled, (state, { payload }) => {
       promotionsAdapter.setOne(state, payload);
-      state.status = "success";
+      state.status = "succeeded";
     });
     builder.addCase(createPromotion.rejected, (state, { payload }: any) => {
+      state.status = "failed";
       state.error = payload.error;
-      state.status = "";
     });
 
     // EDIT PROMOTION
     builder.addCase(editPromotion.pending, (state, action) => {
       state.status = "loading";
-      state.error = "";
     });
     builder.addCase(editPromotion.fulfilled, (state, { payload }) => {
       promotionsAdapter.updateOne(state, {
         id: payload.body.id,
         changes: payload.body,
       });
-      state.status = "success";
+      state.status = "succeeded";
     });
     builder.addCase(editPromotion.rejected, (state, { payload }: any) => {
+      state.status = "failed";
       state.error = payload.error;
-      state.status = "";
     });
 
     // REMOVE PROMOTION
     builder.addCase(removePromotion.pending, (state, action) => {
       state.status = "loading";
-      state.error = "";
     });
     builder.addCase(removePromotion.fulfilled, (state, { payload }) => {
       promotionsAdapter.removeOne(state, payload.id);
-      state.status = "success";
+      state.status = "succeeded";
     });
     builder.addCase(removePromotion.rejected, (state, { payload }: any) => {
+      state.status = "failed";
       state.error = payload.error;
-      state.status = "";
     });
   },
 });

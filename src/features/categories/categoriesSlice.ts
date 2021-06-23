@@ -1,4 +1,4 @@
-import { Category } from "./../../types";
+import { AdditionalState, Category } from "./../../types";
 import {
   createAsyncThunk,
   createEntityAdapter,
@@ -12,6 +12,7 @@ import AdAxios from "../../helpers/adminAxios";
 export const getCategories = createAsyncThunk(
   "categories/getCategories",
   async (_, thunkAPI) => {
+    console.log("category loading");
     try {
       let { data } = await Axios.get("/api/v1/categories/list");
       return data.docs;
@@ -76,7 +77,10 @@ const categoriesAdapter = createEntityAdapter<Category>({
 
 const categoriesSlice = createSlice({
   name: "categories",
-  initialState: categoriesAdapter.getInitialState({ status: "" }),
+  initialState: categoriesAdapter.getInitialState({
+    status: "idle",
+    error: null,
+  } as AdditionalState),
   reducers: {},
   extraReducers: (builder) => {
     // GET CATEGORIES
@@ -85,25 +89,27 @@ const categoriesSlice = createSlice({
     });
     builder.addCase(getCategories.fulfilled, (state, { payload }) => {
       categoriesAdapter.setAll(state, payload);
-      state.status = "success";
+      state.status = "succeeded";
     });
     builder.addCase(getCategories.rejected, (state, action) => {
-      state.status = action.error.message as string;
+      state.status = "failed";
+      state.error = action.error.message as string;
     });
 
-    // ADD PRODUCT
+    // ADD CATEGORY
     builder.addCase(createCategory.pending, (state, _) => {
       state.status = "loading";
     });
     builder.addCase(createCategory.fulfilled, (state, { payload }) => {
       categoriesAdapter.setOne(state, payload);
-      state.status = "success";
+      state.status = "succeeded";
     });
     builder.addCase(createCategory.rejected, (state, action) => {
-      state.status = action.error.message as string;
+      state.status = "failed";
+      state.error = action.error.message as string;
     });
 
-    // EDIT PRODUCT
+    // EDIT CATEGORY
     builder.addCase(editCategory.pending, (state, _) => {
       state.status = "loading";
     });
@@ -115,10 +121,11 @@ const categoriesSlice = createSlice({
       state.status = "success";
     });
     builder.addCase(editCategory.rejected, (state, action) => {
-      state.status = action.error.message as string;
+      state.status = "failed";
+      state.error = action.error.message as string;
     });
 
-    // DELETE PRODUCT
+    // DELETE CATEGORY
     builder.addCase(deleteCategory.pending, (state, _) => {
       state.status = "loading";
     });
@@ -126,7 +133,8 @@ const categoriesSlice = createSlice({
       categoriesAdapter.removeOne(state, payload.id);
     });
     builder.addCase(deleteCategory.rejected, (state, action) => {
-      state.status = action.error.message as string;
+      state.status = "failed";
+      state.error = action.error.message as string;
     });
   },
 });

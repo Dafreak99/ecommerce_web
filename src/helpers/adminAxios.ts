@@ -1,10 +1,13 @@
 import axios from "axios";
 
-const ACCESS_TOKEN = localStorage.getItem("admin_token");
-
 const AdAxios = axios.create({
   baseURL: "http://45.118.134.105:3000",
-  headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
+});
+
+AdAxios.interceptors.request.use(function (config) {
+  const token = localStorage.getItem("admin_token");
+  config.headers.Authorization = token ? `Bearer ${token}` : "";
+  return config;
 });
 
 export default AdAxios;

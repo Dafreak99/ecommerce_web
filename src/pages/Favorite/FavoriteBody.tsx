@@ -82,11 +82,16 @@ const FavoriteBody: React.FC<Props> = () => {
             </Button>
           </Flex>
         ) : (
-          <Grid gridTemplateColumns="repeat(12,1fr)">
-            {favorites.map((favorite) => (
-              <Product product={favorite} isRenderAsFavorite />
-            ))}
-          </Grid>
+          <>
+            <Heading fontSize="large" mb="2rem">
+              Your wishlist
+            </Heading>
+            <Grid gridTemplateColumns="repeat(12,1fr)">
+              {favorites.map((favorite) => (
+                <Product product={favorite} isRenderAsFavorite />
+              ))}
+            </Grid>
+          </>
         )}
       </Box>
     </Box>

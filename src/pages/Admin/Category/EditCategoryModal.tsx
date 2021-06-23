@@ -39,7 +39,7 @@ const EditCategoryModal: React.FC<Props> = ({ id }) => {
 
   const dispatch = useAppDispatch();
 
-  const category = useAppSelector((state: RootState) =>
+  const category = useAppSelector((state) =>
     categorySelectors.selectById(state, id)
   );
 

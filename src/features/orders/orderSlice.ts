@@ -1,4 +1,4 @@
-import { Category } from "./../../types";
+import { AdditionalState } from "./../../types";
 import {
   createAsyncThunk,
   createEntityAdapter,
@@ -28,19 +28,23 @@ const ordersAdapter = createEntityAdapter({
 
 const orderSlice = createSlice({
   name: "categories",
-  initialState: ordersAdapter.getInitialState({ status: "" }),
+  initialState: ordersAdapter.getInitialState({
+    status: "idle",
+    error: null,
+  } as AdditionalState),
   reducers: {},
   extraReducers: (builder) => {
-    // GET CATEGORIES
+    // GET ORDERS
     builder.addCase(getOrders.pending, (state, action) => {
       state.status = "loading";
     });
     builder.addCase(getOrders.fulfilled, (state, { payload }) => {
       ordersAdapter.setAll(state, payload);
-      state.status = "success";
+      state.status = "succeeded";
     });
     builder.addCase(getOrders.rejected, (state, action) => {
-      state.status = action.error.message as string;
+      state.status = "failed";
+      state.error = action.error.message as string;
     });
   },
 });

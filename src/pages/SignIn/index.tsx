@@ -42,7 +42,6 @@ const SignIn: React.FC<Props> = () => {
 
       setToken(res.data.token);
     } catch (error) {
-      console.log(error);
       setError(true);
       setTimeout(() => {
         setError(false);

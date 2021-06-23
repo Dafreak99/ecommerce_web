@@ -23,12 +23,6 @@ import AdminRoute from "./helpers/AdminRoute";
 import AdminSignIn from "./pages/Admin/SignIn";
 
 function App() {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getCategories());
-  }, []);
-
   const categories = useAppSelector(categorySelectors.selectAll);
 
   return (

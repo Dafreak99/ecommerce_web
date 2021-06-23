@@ -1,54 +1,79 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  createEntityAdapter,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
+import Axios from "../../helpers/axios";
+import { Comment } from "../../types";
 
-interface Comment {
-  postId: string;
-  id: string;
-  name: string;
-  email: string;
-  body: string;
+interface InitialState {
+  comments: Comment[];
+  status: string;
+  error: string | null;
 }
 
-export const fetchComments = createAsyncThunk(
-  "comments/fetchComments",
-  async () => {
-    const data = await (
-      await fetch("https://jsonplaceholder.typicode.com/comments?_limit=10")
-    ).json();
-
-    return data;
+export const getComments = createAsyncThunk(
+  "comments/getComments",
+  async (id: string, thunkAPI) => {
+    try {
+      let { data } = await Axios(`/api/v2/public/comment/product/${id}`);
+      return { data };
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
   }
 );
 
-const commentsAdapter = createEntityAdapter<Comment>({
-  selectId: (comment) => comment.id,
-});
+export const createComment = createAsyncThunk(
+  "comments/createComment",
+  async (
+    body: { product_id: string; content: string; rate: number },
+    thunkAPI
+  ) => {
+    try {
+      await Axios.post(`/api/v2/public/comment`, body);
+    } catch (error) {
+      return thunkAPI.rejectWithValue({
+        error: error.response.data.message[0].msg,
+      });
+    }
+  }
+);
+
+const state: InitialState = {
+  comments: [],
+  status: "idle",
+  error: null,
+};
 
 const commentSlice = createSlice({
   name: "comments",
-  initialState: commentsAdapter.getInitialState({ loading: false }),
+  initialState: state,
   reducers: {},
   extraReducers: (builder) => {
-    // GET PRODUCT
-    builder.addCase(fetchComments.pending, (state, _) => {
-      state.loading = true;
+    // GET COMMENT
+    builder.addCase(getComments.pending, (state, _) => {
+      state.status = "loading";
     });
-    builder.addCase(fetchComments.fulfilled, (state, { payload }) => {
-      state.loading = false;
-      commentsAdapter.setAll(state, payload);
+    builder.addCase(
+      getComments.fulfilled,
+      (state, action: PayloadAction<{ data: Comment[] }>) => {
+        state.status = "succeeded";
+        state.comments = action.payload.data;
+      }
+    );
+    builder.addCase(getComments.rejected, (state, action) => {
+      state.status = "failed";
     });
-    builder.addCase(fetchComments.rejected, (state, action) => {
-      state.loading = false;
+
+    // CREATE COMMENT
+    builder.addCase(createComment.pending, (state, _) => {
+      state.status = "loading";
+    });
+    builder.addCase(createComment.fulfilled, (state, action) => {
+      state.status = "succeeded";
+    });
+    builder.addCase(createComment.rejected, (state, action) => {
+      state.status = "failed";
     });
   },
 });
-
-export const commentSelectors = commentsAdapter.getSelectors<RootState>(
-  (state) => state.comments
-);
 
 export default commentSlice.reducer;

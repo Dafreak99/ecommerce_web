@@ -9,13 +9,12 @@ import {
 import Axios from "../../helpers/axios";
 import AdAxios from "../../helpers/adminAxios";
 
-import { Product } from "./../../types";
+import { AdditionalState, Product } from "./../../types";
 import { compareDesc } from "date-fns";
 
 export const getProducts = createAsyncThunk(
   "products/getProducts",
   async (params: string, thunkAPI) => {
-    console.log("product params", params);
     try {
       let { data } = await Axios.get(`/api/v1/products/list${params}`);
       return data.docs;
@@ -32,8 +31,9 @@ export const createProduct = createAsyncThunk(
       let { data } = await AdAxios.post("/api/v1/products/create", body, {});
       return data;
     } catch (error) {
-      console.log(error);
-      return thunkAPI.rejectWithValue({ error: error.message });
+      return thunkAPI.rejectWithValue({
+        error: error.response.data.message[0].msg,
+      });
     }
   }
 );
@@ -52,7 +52,6 @@ export const editProduct = createAsyncThunk(
         changes: params.newObj,
       };
     } catch (error) {
-      console.log(error.message);
       return thunkAPI.rejectWithValue({ error: error.message });
     }
   }
@@ -95,7 +94,10 @@ const productsAdapter = createEntityAdapter<Product>({
 
 const productSlice = createSlice({
   name: "products",
-  initialState: productsAdapter.getInitialState({ status: "" }),
+  initialState: productsAdapter.getInitialState({
+    status: "idle",
+    error: null,
+  } as AdditionalState),
   reducers: {},
   extraReducers: (builder) => {
     // ADD PRODUCT
@@ -107,37 +109,48 @@ const productSlice = createSlice({
       createProduct.fulfilled,
       (state, { payload }: PayloadAction<Product>) => {
         productsAdapter.setOne(state, payload);
-        state.status = "success";
+        state.status = "succeeded";
       }
     );
-    builder.addCase(createProduct.rejected, (state, action) => {
-      state.status = action.error.message as string;
+
+    builder.addCase(createProduct.rejected, (state, { payload }: any) => {
+      state.status = "failed";
+      console.log(payload);
+      state.error = payload.error;
     });
 
     // Edit PRODUCT
     builder.addCase(editProduct.pending, (state, _) => {
       state.status = "loading";
     });
-    builder.addCase(editProduct.fulfilled, (state, { payload }) => {
-      state.status = "success";
-      productsAdapter.updateOne(state, {
-        id: payload.id,
-        changes: payload.changes,
-      });
-    });
+    builder.addCase(
+      editProduct.fulfilled,
+      (state, { payload }: PayloadAction<{ id: string; changes: {} }>) => {
+        productsAdapter.updateOne(state, {
+          id: payload.id,
+          changes: payload.changes,
+        });
+        state.status = "succeeded";
+      }
+    );
     builder.addCase(editProduct.rejected, (state, action) => {
-      state.status = action.error.message as string;
+      state.status = "failed";
+      state.error = action.error.message as string;
     });
     // DELETE PRODUCT
     builder.addCase(deleteProduct.pending, (state, _) => {
       state.status = "loading";
     });
-    builder.addCase(deleteProduct.fulfilled, (state, { payload }) => {
-      state.status = "success";
-      productsAdapter.removeOne(state, payload.id);
-    });
+    builder.addCase(
+      deleteProduct.fulfilled,
+      (state, { payload }: PayloadAction<{ id: string }>) => {
+        state.status = "succeeded";
+        productsAdapter.removeOne(state, payload.id);
+      }
+    );
     builder.addCase(deleteProduct.rejected, (state, action) => {
-      state.status = action.error.message as string;
+      state.status = "failed";
+      state.error = action.error.message as string;
     });
 
     // GET PRODUCT
@@ -153,13 +166,14 @@ const productSlice = createSlice({
       isAnyOf(getProducts.fulfilled, getProductsByCategory.fulfilled),
       (state, { payload }) => {
         productsAdapter.setAll(state, payload);
-        state.status = "success";
+        state.status = "succeeded";
       }
     );
     builder.addMatcher(
       isAnyOf(getProducts.rejected, getProductsByCategory.rejected),
       (state, action) => {
-        state.status = action.error.message as string;
+        state.status = "failed";
+        state.error = action.error.message as string;
       }
     );
   },
@@ -170,3 +184,6 @@ export const productSelectors = productsAdapter.getSelectors<RootState>(
 );
 
 export default productSlice.reducer;
+
+// Todo: Try to prevent re-fetching using status
+// https://redux.js.org/tutorials/essentials/part-5-async-logic

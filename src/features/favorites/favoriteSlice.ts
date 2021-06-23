@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   createAsyncThunk,
   createEntityAdapter,
@@ -16,9 +15,7 @@ export const getFavorite = createAsyncThunk(
   "favorite/getFavorite",
   async (_, thunkAPI) => {
     try {
-      let { data } = await axios(`http://45.118.134.105:3000/api/v2/favorite`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      let { data } = await Axios(`http://45.118.134.105:3000/api/v2/favorite`);
       return data.docs;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -52,6 +49,7 @@ export const removeFromFavorite = createAsyncThunk(
         id,
       };
     } catch (error) {
+      console.log(error.response);
       return thunkAPI.rejectWithValue({ error: error.message });
     }
   }

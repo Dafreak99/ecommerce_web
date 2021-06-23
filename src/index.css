@@ -46,3 +46,7 @@ html {
 .rdrCalendarWrapper.rdrDateRangeWrapper {
   width: 100%;
 }
+
+.dv-star-rating {
+  font-size: 2rem;
+}

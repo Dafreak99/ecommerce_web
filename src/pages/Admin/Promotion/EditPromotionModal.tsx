@@ -52,7 +52,7 @@ const EditPromotionModal: React.FC<Props> = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const promotion = useAppSelector((state: RootState) =>
+  const promotion = useAppSelector((state) =>
     promotionSelector.selectById(state, id)
   );
 

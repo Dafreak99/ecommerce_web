@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Box,
@@ -17,6 +17,9 @@ import {
   NumberInputField,
   Text,
   Select,
+  Spinner,
+  toast,
+  useToast,
 } from "@chakra-ui/react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
@@ -26,8 +29,12 @@ import {
   getCategories,
 } from "../../../features/categories/categoriesSlice";
 import { AiOutlineCheck } from "react-icons/ai";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { createProduct } from "../../../features/products/productSlice";
 import { useHistory } from "react-router-dom";
+import UploadPreview from "../../../components/UploadPreview";
+import BackButton from "../../../components/BackButton";
+import uploadImage from "../../../helpers/uploadImage";
 
 type FormValues = {
   title: string;
@@ -35,8 +42,8 @@ type FormValues = {
   sku: string;
   image: string;
   video: string;
-  images: [string];
-  videos: [string];
+  images: string[];
+  videos: string[];
   price: number;
   quantity: number;
   category: [string];
@@ -49,12 +56,18 @@ type FormValues = {
 interface Props {}
 
 const AddProduct: React.FC<Props> = () => {
+  const toast = useToast();
+
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<FormValues>();
+
+  const [files, setFiles] = useState<File[]>([]);
+  const [fileUrls, setFileUrls] = useState<string[]>([]);
+  const [isSave, setIsSave] = useState<boolean>(false);
 
   const categories = useAppSelector(categorySelectors.selectAll);
 
@@ -65,16 +78,29 @@ const AddProduct: React.FC<Props> = () => {
     dispatch(getCategories());
   }, []);
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    data.images = [data.image];
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    setIsSave(true);
+    data.images = await uploadImage(files, fileUrls);
+
     data.videos = [data.video];
     data.category = [data.cat];
 
     data.specifications = cleanSpecs(data.specifications);
 
-    dispatch(createProduct(data));
+    const resultAction = await dispatch(createProduct(data));
 
-    history.goBack();
+    if (createProduct.rejected.match(resultAction)) {
+      toast({
+        title: "Error",
+        description: (resultAction.payload as any).error,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+      setIsSave(false);
+    } else {
+      history.goBack();
+    }
   };
 
   const cleanSpecs = (specs: string) => {
@@ -91,14 +117,20 @@ const AddProduct: React.FC<Props> = () => {
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
       <Flex justify="space-between" alignItems="center" mb="2rem">
-        <Heading color="gray.600">Add Product</Heading>
+        <BackButton heading="Add Product" />
         <Button
           type="submit"
           textTransform="uppercase"
           bg="primary"
           color="#fff"
+          disabled={isSave}
         >
-          <Icon as={AiOutlineCheck} mr="0.5rem" /> Save
+          {isSave ? (
+            <Spinner size="xs" mr="0.5rem" />
+          ) : (
+            <Icon as={AiOutlineCheck} mr="0.5rem" />
+          )}
+          Save
         </Button>
       </Flex>
       <Box
@@ -189,9 +221,16 @@ const AddProduct: React.FC<Props> = () => {
         <Box>
           <FormControl>
             <FormLabel>Image</FormLabel>
-            <Input
+            {/* <Input
               placeholder="Image link"
               {...register("image", { required: true })}
+              mb="1rem"
+            /> */}
+            <UploadPreview
+              files={files}
+              setFiles={setFiles}
+              fileUrls={fileUrls}
+              setFileUrls={setFileUrls}
             />
           </FormControl>
           <FormControl>
