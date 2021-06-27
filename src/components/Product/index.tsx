@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, Image, Tooltip, Icon, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Tooltip,
+  Icon,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { Product as ProductType } from "../../types";
 import { MdAddShoppingCart, MdFavoriteBorder } from "react-icons/md";
 import { AiFillStar, AiOutlineEye } from "react-icons/ai";
@@ -14,6 +21,7 @@ import {
   addToFavorite,
   removeFromFavorite,
 } from "../../features/favorites/favoriteSlice";
+import QuickReview from "../QuickReview";
 
 interface Props {
   product: ProductType;
@@ -21,6 +29,7 @@ interface Props {
 }
 
 const Product: React.FC<Props> = ({ product, isRenderAsFavorite = false }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
   const dispatch = useAppDispatch();
   const { addToCart } = useCart();
@@ -95,10 +104,15 @@ const Product: React.FC<Props> = ({ product, isRenderAsFavorite = false }) => {
                 aria-label="A tooltip"
                 placement="right"
               >
-                <Box className="product__icon">
+                <Box className="product__icon" onClick={onOpen}>
                   <Icon as={AiOutlineEye} boxSize="1.5rem" />
                 </Box>
               </Tooltip>
+              <QuickReview
+                isOpen={isOpen}
+                onClose={onClose}
+                product={product}
+              />
             </>
           )}
         </Box>

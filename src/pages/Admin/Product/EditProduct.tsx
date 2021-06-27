@@ -89,6 +89,8 @@ const EditProduct: React.FC<Props> = () => {
     return specifications;
   };
 
+  console.log("hey");
+
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
       <Flex justify="space-between" alignItems="center" mb="2rem">
@@ -159,8 +161,8 @@ const EditProduct: React.FC<Props> = () => {
                   render={({ field }) => (
                     <RadioGroup {...field}>
                       <HStack spacing="24px">
-                        <Radio value="pending">Pending</Radio>
                         <Radio value="selling">Selling</Radio>
+                        <Radio value="pending">Pending</Radio>
                         <Radio value="empty">Empty</Radio>
                         <Radio value="sales">Sales</Radio>
                       </HStack>
@@ -217,6 +219,7 @@ const EditProduct: React.FC<Props> = () => {
               <FormControl>
                 <FormLabel>Description</FormLabel>
                 <Textarea
+                  h="10rem"
                   placeholder="Description"
                   defaultValue={product.desciption}
                   {...register("desciption", { required: true })}
@@ -225,13 +228,13 @@ const EditProduct: React.FC<Props> = () => {
               <FormControl>
                 <FormLabel>Specification</FormLabel>
                 <Textarea
+                  h="10rem"
                   placeholder="Specifications"
                   {...register("specifications", { required: true })}
-                >
-                  {Object.entries(product.specifications).map(
+                  defaultValue={Object.entries(product.specifications).map(
                     (spec) => `${spec[0]}` + ": " + `${spec[1]}`
                   )}
-                </Textarea>
+                />
               </FormControl>
             </Box>
             {/* Right Column End */}

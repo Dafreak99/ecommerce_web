@@ -70,8 +70,13 @@ const Sidebar: React.FC<Props> = () => {
         flexDirection="column"
         onClick={() => history.push("/")}
       >
-        <Icon as={SiShopware} boxSize="3rem" mb="0.5rem" color="primary" />
-        <Heading color="gray.700" fontSize="3xl">
+        <Icon
+          as={SiShopware}
+          boxSize={{ base: "2rem", xl: "3rem" }}
+          mb="0.5rem"
+          color="primary"
+        />
+        <Heading color="gray.700" fontSize={{ base: "md", xl: "3xl" }}>
           Ecommerce
         </Heading>
       </Flex>
@@ -82,9 +87,11 @@ const Sidebar: React.FC<Props> = () => {
               <ListItem
                 className={renderClassName(i)}
                 onClick={() => setIndex(i)}
+                display="flex"
+                alignItems="center"
               >
                 <Icon as={icon} className={styles.icon} />
-                {title}
+                <Text display={{ base: "none", xl: "block" }}>{title}</Text>
               </ListItem>
             </Link>
           ))}

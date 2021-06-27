@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  FormEvent,
-  useRef,
-  useState,
-} from "react";
+import React, { ChangeEvent } from "react";
 import {
   Box,
   Flex,
@@ -18,7 +12,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { AiFillEdit, AiOutlinePlus, AiOutlineSearch } from "react-icons/ai";
-import { Table, Thead, Tbody, Tr, Th, Td, Image } from "@chakra-ui/react";
+import { Table, Thead, Tr, Th, Td, Image } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { FaTrash } from "react-icons/fa";
 import { useHistory, useLocation } from "react-router-dom";
@@ -30,8 +24,9 @@ import {
   productSelectors,
 } from "../../../features/products/productSlice";
 import { useEffect } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { categorySelectors } from "../../../features/categories/categoriesSlice";
+import Pagination from "./Pagination";
 interface Props {}
 
 interface FormValues {
@@ -39,18 +34,18 @@ interface FormValues {
 }
 
 const Product: React.FC<Props> = () => {
-  const { register, handleSubmit, control } = useForm<FormValues>();
+  const { register, handleSubmit } = useForm<FormValues>();
 
   const products = useAppSelector(productSelectors.selectAll);
   const categories = useAppSelector(categorySelectors.selectAll);
 
+  const productState = useAppSelector((state) => state.products);
+
+  console.log(productState);
+
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const history = useHistory();
-
-  const onHandleDelete = (id: string) => {
-    dispatch(deleteProduct(id));
-  };
-  const location = useLocation();
 
   useEffect(() => {
     dispatch(getProducts(location.search));
@@ -78,6 +73,10 @@ const Product: React.FC<Props> = () => {
     }
 
     history.push(`/admin/product?${params.toString()}`);
+  };
+
+  const onHandleDelete = (id: string) => {
+    dispatch(deleteProduct(id));
   };
 
   return (
@@ -185,6 +184,13 @@ const Product: React.FC<Props> = () => {
           )}
         </TransitionGroup>
       </Table>
+      {productState.status === "succeeded" && (
+        <Pagination
+          prevPage={productState.prevPage}
+          nextPage={productState.nextPage}
+          page={productState.page}
+        />
+      )}
     </Box>
   );
 };

@@ -16,8 +16,8 @@ export const getProducts = createAsyncThunk(
   "products/getProducts",
   async (params: string, thunkAPI) => {
     try {
-      let { data } = await Axios.get(`/api/v1/products/list${params}`);
-      return data.docs;
+      let { data } = await Axios.get(`/api/v1/products/list${params}?limit=5`);
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -86,6 +86,19 @@ export const getProductsByCategory = createAsyncThunk(
   }
 );
 
+interface extraState {
+  status: string;
+  error: null | string;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  limit: number;
+  nextPage: number;
+  page: number;
+  pagingCounter: number;
+  prevPage: null | number;
+  totalPages: number;
+}
+
 const productsAdapter = createEntityAdapter<Product>({
   selectId: (product) => product._id,
   sortComparer: (a, b) =>
@@ -97,7 +110,7 @@ const productSlice = createSlice({
   initialState: productsAdapter.getInitialState({
     status: "idle",
     error: null,
-  } as AdditionalState),
+  } as extraState),
   reducers: {},
   extraReducers: (builder) => {
     // ADD PRODUCT
@@ -165,7 +178,25 @@ const productSlice = createSlice({
     builder.addMatcher(
       isAnyOf(getProducts.fulfilled, getProductsByCategory.fulfilled),
       (state, { payload }) => {
-        productsAdapter.setAll(state, payload);
+        console.log(payload);
+        productsAdapter.setAll(state, payload.docs);
+
+        const {
+          hasNextPage,
+          hasPrevPage,
+          nextPage,
+          page,
+          prevPage,
+          totalPages,
+        } = payload;
+
+        state.hasNextPage = hasNextPage;
+        state.hasPrevPage = hasPrevPage;
+        state.nextPage = nextPage;
+        state.page = page;
+        state.prevPage = prevPage;
+        state.totalPages = totalPages;
+
         state.status = "succeeded";
       }
     );

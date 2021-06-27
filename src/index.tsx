@@ -8,6 +8,11 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "./theme";
 import { CartProvider } from "./contexts/cartContext";
 import { AuthProvider } from "./contexts/authContext";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripe = loadStripe(
+  "pk_test_51J4jVuAKmaLhXlhzGeYcInpRupzDBdzZSfa1xRqHoceOeX3l7IY8wPxiFTMTrSVzIJ5wh675FNf7SaBfA6bzjf6x00D2uemC2M"
+);
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,7 +20,7 @@ ReactDOM.render(
       <AuthProvider>
         <CartProvider>
           <ChakraProvider theme={theme}>
-            <App />
+            <App stripe={stripe} />
           </ChakraProvider>
         </CartProvider>
       </AuthProvider>

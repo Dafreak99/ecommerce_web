@@ -23,7 +23,6 @@ import React from "react";
 import { AiFillHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { useHistory, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { RootState } from "../../app/store";
 import { useAuth } from "../../contexts/authContext";
 import { useCart } from "../../contexts/cartContext";
 import { addToFavorite } from "../../features/favorites/favoriteSlice";
@@ -49,16 +48,16 @@ const ProductBody: React.FC<Props> = () => {
   };
 
   const onAddToFavorite = (product: Product) => {
-    console.log("eh");
     if (!isLoggedIn()) {
-      history.push("/signin");
+      console.log("Check here", history.location.pathname);
+      history.push({ pathname: "/signin", state: history.location.pathname });
     }
 
     dispatch(addToFavorite(product));
   };
 
   return (
-    <Box minH="calc(100vh - 160px)">
+    <Box minH="calc(100vh - 160px)" borderBottom="1px solid #f3f3f3">
       <Box bg="gray.100">
         <Breadcrumb p="1rem 0" className="container">
           <BreadcrumbItem onClick={() => history.push("/")}>
@@ -82,17 +81,18 @@ const ProductBody: React.FC<Props> = () => {
           <Grid
             className="container"
             gridTemplateColumns="repeat(12,1fr)"
-            gridGap="4rem"
+            gridGap={{ base: 0, lg: "4rem" }}
+            gridRowGap="4rem"
             p="4rem 0"
           >
             <Heading gridColumn="span 12" fontSize="xl">
               {product.title}
             </Heading>
 
-            <Box gridColumn="span 5">
+            <Box gridColumn={{ base: "span 12", lg: "span 5" }}>
               <Image src={product.images[0]} w="60%" />
             </Box>
-            <Box gridColumn="span 7">
+            <Box gridColumn={{ base: "span 12", lg: "span 7" }}>
               <Text fontSize="3xl" fontWeight="semibold" mb="1.5rem">
                 ${product.price}
               </Text>

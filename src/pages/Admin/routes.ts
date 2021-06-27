@@ -19,7 +19,6 @@ const routes = [
   },
   {
     path: "/edit-product/:id",
-    exact: true,
     component: EditProduct,
   },
   {

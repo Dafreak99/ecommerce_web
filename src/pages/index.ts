@@ -6,5 +6,16 @@ import ProductDetail from "./ProductDetail";
 import Search from "./Search";
 import SignIn from "./SignIn";
 import Favorite from "./Favorite";
+import Checkout from "./Checkout";
 
-export { Admin, Home, Cart, Product, ProductDetail, Search, SignIn, Favorite };
+export {
+  Admin,
+  Home,
+  Cart,
+  Product,
+  ProductDetail,
+  Search,
+  SignIn,
+  Favorite,
+  Checkout,
+};

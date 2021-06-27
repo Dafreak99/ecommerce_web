@@ -45,7 +45,7 @@ const Navbar: React.FC<Props> = () => {
   const favorites = useAppSelector(favoriteSelector.selectAll);
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    history.push(`/search/${data.key}`);
+    history.push(`/search?search=${data.key}`);
   };
 
   return (
@@ -68,7 +68,9 @@ const Navbar: React.FC<Props> = () => {
           onClick={() => history.push("/")}
         >
           <Icon as={SiShopware} boxSize="2rem" mr="0.5rem" color="primary" />
-          <Heading fontSize="xl">Ecommerce</Heading>
+          <Heading fontSize="xl" display={{ base: "none", md: "block" }}>
+            Ecommerce
+          </Heading>
         </Flex>
         <Flex alignItems="center">
           <Box>

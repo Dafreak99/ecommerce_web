@@ -11,7 +11,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
 import axios from "axios";
 import { useAuth } from "../../contexts/authContext";
@@ -23,6 +23,8 @@ interface FormValues {
   password: string;
 }
 const SignIn: React.FC<Props> = () => {
+  const history = useHistory();
+
   const {
     register,
     handleSubmit,
@@ -50,7 +52,9 @@ const SignIn: React.FC<Props> = () => {
   };
 
   if (isLoggedIn()) {
-    return <Redirect to="/" />;
+    const prevUrl = history.location.state as string;
+
+    return <Redirect to={prevUrl ? prevUrl : "/"} />;
   }
 
   return (
@@ -67,7 +71,7 @@ const SignIn: React.FC<Props> = () => {
         <Heading color="gray.100">Ecommerce</Heading>
       </Flex>
       <Box
-        w="xl"
+        w={{ base: "sm", md: "xl" }}
         bg="#fff"
         boxShadow="0 10px 30px rgba(0,0,0,.1)"
         p="3rem 5rem"

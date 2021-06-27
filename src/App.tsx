@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { Stripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
-import { getProducts } from "./features/products/productSlice";
-import {
-  categorySelectors,
-  getCategories,
-} from "./features/categories/categoriesSlice";
-
+import AdminSignIn from "./pages/Admin/SignIn";
+import AdminRoute from "./helpers/AdminRoute";
 import {
   Home,
   Admin,
@@ -18,13 +15,14 @@ import {
   Search,
   SignIn,
   Favorite,
+  Checkout,
 } from "./pages";
-import AdminRoute from "./helpers/AdminRoute";
-import AdminSignIn from "./pages/Admin/SignIn";
 
-function App() {
-  const categories = useAppSelector(categorySelectors.selectAll);
+interface Props {
+  stripe: Promise<Stripe | null>;
+}
 
+const App: React.FC<Props> = ({ stripe }) => {
   return (
     <Router>
       <Switch>
@@ -36,17 +34,15 @@ function App() {
           <SignIn />
         </Route>
 
-        {categories.map((category) => (
-          <Route path={`/${category.name.toLowerCase()}`}>
-            <Product />
-          </Route>
-        ))}
+        <Route path={["/tv", "/camera", "/phone", "/computer"]}>
+          <Product />
+        </Route>
 
         <Route path="/product/:id">
           <ProductDetail />
         </Route>
 
-        <Route path="/search/:params">
+        <Route path="/search">
           <Search />
         </Route>
 
@@ -63,9 +59,17 @@ function App() {
         </Route>
 
         <AdminRoute path="/admin" component={Admin} exact={false} />
+
+        <Route path="/checkout" exact>
+          <Elements stripe={stripe}>
+            <Checkout />
+          </Elements>
+        </Route>
+
+        <Route exact component={() => <h3>hello</h3>} />
       </Switch>
     </Router>
   );
-}
+};
 
 export default App;

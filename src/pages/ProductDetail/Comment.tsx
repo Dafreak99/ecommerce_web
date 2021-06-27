@@ -66,71 +66,73 @@ const Comment: React.FC<Props> = () => {
   };
 
   return (
-    <Box className="container" p="5rem 0">
-      <Heading fontSize="large" mb="2rem">
-        Customer Reviews
-      </Heading>
+    <Box borderBottom="1px solid #f3f3f3">
+      <Box className="container" p="5rem 0">
+        <Heading fontSize="large" mb="2rem">
+          Customer Reviews
+        </Heading>
 
-      {isLoggedIn() ? (
-        <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-          <Flex>
-            <StarRatingComponent
-              name="rate"
-              starCount={5}
-              value={star}
-              emptyStarColor="#f3f3f3"
-              onStarClick={setStar}
-            />
-            <Textarea
-              w="lg"
-              ml="2rem"
-              mr="1rem"
-              placeholder="Leave a comment on this product"
-              {...register("content", { required: true })}
-            ></Textarea>
-            <Button type="submit">Save</Button>
-          </Flex>
-        </Box>
-      ) : (
-        <Alert status="info" w="max-content">
-          <AlertIcon />
-          Please login to review this product.
-          <Link
-            to="/signin"
-            style={{ textDecoration: "underline", marginLeft: "5px" }}
-          >
-            Login Page
-          </Link>
-        </Alert>
-      )}
-
-      {comments?.length > 0 ? (
-        <>
-          {comments.map(({ content, user_id, rate, createdAt }, i) => (
-            <Flex key={i} mt="4rem">
-              <Box boxSize="6rem" borderRadius="50%" bg="#f3f3f3" mr="2rem" />
-              <Box>
-                <Text fontWeight="semibold" mb="5px">
-                  User: {user_id}
-                </Text>
-                <Flex alignItems="center">
-                  <StarRatingComponent
-                    name="rate"
-                    value={rate}
-                    emptyStarColor="#f3f3f3"
-                  />
-                  <Box ml="1rem" fontSize="md" fontStyle="italic">
-                    {format(new Date(createdAt), "dd-MM-yyyy")}
-                  </Box>
-                </Flex>
-                <Text>{content}</Text>
-              </Box>
+        {isLoggedIn() ? (
+          <Box as="form" onSubmit={handleSubmit(onSubmit)}>
+            <Flex>
+              <StarRatingComponent
+                name="rate"
+                starCount={5}
+                value={star}
+                emptyStarColor="#f3f3f3"
+                onStarClick={setStar}
+              />
+              <Textarea
+                w="lg"
+                ml="2rem"
+                mr="1rem"
+                placeholder="Leave a comment on this product"
+                {...register("content", { required: true })}
+              ></Textarea>
+              <Button type="submit">Save</Button>
             </Flex>
-          ))}
-        </>
-      ) : (
-        <Text mt="2rem">There is no review in this item yet</Text>
-      )}
+          </Box>
+        ) : (
+          <Alert status="info" w="max-content">
+            <AlertIcon />
+            Please login to review this product.
+            <Link
+              to="/signin"
+              style={{ textDecoration: "underline", marginLeft: "5px" }}
+            >
+              Login Page
+            </Link>
+          </Alert>
+        )}
+
+        {comments?.length > 0 ? (
+          <>
+            {comments.map(({ content, user_id, rate, createdAt }, i) => (
+              <Flex key={i} mt="4rem">
+                <Box boxSize="6rem" borderRadius="50%" bg="#f3f3f3" mr="2rem" />
+                <Box>
+                  <Text fontWeight="semibold" mb="5px">
+                    User: {user_id}
+                  </Text>
+                  <Flex alignItems="center">
+                    <StarRatingComponent
+                      name="rate"
+                      value={rate}
+                      emptyStarColor="#f3f3f3"
+                    />
+                    <Box ml="1rem" fontSize="md" fontStyle="italic">
+                      {format(new Date(createdAt), "dd-MM-yyyy")}
+                    </Box>
+                  </Flex>
+                  <Text>{content}</Text>
+                </Box>
+              </Flex>
+            ))}
+          </>
+        ) : (
+          <Text mt="2rem">There is no review in this item yet</Text>
+        )}
+      </Box>
     </Box>
   );
 };

@@ -16,10 +16,10 @@ const Category: React.FC<Props> = () => {
   const categories = useAppSelector(categorySelectors.selectAll);
 
   const data = [
-    { src: cate1, name: "Computer" },
-    { src: cate2, name: "Phone" },
-    { src: cate3, name: "TV" },
     { src: cate4, name: "Camera" },
+    { src: cate3, name: "TV" },
+    { src: cate2, name: "Phone" },
+    { src: cate1, name: "Computer" },
   ];
 
   return (
