@@ -16,57 +16,30 @@ import {
   SignIn,
   Favorite,
   Checkout,
+  Order,
 } from "./pages";
+import PrivateRoute from "./helpers/PrivateRoute";
 
-interface Props {
-  stripe: Promise<Stripe | null>;
-}
+interface Props {}
 
-const App: React.FC<Props> = ({ stripe }) => {
+const App: React.FC<Props> = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/" exact>
-          <Home />
-        </Route>
-
-        <Route path="/signin" exact>
-          <SignIn />
-        </Route>
-
-        <Route path={["/tv", "/camera", "/phone", "/computer"]}>
-          <Product />
-        </Route>
-
-        <Route path="/product/:id">
-          <ProductDetail />
-        </Route>
-
-        <Route path="/search">
-          <Search />
-        </Route>
-
-        <Route path="/cart">
-          <Cart />
-        </Route>
-
-        <Route path="/favorite">
-          <Favorite />
-        </Route>
-
-        <Route path="/admin" exact>
-          <AdminSignIn />
-        </Route>
-
+        <Route path="/" exact component={Home} />
+        <Route path="/signin" exact component={SignIn} />
+        <Route
+          path={["/tv", "/camera", "/phone", "/computer"]}
+          component={Product}
+        />
+        <Route path="/product/:id" component={ProductDetail} />
+        <Route path="/search" component={Search} />
+        <Route path="/cart" component={Cart} />
+        <Route path="/favorite" component={Favorite} />
+        <Route path="/admin" exact component={AdminSignIn} />
+        <PrivateRoute path="/order" component={Order} exact={false} />
+        <PrivateRoute path="/checkout" component={Checkout} exact={true} />
         <AdminRoute path="/admin" component={Admin} exact={false} />
-
-        <Route path="/checkout" exact>
-          <Elements stripe={stripe}>
-            <Checkout />
-          </Elements>
-        </Route>
-
-        <Route exact component={() => <h3>hello</h3>} />
       </Switch>
     </Router>
   );

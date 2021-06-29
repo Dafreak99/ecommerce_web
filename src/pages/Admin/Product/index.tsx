@@ -41,14 +41,14 @@ const Product: React.FC<Props> = () => {
 
   const productState = useAppSelector((state) => state.products);
 
-  console.log(productState);
-
   const location = useLocation();
   const dispatch = useAppDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(getProducts(location.search));
+    dispatch(
+      getProducts({ condition: location.search.split("?")[1], limit: 5 })
+    );
   }, [location]);
 
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -62,6 +62,9 @@ const Product: React.FC<Props> = () => {
   const changeURL = (name: string, value: string) => {
     const params = new URLSearchParams(location.search);
 
+    if (params.has("page")) {
+      params.delete("page");
+    }
     if (params.has(name)) {
       params.delete(name);
     }
@@ -146,8 +149,8 @@ const Product: React.FC<Props> = () => {
             ({ title, price, images, status, quantity, is_active, _id }, i) => (
               <CSSTransition key={_id} timeout={500} classNames="item">
                 <Tr key={i}>
-                  <Td>{i + 1}</Td>
-                  <Td>{title} </Td>
+                  <Td>{i + 1 + 5 * (productState.page - 1)}</Td>
+                  <Td>{title}</Td>
                   <Td>
                     <Image
                       src={images[0]}

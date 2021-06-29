@@ -9,14 +9,24 @@ import {
 import Axios from "../../helpers/axios";
 import AdAxios from "../../helpers/adminAxios";
 
-import { AdditionalState, Product } from "./../../types";
+import { Product } from "./../../types";
 import { compareDesc } from "date-fns";
 
 export const getProducts = createAsyncThunk(
   "products/getProducts",
-  async (params: string, thunkAPI) => {
+  async (
+    params: {
+      condition: string;
+      limit?: number;
+    },
+    thunkAPI
+  ) => {
     try {
-      let { data } = await Axios.get(`/api/v1/products/list${params}?limit=5`);
+      const { limit = 5, condition } = params;
+
+      let { data } = await Axios.get(
+        `/api/v1/products/list?limit=${limit}&${condition}`
+      );
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -79,7 +89,7 @@ export const getProductsByCategory = createAsyncThunk(
       let { data } = await Axios.get(
         `/api/v1/products/list?category=${categoryId}`
       );
-      return data.docs;
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }

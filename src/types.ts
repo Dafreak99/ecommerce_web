@@ -22,6 +22,15 @@ export interface Product {
   quantity_order: number;
 }
 
+export interface CheckoutedProduct {
+  _id: string;
+  images: string[];
+  title: string;
+  current_price: number;
+  qty: number;
+  amount: number;
+}
+
 export interface Category {
   _id: string;
   name: string;
@@ -50,6 +59,27 @@ export interface Comment {
   user_id: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Order {
+  buyer:
+    | string
+    | {
+        name: string;
+        phone: string;
+        email: string;
+        address: string;
+        postcode: string;
+      };
+  charge_id: string;
+  createdAt: string;
+  description: string;
+  products: Product[];
+  status: string;
+  total_amount: number;
+  updatedAt: string;
+  user: string | { first_name: string; last_name: string };
+  _id: string;
 }
 
 export interface AdditionalState {

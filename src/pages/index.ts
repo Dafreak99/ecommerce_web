@@ -7,6 +7,7 @@ import Search from "./Search";
 import SignIn from "./SignIn";
 import Favorite from "./Favorite";
 import Checkout from "./Checkout";
+import Order from "./Order";
 
 export {
   Admin,
@@ -18,4 +19,5 @@ export {
   SignIn,
   Favorite,
   Checkout,
+  Order,
 };

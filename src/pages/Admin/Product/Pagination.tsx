@@ -1,8 +1,7 @@
 import { Box, Button, Icon } from "@chakra-ui/react";
 import React from "react";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
-import { useAppDispatch } from "../../../app/hooks";
-import { getProducts } from "../../../features/products/productSlice";
+import { useHistory, useLocation } from "react-router-dom";
 
 interface Props {
   prevPage: number | null;
@@ -11,13 +10,23 @@ interface Props {
 }
 
 const Pagination: React.FC<Props> = ({ page, prevPage, nextPage }) => {
-  const dispatch = useAppDispatch();
+  const history = useHistory();
+  const { search } = useLocation();
 
   const prev = () => {
-    dispatch(getProducts(`?page=${prevPage}`));
+    history.push(`/admin/product/?page=${prevPage}&${searchCondition()}`);
   };
   const next = () => {
-    dispatch(getProducts(`?page=${nextPage}`));
+    history.push(`/admin/product/?page=${nextPage}&${searchCondition()}`);
+  };
+
+  const searchCondition = () => {
+    const params = new URLSearchParams(search);
+
+    // Since ?page is a fixture param, delete params to avoid ?page=1&page=2
+    if (params.has("page")) params.delete("page");
+
+    return params.toString();
   };
 
   return (

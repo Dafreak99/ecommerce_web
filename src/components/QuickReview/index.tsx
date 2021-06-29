@@ -49,7 +49,6 @@ const QuickReview: React.FC<Props> = ({ isOpen, onClose, product }) => {
           <Heading fontSize="lg" mb="2rem" mt="1rem" textAlign="center">
             {title}
           </Heading>
-          {/* <Text>{desciption}</Text> */}
           <Table variant="simple">
             <Thead>
               <Tr>

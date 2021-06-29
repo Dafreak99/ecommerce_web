@@ -1,9 +1,10 @@
-import { Box, Button, Icon, Text } from "@chakra-ui/react";
+import { Box, Button, Icon, Text, useToast } from "@chakra-ui/react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { StripeCardElement } from "@stripe/stripe-js";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaStripe } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 import { useCart } from "../../contexts/cartContext";
 import Axios from "../../helpers/axios";
 import CardSection from "./CardSection";
@@ -23,9 +24,12 @@ const CheckoutForm: React.FC<Props> = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
-  const { cart } = useCart();
+
+  const toast = useToast();
+  const { cart, emptyCart } = useCart();
   const stripe = useStripe();
   const elements = useElements();
+  const history = useHistory();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (!stripe || !elements) {
@@ -65,14 +69,26 @@ const CheckoutForm: React.FC<Props> = () => {
       }),
     };
 
-    console.log(body);
-
     try {
       const res = await Axios.post(
         "/api/v2/public/order/checkout-stripe",
         body
       );
-      console.log(res.data);
+
+      toast({
+        title: "Checkout successfully",
+        description: "Thank you for your payment",
+        status: "success",
+        position: "top",
+        duration: 3000,
+      });
+
+      setTimeout(() => {
+        history.push(`/order/${res.data._id}`);
+
+        // Clear cart after checkout
+        emptyCart();
+      }, 3000);
     } catch (error) {
       console.log(error.response.data);
     }

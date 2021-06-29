@@ -90,9 +90,6 @@ const CartBody: React.FC<Props> = () => {
               <Heading fontSize="lg" color="gray.600">
                 Your items
               </Heading>
-              <Button variant="ghost" colorScheme="red" onClick={emptyCart}>
-                Empty Cart
-              </Button>
             </Flex>
             <Box>
               <Table variant="simple" mt="4rem">
@@ -127,7 +124,7 @@ const CartBody: React.FC<Props> = () => {
                               maxW={24}
                               defaultValue={cartQuantity}
                               max={quantity}
-                              min={0}
+                              min={1}
                               onChange={(str, num) =>
                                 onChangeQuantity(str, num, _id)
                               }
@@ -162,13 +159,27 @@ const CartBody: React.FC<Props> = () => {
                     <Td></Td>
                     <Td></Td>
                     <Td></Td>
-                    <Td isNumeric fontWeight="bold">
+                    <Td isNumeric fontWeight="bold" fontSize="1.2rem">
                       ${getTotalPrice()}
                     </Td>
                     <Td></Td>
                   </Tr>
                 </Tfoot>
               </Table>
+              <Flex justify="space-between" mt="4rem">
+                <Button variant="ghost" colorScheme="red" onClick={emptyCart}>
+                  Empty Cart
+                </Button>
+
+                <Button
+                  size="lg"
+                  bg="primary"
+                  color="#fff"
+                  onClick={() => history.push("/checkout")}
+                >
+                  Proceed Checkout
+                </Button>
+              </Flex>
             </Box>
           </Box>
         )}

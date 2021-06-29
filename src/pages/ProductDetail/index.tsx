@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import Footer from "../../components/Footer";
@@ -16,6 +16,7 @@ interface Props {}
 
 const ProductDetail: React.FC<Props> = () => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const productStatus = useAppSelector((state) => state.products.status);
 
@@ -26,12 +27,16 @@ const ProductDetail: React.FC<Props> = () => {
   );
 
   useEffect(() => {
-    if (productStatus === "idle") dispatch(getProducts(""));
+    if (productStatus === "idle")
+      dispatch(getProducts({ condition: "", limit: 8 }));
+  }, []);
+
+  useEffect(() => {
     window.scrollTo({
       top: 0,
       left: 0,
     });
-  }, []);
+  }, [location]);
 
   return (
     <>

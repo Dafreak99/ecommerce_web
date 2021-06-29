@@ -6,6 +6,7 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import { orderSelectors } from "../../../features/orders/orderSlice";
 import { useHistory } from "react-router-dom";
+import { format } from "date-fns";
 interface Props {}
 
 const Order: React.FC<Props> = () => {
@@ -28,12 +29,11 @@ const Order: React.FC<Props> = () => {
       <Flex justify="space-between" alignItems="center" mb="2rem">
         <Heading color="gray.600">Orders</Heading>
       </Flex>
-      <Table variant="simple" bg="#fff">
+      <Table variant="simple" bg="#fff" w="max-content">
         <Thead>
           <Tr>
             <Th>#</Th>
             <Th>NAME</Th>
-            <Th>CREATED DATE</Th>
             <Th>AMOUNT</Th>
             <Th>STATUS</Th>
             <Th></Th>
@@ -41,38 +41,29 @@ const Order: React.FC<Props> = () => {
           </Tr>
         </Thead>
         <TransitionGroup component="tbody">
-          {orders.map(
-            (
-              {
-                status,
-                createdAt,
-                total_amount,
-                user: { first_name, last_name },
-                _id,
-              },
-              i
-            ) => (
-              <CSSTransition key={_id} timeout={500} classNames="item">
-                <Tr key={i}>
-                  <Td>{i + 1}</Td>
-                  <Td>{first_name + " " + last_name}</Td>
-                  <Td>{createdAt}</Td>
-                  <Td>${total_amount}</Td>
-                  <Td>
-                    {" "}
-                    <Badge colorScheme={renderColorScheme(status)}>
-                      {status}
-                    </Badge>
-                  </Td>
-                  <Td>
-                    <Button onClick={() => history.push(`./order/${_id}`)}>
-                      View Detail
-                    </Button>
-                  </Td>
-                </Tr>
-              </CSSTransition>
-            )
-          )}
+          {orders.map(({ status, createdAt, total_amount, _id }, i) => (
+            <CSSTransition key={_id} timeout={500} classNames="item">
+              <Tr key={i}>
+                <Td>{i + 1}</Td>
+                <Td>{format(new Date(createdAt), "hh:mm | dd-MM-yyyy")}</Td>
+                <Td>${total_amount}</Td>
+                <Td>
+                  {" "}
+                  <Badge colorScheme={renderColorScheme(status)}>
+                    {status}
+                  </Badge>
+                </Td>
+                <Td>
+                  <Button
+                    variant="ghost"
+                    onClick={() => history.push(`./order/${_id}`)}
+                  >
+                    View Detail
+                  </Button>
+                </Td>
+              </Tr>
+            </CSSTransition>
+          ))}
         </TransitionGroup>
       </Table>
     </Box>

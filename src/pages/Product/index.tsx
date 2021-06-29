@@ -1,7 +1,7 @@
 import { Box, Grid, Text, Spinner } from "@chakra-ui/react";
 import React from "react";
 import { useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
@@ -10,10 +10,7 @@ import {
   productSelectors,
 } from "../../features/products/productSlice";
 import ProductComponent from "../../components/Product";
-import {
-  categorySelectors,
-  getCategories,
-} from "../../features/categories/categoriesSlice";
+import { categorySelectors } from "../../features/categories/categoriesSlice";
 
 interface Props {}
 
@@ -28,10 +25,8 @@ const Product: React.FC<Props> = () => {
   const productStatus = useAppSelector((state) => state.products.status);
 
   useEffect(() => {
-    console.log(history.location);
     if (history.location.state) {
       dispatch(getProductsByCategory(history.location.state as string));
-    } else {
     }
   }, []);
 

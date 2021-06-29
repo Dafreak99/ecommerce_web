@@ -12,7 +12,6 @@ import AdAxios from "../../helpers/adminAxios";
 export const getCategories = createAsyncThunk(
   "categories/getCategories",
   async (_, thunkAPI) => {
-    console.log("category loading");
     try {
       let { data } = await Axios.get("/api/v1/categories/list");
       return data.docs;

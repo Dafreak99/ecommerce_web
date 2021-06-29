@@ -9,10 +9,12 @@ import { theme } from "./theme";
 import { CartProvider } from "./contexts/cartContext";
 import { AuthProvider } from "./contexts/authContext";
 import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
-const stripe = loadStripe(
-  "pk_test_51J4jVuAKmaLhXlhzGeYcInpRupzDBdzZSfa1xRqHoceOeX3l7IY8wPxiFTMTrSVzIJ5wh675FNf7SaBfA6bzjf6x00D2uemC2M"
-);
+// const stripe = loadStripe(
+//   "pk_test_51J4jVuAKmaLhXlhzGeYcInpRupzDBdzZSfa1xRqHoceOeX3l7IY8wPxiFTMTrSVzIJ5wh675FNf7SaBfA6bzjf6x00D2uemC2M"
+// );
+const stripe = loadStripe("pk_test_BHUOafmeJtUMRjSTplsjt9Z9");
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,7 +22,9 @@ ReactDOM.render(
       <AuthProvider>
         <CartProvider>
           <ChakraProvider theme={theme}>
-            <App stripe={stripe} />
+            <Elements stripe={stripe}>
+              <App />
+            </Elements>
           </ChakraProvider>
         </CartProvider>
       </AuthProvider>

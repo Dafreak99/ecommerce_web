@@ -22,7 +22,7 @@ const SearchBody: React.FC<Props> = () => {
   const products = useAppSelector(productSelectors.selectAll);
 
   useEffect(() => {
-    dispatch(getProducts(location.search))
+    dispatch(getProducts({ condition: location.search }))
       .then(unwrapResult)
       .then((data) => setIsLoading(false));
   }, [location]);
@@ -34,7 +34,7 @@ const SearchBody: React.FC<Props> = () => {
         alignItems="center"
         p="5rem 0"
         className="container"
-        h="calc(100vh - 160px)"
+        minH="calc(100vh - 160px)"
       >
         <Spinner />
       </Flex>
@@ -42,7 +42,7 @@ const SearchBody: React.FC<Props> = () => {
   }
 
   return (
-    <Box p="5rem 0" className="container" h="calc(100vh - 160px)">
+    <Box p="5rem 0" className="container" minH="calc(100vh - 160px)">
       <Text mb="2rem" fontSize="xl">
         Found {products.length} items
       </Text>

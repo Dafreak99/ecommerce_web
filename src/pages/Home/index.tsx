@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Box } from "@chakra-ui/react";
 
 import Navbar from "../../components/Navbar";
@@ -25,7 +24,7 @@ const Home: React.FC<Props> = () => {
   useEffect(() => {
     if (categoriesStatus === "idle") dispatch(getCategories());
 
-    dispatch(getProducts(""));
+    dispatch(getProducts({ condition: "", limit: 8 }));
     if (isLoggedIn()) {
       dispatch(getFavorite());
     }

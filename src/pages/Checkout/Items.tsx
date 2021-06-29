@@ -34,7 +34,7 @@ const Items: React.FC<Props> = () => {
         mb="2rem"
         variant="unstyled"
         outline="none"
-        onClick={() => history.push("/")}
+        onClick={history.goBack}
       >
         <Icon as={BsArrowLeft} boxSize="2rem" mr="1rem" /> Return to Shopping
       </Button>
@@ -47,7 +47,7 @@ const Items: React.FC<Props> = () => {
             <Th>No.</Th>
             <Th>Name</Th>
             <Th>Image</Th>
-            <Th>Quantity</Th>
+            <Th isNumeric>Quantity</Th>
             <Th isNumeric>Price</Th>
             <Th isNumeric>Total</Th>
             <Th></Th>
@@ -62,7 +62,7 @@ const Items: React.FC<Props> = () => {
                 <Td>
                   <Image src={images[0]} h="100px" />
                 </Td>
-                <Td isNumeric>12</Td>
+                <Td isNumeric>{cartQuantity}</Td>
                 <Td isNumeric>${price}</Td>
                 <Td isNumeric>${price * cartQuantity}</Td>
                 <Td></Td>
