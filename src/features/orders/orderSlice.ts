@@ -45,6 +45,24 @@ export const getOrdersFromCustomerSide = createAsyncThunk(
   }
 );
 
+export const checkOrderStatus = createAsyncThunk(
+  "orders/checkOrderStatus",
+  async (id: string, thunkAPI) => {
+    try {
+      let { data } = await AdAxios.post(`/api/v1/orders/check-status/${id}`, {
+        status: "success",
+      });
+
+      return {
+        message: data.message,
+        id,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
 const ordersAdapter = createEntityAdapter({
   selectId: (order: any) => order._id,
   sortComparer: (a, b) =>
@@ -84,6 +102,22 @@ const orderSlice = createSlice({
       }
     );
     builder.addCase(getOrdersFromCustomerSide.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message as string;
+    });
+
+    // CHECK ORDER STATUS
+    builder.addCase(checkOrderStatus.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(checkOrderStatus.fulfilled, (state, { payload }) => {
+      ordersAdapter.updateOne(state, {
+        id: payload.id,
+        changes: { status: "SUCCESS" },
+      });
+      state.status = "succeeded";
+    });
+    builder.addCase(checkOrderStatus.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message as string;
     });

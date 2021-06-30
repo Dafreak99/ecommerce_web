@@ -82,6 +82,16 @@ export interface Order {
   _id: string;
 }
 
+export interface Buyer {
+  _id: string;
+  orders: any[];
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  postcode: string;
+}
+
 export interface AdditionalState {
   status: string;
   error: string | null;

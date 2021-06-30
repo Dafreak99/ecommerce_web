@@ -14,17 +14,29 @@ import {
   Grid,
   Stack,
   Text,
+  Button,
+  Icon,
+  useToast,
+  Spinner,
 } from "@chakra-ui/react";
-import { useAppSelector } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 
-import { orderSelectors } from "../../../features/orders/orderSlice";
+import {
+  checkOrderStatus,
+  orderSelectors,
+} from "../../../features/orders/orderSlice";
 import { CheckoutedProduct } from "../../../types";
 import BackButton from "../../../components/BackButton";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { BsCheck } from "react-icons/bs";
+import { unwrapResult } from "@reduxjs/toolkit";
 interface Props {}
 
 const OrderDetail: React.FC<Props> = () => {
+  const history = useHistory();
+  const dispatch = useAppDispatch();
   const params = useParams<{ id: string }>();
+  const toast = useToast();
 
   const order = useAppSelector((state) =>
     orderSelectors.selectById(state, params.id)
@@ -46,26 +58,56 @@ const OrderDetail: React.FC<Props> = () => {
         <Flex justify="space-between" alignItems="center" mb="2rem">
           <BackButton heading="Order Detail" />
         </Flex>
-        <Box
-          p="2rem 3rem"
+        <Flex
+          p="4rem 3rem"
           bg="#fff"
           boxShadow="0 4px 10px rgba(0,0,0,.05)"
           borderRadius="5px"
+          justify="center"
+          alignItems="center"
         >
-          Loading...
-        </Box>
+          <Spinner />
+        </Flex>
       </Box>
     );
   }
+
+  const normalize = (amount: number) => {
+    return amount.toString().slice(0, amount.toString().length - 2);
+  };
+
+  const onApproveOrder = () => {
+    dispatch(checkOrderStatus(params.id))
+      .then(unwrapResult)
+      .then((data) =>
+        setTimeout(() => {
+          toast({
+            position: "top",
+            duration: 3000,
+            description: data.message,
+            status: "success",
+          });
+          history.goBack();
+        }, 1000)
+      );
+  };
 
   return (
     <Box>
       <>
         <Flex justify="space-between" alignItems="center" mb="2rem">
           <BackButton heading="Order Detail" />
+          <Button
+            bg="primary"
+            color="#fff"
+            leftIcon={<BsCheck />}
+            onClick={onApproveOrder}
+          >
+            Approve
+          </Button>
         </Flex>
         <Box
-          p="2rem 3rem"
+          p="4rem 3rem"
           bg="#fff"
           boxShadow="0 4px 10px rgba(0,0,0,.05)"
           borderRadius="5px"
@@ -120,7 +162,7 @@ const OrderDetail: React.FC<Props> = () => {
               <Text fontWeight="bold">
                 Total Amount:{" "}
                 <Box as="span" fontWeight="normal">
-                  ${order.total_amount}
+                  ${normalize(order.total_amount)}
                 </Box>
               </Text>
               <Text fontWeight="bold">

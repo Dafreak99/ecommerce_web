@@ -5,6 +5,8 @@ import EditProduct from "./Product/EditProduct";
 import Order from "./Order";
 import OrderDetail from "./Order/OrderDetail";
 import Promotion from "./Promotion";
+import Payment from "./Payment";
+import PaymentDetail from "./Payment/PaymentDetail";
 
 const routes = [
   {
@@ -34,6 +36,15 @@ const routes = [
   {
     path: "/order/:id",
     component: OrderDetail,
+  },
+  {
+    path: "/payment",
+    exact: true,
+    component: Payment,
+  },
+  {
+    path: "/payment/:id",
+    component: PaymentDetail,
   },
   {
     path: "/promotion",

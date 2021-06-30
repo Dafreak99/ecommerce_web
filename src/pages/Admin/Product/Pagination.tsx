@@ -14,10 +14,10 @@ const Pagination: React.FC<Props> = ({ page, prevPage, nextPage }) => {
   const { search } = useLocation();
 
   const prev = () => {
-    history.push(`/admin/product/?page=${prevPage}&${searchCondition()}`);
+    history.push(`/admin/product/?page=${prevPage}${searchCondition()}`);
   };
   const next = () => {
-    history.push(`/admin/product/?page=${nextPage}&${searchCondition()}`);
+    history.push(`/admin/product/?page=${nextPage}${searchCondition()}`);
   };
 
   const searchCondition = () => {
@@ -26,7 +26,7 @@ const Pagination: React.FC<Props> = ({ page, prevPage, nextPage }) => {
     // Since ?page is a fixture param, delete params to avoid ?page=1&page=2
     if (params.has("page")) params.delete("page");
 
-    return params.toString();
+    return params.toString() ? `&${params.toString()}` : "";
   };
 
   return (

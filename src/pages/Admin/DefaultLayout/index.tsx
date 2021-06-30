@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { getCategories } from "../../../features/categories/categoriesSlice";
 import { getOrders } from "../../../features/orders/orderSlice";
 import { getPromotions } from "../../../features/promotions/promotionSlice";
+import { getBuyers } from "../../../features/buyers/buyersSlice";
 
 interface Props {}
 
@@ -25,6 +26,7 @@ const AdminLayout: React.FC<Props> = () => {
     // Since these only getting dispatch once
     dispatch(getOrders());
     dispatch(getPromotions());
+    dispatch(getBuyers());
   }, []);
 
   return (
