@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
-import { AiOutlinePercentage } from "react-icons/ai";
+import { AiOutlineBarChart, AiOutlinePercentage } from "react-icons/ai";
 import {
   BsCardChecklist,
   BsCardText,
@@ -23,6 +23,7 @@ import { FiLogOut } from "react-icons/fi";
 import styles from "./Sidebar.module.css";
 import { useAuth } from "../../../contexts/authContext";
 import { SiShopware } from "react-icons/si";
+import { GrOverview } from "react-icons/gr";
 interface Props {}
 
 const Sidebar: React.FC<Props> = () => {
@@ -32,12 +33,13 @@ const Sidebar: React.FC<Props> = () => {
   const [index, setIndex] = useState<number>(0);
 
   const routes: any = {
-    product: 0,
-    category: 1,
-    order: 2,
-    payment: 3,
-    voucher: 4,
-    promotion: 5,
+    overview: 0,
+    product: 1,
+    category: 2,
+    order: 3,
+    payment: 4,
+    voucher: 5,
+    promotion: 6,
   };
 
   useEffect(() => {
@@ -53,6 +55,7 @@ const Sidebar: React.FC<Props> = () => {
   };
 
   const menu = [
+    { title: "Overview", icon: AiOutlineBarChart, path: "/admin/overview" },
     { title: "Product", icon: BsDisplay, path: "/admin/product" },
     { title: "Category", icon: BsListCheck, path: "/admin/category" },
     { title: "Order", icon: BsCardChecklist, path: "/admin/order" },

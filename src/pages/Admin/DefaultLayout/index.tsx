@@ -12,6 +12,7 @@ import { getCategories } from "../../../features/categories/categoriesSlice";
 import { getOrders } from "../../../features/orders/orderSlice";
 import { getPromotions } from "../../../features/promotions/promotionSlice";
 import { getBuyers } from "../../../features/buyers/buyersSlice";
+import { getOverview } from "../../../features/overview/overviewSlice";
 
 interface Props {}
 
@@ -24,6 +25,7 @@ const AdminLayout: React.FC<Props> = () => {
     if (categoriesStatus === "idle") dispatch(getCategories());
 
     // Since these only getting dispatch once
+    dispatch(getOverview());
     dispatch(getOrders());
     dispatch(getPromotions());
     dispatch(getBuyers());

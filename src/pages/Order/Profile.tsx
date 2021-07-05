@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   Heading,
   Icon,
@@ -13,7 +14,9 @@ import { FaAddressBook } from "react-icons/fa";
 import { RiCharacterRecognitionFill } from "react-icons/ri";
 import { MdEmail } from "react-icons/md";
 import { useAppSelector } from "../../app/hooks";
-import EditProfile from "./EditProfile";
+
+import EditProfileModal from "./EditProfileModal";
+import ChangePasswordModal from "./ChangePasswordModal";
 
 interface Props {}
 
@@ -42,7 +45,6 @@ const Profile: React.FC<Props> = () => {
         )}
         {status === "succeeded" && (
           <>
-            <EditProfile profile={profile} />
             <Heading fontSize="xl">
               👋 Hello, {profile.first_name + " " + profile.last_name}
             </Heading>
@@ -78,6 +80,9 @@ const Profile: React.FC<Props> = () => {
                 </Box>
               </ListItem>
             </List>
+
+            <EditProfileModal profile={profile} />
+            <ChangePasswordModal />
           </>
         )}
       </Box>

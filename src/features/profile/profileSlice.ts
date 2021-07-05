@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Axios from "../../helpers/axios";
-import { FormValues } from "../../pages/Order/EditProfile";
+import { FormValues } from "../../pages/Order/EditProfileModal";
 import { Profile } from "../../types";
 
 export const getProfile = createAsyncThunk(

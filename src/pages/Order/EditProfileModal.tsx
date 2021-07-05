@@ -15,7 +15,9 @@ import {
   ModalOverlay,
   Spinner,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
+import { unwrapResult } from "@reduxjs/toolkit";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEdit } from "react-icons/ai";
@@ -35,28 +37,50 @@ export interface FormValues {
   phone: string;
 }
 
-const EditProfile: React.FC<Props> = ({ profile }) => {
+const EditProfileModal: React.FC<Props> = ({ profile }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm<FormValues>();
   const dispatch = useAppDispatch();
+  const toast = useToast();
 
   const { updateStatus } = useAppSelector((state) => state.profile);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    dispatch(updateProfile(data));
+    dispatch(updateProfile(data))
+      .then(unwrapResult)
+      .then((data) => {
+        toast({
+          status: "success",
+          title: "Success",
+          duration: 2000,
+          position: "top",
+          isClosable: true,
+        });
+      })
+      .catch((err) => {
+        toast({
+          status: "error",
+          title: "Error",
+          duration: 2000,
+          position: "top",
+          isClosable: true,
+        });
+      });
+
     onClose();
   };
   return (
     <>
-      <Icon
-        as={AiFillEdit}
-        cursor="pointer"
+      <Button
+        leftIcon={<AiFillEdit />}
+        mt="2rem"
+        w="100%"
+        bg="#fff"
+        color="primary"
         onClick={onOpen}
-        fontSize="1.5rem"
-        position="absolute"
-        top="5%"
-        right="5%"
-      />
+      >
+        Edit Profile
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -123,4 +147,4 @@ const EditProfile: React.FC<Props> = ({ profile }) => {
   );
 };
 
-export default EditProfile;
+export default EditProfileModal;

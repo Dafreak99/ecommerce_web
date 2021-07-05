@@ -8,6 +8,7 @@ import favoriteSlice from "../features/favorites/favoriteSlice";
 import promotionSlice from "../features/promotions/promotionSlice";
 import buyersSlice from "../features/buyers/buyersSlice";
 import profileSlice from "../features/profile/profileSlice";
+import overviewSlice from "../features/overview/overviewSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     promotions: promotionSlice,
     buyers: buyersSlice,
     profile: profileSlice,
+    overview: overviewSlice,
   },
 });
 

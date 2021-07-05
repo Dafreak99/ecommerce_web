@@ -7,8 +7,14 @@ import OrderDetail from "./Order/OrderDetail";
 import Promotion from "./Promotion";
 import Payment from "./Payment";
 import PaymentDetail from "./Payment/PaymentDetail";
+import Overview from "./Overview";
 
 const routes = [
+  {
+    path: "/overview",
+    exact: false,
+    component: Overview,
+  },
   {
     path: "/product",
     exact: false,
