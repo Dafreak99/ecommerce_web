@@ -37,7 +37,7 @@ const App: React.FC<Props> = () => {
         <Route path="/cart" component={Cart} />
         <Route path="/favorite" component={Favorite} />
         <Route path="/admin" exact component={AdminLogin} />
-        <PrivateRoute path="/order" component={Order} exact={false} />
+        <PrivateRoute path="/order" component={Order} exact={true} />
         <PrivateRoute path="/checkout" component={Checkout} exact={true} />
         <AdminRoute path="/admin" component={Admin} exact={false} />
       </Switch>

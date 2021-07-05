@@ -12,7 +12,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
 import Axios from "../../../helpers/axios";
 import { useAuth } from "../../../contexts/authContext";
@@ -30,7 +30,7 @@ const AdminLogin: React.FC<Props> = () => {
     formState: { errors },
   } = useForm<FormValues>();
 
-  const [error, setError] = useState<boolean>(false);
+  const [error] = useState<boolean>(false);
   const toast = useToast();
 
   const { setAdminToken, isAdminLoggedIn } = useAuth();
@@ -78,17 +78,7 @@ const AdminLogin: React.FC<Props> = () => {
         <Heading mb="2rem" textAlign="center">
           Admin Login
         </Heading>
-        {error && (
-          <Box
-            p="0.5rem 1rem"
-            bg="red.100"
-            borderRadius="5px"
-            color="red.600"
-            mb="1rem"
-          >
-            <Text>Invalid credentials</Text>
-          </Box>
-        )}
+
         <Box as="form" onSubmit={handleSubmit(onSubmit)}>
           <FormControl>
             <FormLabel>Email</FormLabel>

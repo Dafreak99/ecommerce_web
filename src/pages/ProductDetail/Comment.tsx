@@ -74,7 +74,7 @@ const Comment: React.FC<Props> = () => {
 
         {isLoggedIn() ? (
           <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-            <Flex>
+            <Flex flexDirection={{ base: "column", lg: "row" }}>
               <StarRatingComponent
                 name="rate"
                 starCount={5}
@@ -83,9 +83,10 @@ const Comment: React.FC<Props> = () => {
                 onStarClick={setStar}
               />
               <Textarea
-                w="lg"
-                ml="2rem"
-                mr="1rem"
+                w={{ base: "100%", lg: "sm" }}
+                ml={{ base: 0, lg: "2rem" }}
+                mr={{ base: 0, lg: "1rem" }}
+                mb={{ base: "1rem", lg: 0 }}
                 placeholder="Leave a comment on this product"
                 {...register("content", { required: true })}
               ></Textarea>

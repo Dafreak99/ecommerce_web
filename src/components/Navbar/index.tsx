@@ -27,6 +27,7 @@ import { useAuth } from "../../contexts/authContext";
 import { useAppSelector } from "../../app/hooks";
 import { favoriteSelector } from "../../features/favorites/favoriteSlice";
 import { FiPackage } from "react-icons/fi";
+import { ImProfile } from "react-icons/im";
 
 interface Props {}
 
@@ -138,6 +139,10 @@ const Navbar: React.FC<Props> = () => {
             <MenuList>
               {isLoggedIn() ? (
                 <>
+                  <MenuItem onClick={() => history.push("/profile")}>
+                    <Icon as={ImProfile} boxSize="1rem" mr="10px" /> View
+                    Profile
+                  </MenuItem>
                   <MenuItem onClick={() => history.push("/order")}>
                     <Icon as={FiPackage} boxSize="1rem" mr="10px" /> View Orders
                   </MenuItem>

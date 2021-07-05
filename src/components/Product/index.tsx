@@ -52,10 +52,7 @@ const Product: React.FC<Props> = ({ product, isRenderAsFavorite = false }) => {
   };
 
   return (
-    <Box
-      className="product"
-      gridColumn={{ base: "span 12", sm: "span 6", xl: "span 3" }}
-    >
+    <Box className="product" gridColumn={{ base: "span 6", xl: "span 3" }}>
       <Link to={`/product/${product._id}`} className="product__link">
         <Box className="product__utils" onClick={(e) => e.preventDefault()}>
           {isRenderAsFavorite ? (

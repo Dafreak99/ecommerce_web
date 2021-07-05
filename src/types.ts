@@ -1,3 +1,5 @@
+import { StripeCardElementChangeEvent } from "@stripe/stripe-js";
+
 export interface Product {
   title: string;
   desciption: string;
@@ -90,6 +92,15 @@ export interface Buyer {
   phone: string;
   address: string;
   postcode: string;
+}
+
+export interface Profile {
+  _id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  address: string;
+  phone: string;
 }
 
 export interface AdditionalState {

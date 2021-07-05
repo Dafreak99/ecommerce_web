@@ -38,8 +38,8 @@ const Category: React.FC<Props> = () => {
           >
             <Image
               src={data[i].src}
-              w="100px"
-              h="100px"
+              w={{ base: "50px", md: "100px" }}
+              h={{ base: "50px", md: "100px" }}
               margin="auto"
               mb="1rem"
             />

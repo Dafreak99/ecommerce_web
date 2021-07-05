@@ -144,9 +144,11 @@ const ProductBody: React.FC<Props> = () => {
                 <Button
                   leftIcon={<AiOutlineShoppingCart />}
                   onClick={() => onHandleAddToCart(product)}
-                  mr="1rem"
                   bg="primary"
                   color="#fff"
+                  w={{ base: "100%", md: "max-content" }}
+                  mb={{ base: "1rem", md: 0 }}
+                  mr={{ base: 0, md: "1rem" }}
                 >
                   Add to cart
                 </Button>
@@ -155,6 +157,7 @@ const ProductBody: React.FC<Props> = () => {
                   onClick={() => onAddToFavorite(product)}
                   bg="#f882b3"
                   color="#ffff"
+                  w={{ base: "100%", md: "max-content" }}
                 >
                   Add to favorite
                 </Button>

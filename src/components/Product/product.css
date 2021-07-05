@@ -64,3 +64,9 @@
     grid-column: span 6;
   }
 }
+
+@media (max-width: 30em) {
+  .product__link {
+    padding: 1rem 1.5rem;
+  }
+}
