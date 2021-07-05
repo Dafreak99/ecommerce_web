@@ -1,11 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { Stripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-
-import AdminSignIn from "./pages/Admin/SignIn";
+import AdminLogin from "./pages/Admin/Login";
 import AdminRoute from "./helpers/AdminRoute";
+
 import {
   Home,
   Admin,
@@ -13,10 +11,11 @@ import {
   ProductDetail,
   Cart,
   Search,
-  SignIn,
+  Login,
   Favorite,
   Checkout,
   Order,
+  Register,
 } from "./pages";
 import PrivateRoute from "./helpers/PrivateRoute";
 
@@ -27,7 +26,8 @@ const App: React.FC<Props> = () => {
     <Router>
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route path="/signin" exact component={SignIn} />
+        <Route path="/login" exact component={Login} />
+        <Route path="/register" exact component={Register} />
         <Route
           path={["/tv", "/camera", "/phone", "/computer"]}
           component={Product}
@@ -36,7 +36,7 @@ const App: React.FC<Props> = () => {
         <Route path="/search" component={Search} />
         <Route path="/cart" component={Cart} />
         <Route path="/favorite" component={Favorite} />
-        <Route path="/admin" exact component={AdminSignIn} />
+        <Route path="/admin" exact component={AdminLogin} />
         <PrivateRoute path="/order" component={Order} exact={false} />
         <PrivateRoute path="/checkout" component={Checkout} exact={true} />
         <AdminRoute path="/admin" component={Admin} exact={false} />

@@ -19,15 +19,15 @@ const stripe = loadStripe("pk_test_BHUOafmeJtUMRjSTplsjt9Z9");
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <AuthProvider>
-        <CartProvider>
-          <ChakraProvider theme={theme}>
+      <ChakraProvider theme={theme}>
+        <AuthProvider>
+          <CartProvider>
             <Elements stripe={stripe}>
               <App />
             </Elements>
-          </ChakraProvider>
-        </CartProvider>
-      </AuthProvider>
+          </CartProvider>
+        </AuthProvider>
+      </ChakraProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

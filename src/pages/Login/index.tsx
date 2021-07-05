@@ -9,49 +9,63 @@ import {
   Button,
   Text,
   Icon,
+  useToast,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
-import Axios from "../../../helpers/axios";
 import axios from "axios";
-import { useAuth } from "../../../contexts/authContext";
+import { useAuth } from "../../contexts/authContext";
+import Axios from "../../helpers/axios";
 
 interface Props {}
 
-interface FormValues {
+export interface LoginFormValues {
   email: string;
   password: string;
 }
-const AdminSignIn: React.FC<Props> = () => {
+const Login: React.FC<Props> = () => {
+  const history = useHistory();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<LoginFormValues>();
 
-  const [error, setError] = useState<boolean>(false);
+  const { isLoggedIn, setToken } = useAuth();
+  const toast = useToast();
 
-  const { setAdminToken, isAdminLoggedIn } = useAuth();
-
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
-      const res = await axios.post(
-        "http://45.118.134.105:3000/api/v1/admin/login",
-        data
-      );
+      const res = await Axios.post("/api/v2/public/auth/login", data);
+      setToken(res.data);
 
-      setAdminToken(res.data.token);
+      toast({
+        title: "Success.",
+        status: "success",
+        description: "Succesfully login",
+        duration: 2000,
+        position: "top-right",
+      });
+
+      setToken(res.data.token);
     } catch (error) {
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-      }, 2000);
+      toast({
+        title: "Error.",
+        description: error.response.data.message[0].msg,
+        status: "error",
+        duration: 2000,
+        position: "top-right",
+        isClosable: true,
+      });
     }
   };
 
-  if (isAdminLoggedIn()) {
-    return <Redirect to="/admin/product" />;
+  if (isLoggedIn()) {
+    const prevUrl = history.location.state as string;
+
+    return <Redirect to={prevUrl ? prevUrl : "/"} />;
   }
 
   return (
@@ -68,25 +82,15 @@ const AdminSignIn: React.FC<Props> = () => {
         <Heading color="gray.100">Ecommerce</Heading>
       </Flex>
       <Box
-        w="xl"
+        w={{ base: "sm", md: "xl" }}
         bg="#fff"
         boxShadow="0 10px 30px rgba(0,0,0,.1)"
         p="3rem 5rem"
       >
         <Heading mb="2rem" textAlign="center">
-          Admin Sign In
+          Login Page
         </Heading>
-        {error && (
-          <Box
-            p="0.5rem 1rem"
-            bg="red.100"
-            borderRadius="5px"
-            color="red.600"
-            mb="1rem"
-          >
-            <Text>Invalid credentials</Text>
-          </Box>
-        )}
+
         <Box as="form" onSubmit={handleSubmit(onSubmit)}>
           <FormControl>
             <FormLabel>Email</FormLabel>
@@ -115,13 +119,20 @@ const AdminSignIn: React.FC<Props> = () => {
 
           <FormControl mt="2rem">
             <Button w="100%" colorScheme="teal" type="submit">
-              Sign In
+              Login
             </Button>
           </FormControl>
+
+          <Text textAlign="center" mt="2rem" fontStyle="italic">
+            Doesn't have an account yet ?{" "}
+            <Link to="/signup" style={{ fontWeight: "bold" }}>
+              Sign Up
+            </Link>
+          </Text>
         </Box>
       </Box>
     </Flex>
   );
 };
 
-export default AdminSignIn;
+export default Login;

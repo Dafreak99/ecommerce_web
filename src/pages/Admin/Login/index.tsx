@@ -9,12 +9,13 @@ import {
   Button,
   Text,
   Icon,
+  useToast,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
-import axios from "axios";
-import { useAuth } from "../../contexts/authContext";
+import Axios from "../../../helpers/axios";
+import { useAuth } from "../../../contexts/authContext";
 
 interface Props {}
 
@@ -22,9 +23,7 @@ interface FormValues {
   email: string;
   password: string;
 }
-const SignIn: React.FC<Props> = () => {
-  const history = useHistory();
-
+const AdminLogin: React.FC<Props> = () => {
   const {
     register,
     handleSubmit,
@@ -32,29 +31,29 @@ const SignIn: React.FC<Props> = () => {
   } = useForm<FormValues>();
 
   const [error, setError] = useState<boolean>(false);
+  const toast = useToast();
 
-  const { setToken, isLoggedIn } = useAuth();
+  const { setAdminToken, isAdminLoggedIn } = useAuth();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      const res = await axios.post(
-        "http://45.118.134.105:3000/api/v2/public/auth/login",
-        data
-      );
+      const res = await Axios.post("/api/v1/admin/login", data);
 
-      setToken(res.data.token);
+      setAdminToken(res.data.token);
     } catch (error) {
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-      }, 2000);
+      toast({
+        title: "Error.",
+        description: error.response.data.message[0].msg,
+        status: "error",
+        duration: 2000,
+        position: "top-right",
+        isClosable: true,
+      });
     }
   };
 
-  if (isLoggedIn()) {
-    const prevUrl = history.location.state as string;
-
-    return <Redirect to={prevUrl ? prevUrl : "/"} />;
+  if (isAdminLoggedIn()) {
+    return <Redirect to="/admin/product" />;
   }
 
   return (
@@ -71,13 +70,13 @@ const SignIn: React.FC<Props> = () => {
         <Heading color="gray.100">Ecommerce</Heading>
       </Flex>
       <Box
-        w={{ base: "sm", md: "xl" }}
+        w="xl"
         bg="#fff"
         boxShadow="0 10px 30px rgba(0,0,0,.1)"
         p="3rem 5rem"
       >
         <Heading mb="2rem" textAlign="center">
-          Sign In
+          Admin Login
         </Heading>
         {error && (
           <Box
@@ -118,20 +117,13 @@ const SignIn: React.FC<Props> = () => {
 
           <FormControl mt="2rem">
             <Button w="100%" colorScheme="teal" type="submit">
-              Sign In
+              Login
             </Button>
           </FormControl>
-
-          <Text textAlign="center" mt="2rem" fontStyle="italic">
-            Doesn't have an account yet ?{" "}
-            <Link to="/signup" style={{ fontWeight: "bold" }}>
-              Sign Up
-            </Link>
-          </Text>
         </Box>
       </Box>
     </Flex>
   );
 };
 
-export default SignIn;
+export default AdminLogin;

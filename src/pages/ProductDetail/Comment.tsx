@@ -97,7 +97,7 @@ const Comment: React.FC<Props> = () => {
             <AlertIcon />
             Please login to review this product.
             <Link
-              to="/signin"
+              to="/login"
               style={{ textDecoration: "underline", marginLeft: "5px" }}
             >
               Login Page

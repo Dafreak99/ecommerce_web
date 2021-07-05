@@ -58,7 +58,7 @@ const FavoriteBody: React.FC<Props> = () => {
               mt="2rem"
               size="lg"
               onClick={() =>
-                history.push({ pathname: "/signin", state: "/favorite" })
+                history.push({ pathname: "/login", state: "/favorite" })
               }
             >
               Go to Login

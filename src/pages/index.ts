@@ -4,7 +4,8 @@ import Cart from "./Cart";
 import Product from "./Product";
 import ProductDetail from "./ProductDetail";
 import Search from "./Search";
-import SignIn from "./SignIn";
+import Login from "./Login";
+import Register from "./Register";
 import Favorite from "./Favorite";
 import Checkout from "./Checkout";
 import Order from "./Order";
@@ -16,7 +17,8 @@ export {
   Product,
   ProductDetail,
   Search,
-  SignIn,
+  Login,
+  Register,
   Favorite,
   Checkout,
   Order,

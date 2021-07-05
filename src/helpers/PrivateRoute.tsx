@@ -12,7 +12,7 @@ const PrivateRoute: React.FC<{
   return isLoggedIn() ? (
     <Route path={props.path} exact={props.exact} component={props.component} />
   ) : (
-    <Redirect to="/signin" />
+    <Redirect to="/login" />
   );
 };
 export default PrivateRoute;

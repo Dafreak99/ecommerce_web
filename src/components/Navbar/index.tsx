@@ -148,7 +148,7 @@ const Navbar: React.FC<Props> = () => {
                 </>
               ) : (
                 <>
-                  <MenuItem onClick={() => history.push("/signin")}>
+                  <MenuItem onClick={() => history.push("/login")}>
                     <Icon
                       as={AiOutlineSafetyCertificate}
                       boxSize="1rem"

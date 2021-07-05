@@ -41,7 +41,7 @@ const Product: React.FC<Props> = ({ product, isRenderAsFavorite = false }) => {
 
   const onAddToFavorite = (product: ProductType) => {
     if (!isLoggedIn()) {
-      history.push("/signin");
+      history.push("/login");
     }
 
     dispatch(addToFavorite(product));

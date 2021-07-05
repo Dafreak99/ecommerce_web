@@ -49,8 +49,7 @@ const ProductBody: React.FC<Props> = () => {
 
   const onAddToFavorite = (product: Product) => {
     if (!isLoggedIn()) {
-      console.log("Check here", history.location.pathname);
-      history.push({ pathname: "/signin", state: history.location.pathname });
+      history.push({ pathname: "/login", state: history.location.pathname });
     }
 
     dispatch(addToFavorite(product));
