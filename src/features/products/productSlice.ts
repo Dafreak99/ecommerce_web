@@ -9,7 +9,7 @@ import {
 import Axios from "../../helpers/axios";
 import AdAxios from "../../helpers/adminAxios";
 
-import { Product } from "./../../types";
+import { ExtraState, Product } from "./../../types";
 import { compareDesc } from "date-fns";
 
 export const getProducts = createAsyncThunk(
@@ -102,20 +102,6 @@ export const getProductsByCategory = createAsyncThunk(
   }
 );
 
-interface extraState {
-  status: string;
-  error: null | string;
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
-  limit: number;
-  nextPage: number;
-  page: number;
-  pagingCounter: number;
-  prevPage: null | number;
-  totalPages: number;
-  totalDocs: number;
-}
-
 const productsAdapter = createEntityAdapter<Product>({
   selectId: (product) => product._id,
   sortComparer: (a, b) =>
@@ -127,7 +113,7 @@ const productSlice = createSlice({
   initialState: productsAdapter.getInitialState({
     status: "idle",
     error: null,
-  } as extraState),
+  } as ExtraState),
   reducers: {},
   extraReducers: (builder) => {
     // ADD PRODUCT
@@ -195,7 +181,6 @@ const productSlice = createSlice({
     builder.addMatcher(
       isAnyOf(getProducts.fulfilled, getProductsByCategory.fulfilled),
       (state, { payload }) => {
-        console.log(payload);
         productsAdapter.setAll(state, payload.docs);
 
         const {
@@ -206,6 +191,7 @@ const productSlice = createSlice({
           prevPage,
           totalPages,
           totalDocs,
+          limit,
         } = payload;
 
         state.hasNextPage = hasNextPage;
@@ -215,6 +201,7 @@ const productSlice = createSlice({
         state.prevPage = prevPage;
         state.totalPages = totalPages;
         state.totalDocs = totalDocs;
+        state.limit = limit;
 
         state.status = "succeeded";
       }

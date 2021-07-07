@@ -121,7 +121,7 @@ const PaymentDetail: React.FC<Props> = () => {
                 <Th>Created At</Th>
               </Tr>
             </Thead>
-            <Tbody>
+            {/* <Tbody>
               {buyerDetail.orders.map(
                 (
                   { total_amount, description, createdAt, status },
@@ -140,7 +140,7 @@ const PaymentDetail: React.FC<Props> = () => {
                   </Tr>
                 )
               )}
-            </Tbody>
+            </Tbody> */}
           </Table>
         </Box>
       </>

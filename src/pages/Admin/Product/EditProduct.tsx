@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Box,
@@ -31,6 +31,10 @@ import { useHistory, useParams } from "react-router-dom";
 import { RootState } from "../../../app/store";
 import { categorySelectors } from "../../../features/categories/categoriesSlice";
 import BackButton from "../../../components/BackButton";
+import {
+  getPromotionsByStatus,
+  promotionSelector,
+} from "../../../features/promotions/promotionSlice";
 
 type FormValues = {
   title: string;
@@ -44,7 +48,7 @@ type FormValues = {
   quantity: number;
   category: [string];
   cat: string;
-  promotion: string | null;
+  promotion: string | number | readonly string[] | undefined;
   specifications: any;
   status: string;
 };
@@ -67,6 +71,11 @@ const EditProduct: React.FC<Props> = () => {
   const product = useAppSelector((state) =>
     productSelectors.selectById(state, params.id)
   );
+  const promotions = useAppSelector(promotionSelector.selectAll);
+
+  useEffect(() => {
+    dispatch(getPromotionsByStatus(true));
+  }, []);
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     data.images = [data.image];
@@ -88,8 +97,6 @@ const EditProduct: React.FC<Props> = () => {
     }
     return specifications;
   };
-
-  console.log("hey");
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmit)}>
@@ -190,6 +197,34 @@ const EditProduct: React.FC<Props> = () => {
                   />
                 )}
                 {errors.cat?.type === "required" && (
+                  <Text color="red.600" fontStyle="italic" mt="0.5rem">
+                    Category is required
+                  </Text>
+                )}
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Promotion</FormLabel>
+                {promotions.length > 0 && (
+                  <Controller
+                    name="promotion"
+                    control={control}
+                    rules={{ required: true }}
+                    defaultValue={
+                      product.promotion ? product.promotion!._id : ""
+                    }
+                    render={({ field }) => (
+                      <Select placeholder="Select promotion" {...field}>
+                        {promotions.map(({ _id, title, value }) => (
+                          <option value={_id} key={_id}>
+                            {title} ({value}%)
+                          </option>
+                        ))}
+                      </Select>
+                    )}
+                  />
+                )}
+                {errors.promotion?.type === "required" && (
                   <Text color="red.600" fontStyle="italic" mt="0.5rem">
                     Category is required
                   </Text>

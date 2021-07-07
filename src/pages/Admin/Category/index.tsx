@@ -17,14 +17,22 @@ import AddCategoryModal from "./AddCategoryModal";
 import {
   categorySelectors,
   deleteCategory,
+  getCategories,
 } from "../../../features/categories/categoriesSlice";
 import EditCategoryModal from "./EditCategoryModal";
+import { useEffect } from "react";
 interface Props {}
 
 const Category: React.FC<Props> = () => {
   const categories = useAppSelector(categorySelectors.selectAll);
 
   const dispatch = useAppDispatch();
+
+  const { status } = useAppSelector((state) => state.categories);
+
+  useEffect(() => {
+    if (status === "idle") dispatch(getCategories());
+  });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 

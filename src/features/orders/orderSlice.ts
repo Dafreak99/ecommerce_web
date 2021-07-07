@@ -1,4 +1,4 @@
-import { AdditionalState, Order } from "./../../types";
+import { ExtraState } from "./../../types";
 import {
   createAsyncThunk,
   createEntityAdapter,
@@ -11,10 +11,12 @@ import Axios from "../../helpers/axios";
 
 export const getOrders = createAsyncThunk(
   "orders/getOrders",
-  async (_, thunkAPI) => {
+  async (condition: string, thunkAPI) => {
     try {
-      let { data } = await AdAxios.get("/api/v1/orders/list");
-      return data.docs;
+      let { data } = await AdAxios.get(
+        `/api/v1/orders/list?limit=6&${condition}`
+      );
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -74,7 +76,7 @@ const orderSlice = createSlice({
   initialState: ordersAdapter.getInitialState({
     status: "idle",
     error: null,
-  } as AdditionalState),
+  } as ExtraState),
   reducers: {},
   extraReducers: (builder) => {
     // GET ORDERS
@@ -82,8 +84,29 @@ const orderSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(getOrders.fulfilled, (state, { payload }) => {
-      ordersAdapter.setAll(state, payload);
+      const {
+        hasNextPage,
+        hasPrevPage,
+        nextPage,
+        page,
+        prevPage,
+        totalPages,
+        totalDocs,
+        docs,
+        limit,
+      } = payload;
+
+      state.hasNextPage = hasNextPage;
+      state.hasPrevPage = hasPrevPage;
+      state.nextPage = nextPage;
+      state.page = page;
+      state.prevPage = prevPage;
+      state.totalPages = totalPages;
+      state.totalDocs = totalDocs;
+      state.limit = limit;
       state.status = "succeeded";
+
+      ordersAdapter.setAll(state, docs);
     });
     builder.addCase(getOrders.rejected, (state, action) => {
       state.status = "failed";

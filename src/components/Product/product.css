@@ -9,6 +9,20 @@
   padding: 2rem 3rem;
   display: block;
 }
+.product__promotion {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  padding: 10px 20px;
+  background-color: var(--chakra-colors-primary);
+  border-radius: 5px;
+  color: #fff;
+  transition: 350ms all;
+}
+
+.product__promotion:hover {
+  background-color: #108a76;
+}
 
 .product:hover {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);

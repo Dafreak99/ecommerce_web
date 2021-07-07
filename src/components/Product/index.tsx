@@ -6,6 +6,7 @@ import {
   Icon,
   Text,
   useDisclosure,
+  Flex,
 } from "@chakra-ui/react";
 import { Product as ProductType } from "../../types";
 import { MdAddShoppingCart, MdFavoriteBorder } from "react-icons/md";
@@ -51,9 +52,14 @@ const Product: React.FC<Props> = ({ product, isRenderAsFavorite = false }) => {
     dispatch(removeFromFavorite(id));
   };
 
+  const getDiscountedPrice = (price: number, percent: number) => {
+    return price - (price * percent) / 100;
+  };
+
   return (
     <Box className="product" gridColumn={{ base: "span 6", xl: "span 3" }}>
       <Link to={`/product/${product._id}`} className="product__link">
+        {product.promotion && <Box className="product__promotion">10% Off</Box>}
         <Box className="product__utils" onClick={(e) => e.preventDefault()}>
           {isRenderAsFavorite ? (
             <>
@@ -132,14 +138,37 @@ const Product: React.FC<Props> = ({ product, isRenderAsFavorite = false }) => {
           <Text mb="5px" fontSize={{ base: "md", xl: "lg" }}>
             {product.title}
           </Text>
-          <Text
-            fontWeight="bold"
-            mb="1rem"
-            fontSize={{ base: "md", xl: "lg" }}
-            color="black.700"
-          >
-            ${product.price}
-          </Text>
+
+          {product.promotion ? (
+            <Flex justify="space-between">
+              <Text
+                fontWeight="bold"
+                mb="1rem"
+                fontSize={{ base: "md", xl: "lg" }}
+                color="red.300"
+                as="s"
+              >
+                ${product.price}
+              </Text>
+              <Text
+                fontWeight="bold"
+                mb="1rem"
+                fontSize={{ base: "md", xl: "lg" }}
+                color="black.700"
+              >
+                ${getDiscountedPrice(product.price, product.promotion.value)}
+              </Text>
+            </Flex>
+          ) : (
+            <Text
+              fontWeight="bold"
+              mb="1rem"
+              fontSize={{ base: "md", xl: "lg" }}
+              color="black.700"
+            >
+              ${product.price}
+            </Text>
+          )}
         </Box>
       </Link>
     </Box>

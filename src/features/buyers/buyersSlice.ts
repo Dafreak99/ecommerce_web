@@ -1,23 +1,34 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AdAxios from "../../helpers/adminAxios";
-import { Buyer } from "../../types";
+import { Buyer, ExtraState } from "../../types";
 
 interface InitialState {
   allBuyers: Buyer[];
   buyerDetail: Buyer;
+
+  nextPage: number | null;
+  page: number;
+  prevPage: number | null;
+  totalPages: number;
 }
 
-const initialState: InitialState = {
+const initialState: InitialState | ExtraState = {
   allBuyers: [],
   buyerDetail: {} as Buyer,
+  nextPage: null,
+  page: 1,
+  prevPage: null,
+  totalPages: 1,
 };
 
 export const getBuyers = createAsyncThunk(
   "buyers/getBuyers",
-  async (_, ThunkAPI) => {
+  async (condition: string, ThunkAPI) => {
     try {
-      const { data } = await AdAxios("/api/v1/payments/buyers");
-      return data.docs;
+      const { data } = await AdAxios(
+        `/api/v1/payments/buyers?limit=6&${condition}`
+      );
+      return data;
     } catch (error) {
       return ThunkAPI.rejectWithValue({ error: error.response.data });
     }
@@ -43,7 +54,13 @@ const buyersSlice = createSlice({
   extraReducers: (builder) => {
     // GET BUYERS
     builder.addCase(getBuyers.fulfilled, (state, { payload }) => {
-      state.allBuyers = payload;
+      const { docs, nextPage, prevPage, totalPages, page } = payload;
+
+      state.allBuyers = docs;
+      state.nextPage = nextPage;
+      state.prevPage = prevPage;
+      state.totalPages = totalPages;
+      state.page = page;
     });
 
     // GET BUYER DETAIL

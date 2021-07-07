@@ -12,13 +12,11 @@ import {
   HStack,
   Textarea,
   Flex,
-  Heading,
   NumberInput,
   NumberInputField,
   Text,
   Select,
   Spinner,
-  toast,
   useToast,
 } from "@chakra-ui/react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
@@ -29,12 +27,15 @@ import {
   getCategories,
 } from "../../../features/categories/categoriesSlice";
 import { AiOutlineCheck } from "react-icons/ai";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { createProduct } from "../../../features/products/productSlice";
 import { useHistory } from "react-router-dom";
 import UploadPreview from "../../../components/UploadPreview";
 import BackButton from "../../../components/BackButton";
 import uploadImage from "../../../helpers/uploadImage";
+import {
+  getPromotionsByStatus,
+  promotionSelector,
+} from "../../../features/promotions/promotionSlice";
 
 type FormValues = {
   title: string;
@@ -48,7 +49,7 @@ type FormValues = {
   quantity: number;
   category: [string];
   cat: string;
-  promotion: string | null;
+  promotion: string | number | readonly string[] | undefined;
   specifications: any;
   status: string;
 };
@@ -70,12 +71,14 @@ const AddProduct: React.FC<Props> = () => {
   const [isSave, setIsSave] = useState<boolean>(false);
 
   const categories = useAppSelector(categorySelectors.selectAll);
+  const promotions = useAppSelector(promotionSelector.selectAll);
 
   const dispatch = useAppDispatch();
   const history = useHistory();
 
   useEffect(() => {
     dispatch(getCategories());
+    dispatch(getPromotionsByStatus(true));
   }, []);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -84,7 +87,6 @@ const AddProduct: React.FC<Props> = () => {
 
     data.videos = [data.video];
     data.category = [data.cat];
-
     data.specifications = cleanSpecs(data.specifications);
 
     const resultAction = await dispatch(createProduct(data));
@@ -198,7 +200,7 @@ const AddProduct: React.FC<Props> = () => {
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => (
-                  <Select placeholder="Select option" {...field}>
+                  <Select placeholder="Select category" {...field}>
                     {categories.map(({ name, _id }) => (
                       <option value={_id} key={_id}>
                         {name}
@@ -214,6 +216,24 @@ const AddProduct: React.FC<Props> = () => {
               </Text>
             )}
           </FormControl>
+          <FormControl>
+            <FormLabel>Promotion</FormLabel>
+            {promotions.length > 0 && (
+              <Controller
+                name="promotion"
+                control={control}
+                render={({ field }) => (
+                  <Select placeholder="Select promotion" {...field}>
+                    {promotions.map(({ _id, title, value }) => (
+                      <option value={_id} key={_id}>
+                        {title} ({value}%)
+                      </option>
+                    ))}
+                  </Select>
+                )}
+              />
+            )}
+          </FormControl>
         </Box>
 
         {/* Right Column */}
@@ -221,11 +241,7 @@ const AddProduct: React.FC<Props> = () => {
         <Box>
           <FormControl>
             <FormLabel>Image</FormLabel>
-            {/* <Input
-              placeholder="Image link"
-              {...register("image", { required: true })}
-              mb="1rem"
-            /> */}
+
             <UploadPreview
               files={files}
               setFiles={setFiles}

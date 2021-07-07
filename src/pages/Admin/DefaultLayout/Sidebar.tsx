@@ -60,7 +60,6 @@ const Sidebar: React.FC<Props> = () => {
     { title: "Category", icon: BsListCheck, path: "/admin/category" },
     { title: "Order", icon: BsCardChecklist, path: "/admin/order" },
     { title: "Payment", icon: BsCreditCard, path: "/admin/payment" },
-    { title: "Voucher", icon: BsCardText, path: "/admin/voucher" },
     { title: "Promotion", icon: AiOutlinePercentage, path: "/admin/promotion" },
   ];
 

@@ -20,6 +20,20 @@ export const getPromotions = createAsyncThunk(
   }
 );
 
+export const getPromotionsByStatus = createAsyncThunk(
+  "promotions/getPromotionsByStatus",
+  async (status: boolean, thunkAPI) => {
+    try {
+      let { data } = await AdAxios.get(
+        `/api/v1/promotion/list?is_active=${status}`
+      );
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
 export const createPromotion = createAsyncThunk(
   "promotions/createPromotion",
   async (
@@ -107,6 +121,19 @@ const promotionSlice = createSlice({
       state.status = "succeeded";
     });
     builder.addCase(getPromotions.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message as string;
+    });
+
+    // GET PROMOTIONS BY STATUS
+    builder.addCase(getPromotionsByStatus.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(getPromotionsByStatus.fulfilled, (state, { payload }) => {
+      promotionsAdapter.setAll(state, payload);
+      state.status = "succeeded";
+    });
+    builder.addCase(getPromotionsByStatus.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message as string;
     });

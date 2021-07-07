@@ -42,9 +42,8 @@ const Product: React.FC<Props> = () => {
   const products = useAppSelector(productSelectors.selectAll);
   const categories = useAppSelector(categorySelectors.selectAll);
 
-  const { page, prevPage, nextPage, totalPages, status } = useAppSelector(
-    (state) => state.products
-  );
+  const { page, prevPage, nextPage, totalPages, status, limit } =
+    useAppSelector((state) => state.products);
 
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -52,7 +51,7 @@ const Product: React.FC<Props> = () => {
 
   useEffect(() => {
     dispatch(
-      getProducts({ condition: location.search.split("?")[1], limit: 5 })
+      getProducts({ condition: location.search.split("?")[1], limit: 4 })
     );
   }, [location]);
 
@@ -80,7 +79,7 @@ const Product: React.FC<Props> = () => {
       params.delete(name);
     }
 
-    history.push(`/admin/product?${params.toString()}`);
+    history.push(`${location.pathname}?${params.toString()}`);
   };
 
   const onHandleDelete = (id: string) => {
@@ -153,6 +152,7 @@ const Product: React.FC<Props> = () => {
                 <Th isNumeric>QUANTITY</Th>
                 <Th>STATUS</Th>
                 <Th>ACTIVE</Th>
+                <Th>PROMOTION</Th>
                 <Th></Th>
                 <Th></Th>
               </Tr>
@@ -160,12 +160,21 @@ const Product: React.FC<Props> = () => {
             <TransitionGroup component="tbody">
               {products.map(
                 (
-                  { title, price, images, status, quantity, is_active, _id },
+                  {
+                    title,
+                    price,
+                    images,
+                    status,
+                    quantity,
+                    is_active,
+                    promotion,
+                    _id,
+                  },
                   i
                 ) => (
                   <CSSTransition key={_id} timeout={500} classNames="item">
                     <Tr key={i}>
-                      <Td>{i + 1 + 5 * (page - 1)}</Td>
+                      <Td>{i + 1 + limit * (page - 1)}</Td>
                       <Td>{title}</Td>
                       <Td>
                         <Image
@@ -185,6 +194,7 @@ const Product: React.FC<Props> = () => {
                           {is_active.toString()}
                         </Badge>{" "}
                       </Td>
+                      <Td>{promotion ? promotion.value + "%" : "No"}</Td>
                       <Td>
                         <Icon
                           as={AiFillEdit}

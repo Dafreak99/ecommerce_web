@@ -10,19 +10,23 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import { Table, Thead, Tr, Th, Td } from "@chakra-ui/react";
-import { useAppSelector } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-import { orderSelectors } from "../../../features/orders/orderSlice";
+import { getOrders, orderSelectors } from "../../../features/orders/orderSlice";
 import { useHistory } from "react-router-dom";
 import { format } from "date-fns";
 import { useState } from "react";
+import Pagination from "../../../components/Pagination";
 interface Props {}
 
 const Order: React.FC<Props> = () => {
   const history = useHistory();
-
+  const dispatch = useAppDispatch();
   const orders = useAppSelector(orderSelectors.selectAll);
+  const { page, nextPage, prevPage, totalPages, limit } = useAppSelector(
+    (state) => state.orders
+  );
   const [data, setData] = useState([] as any[]);
   const [status, setStatus] = useState(null);
 
@@ -31,6 +35,10 @@ const Order: React.FC<Props> = () => {
       setData(orders);
     }
   }, [orders]);
+
+  useEffect(() => {
+    dispatch(getOrders(history.location.search.split("?")[1]));
+  }, [history.location]);
 
   const renderColorScheme = (status: string) => {
     if (status === "PENDING") {
@@ -41,17 +49,28 @@ const Order: React.FC<Props> = () => {
       return "red";
     }
   };
+  const changeURL = (name: string, value: string) => {
+    const params = new URLSearchParams(history.location.search);
+
+    if (params.has("page")) {
+      params.delete("page");
+    }
+    if (params.has(name)) {
+      params.delete(name);
+    }
+
+    if (value) {
+      params.append(name, value);
+    } else {
+      params.delete(name);
+    }
+
+    history.push(`${history.location.pathname}?${params.toString()}`);
+  };
+
   const onHandleChange = (e: React.ChangeEvent) => {
     const { value } = e.target as HTMLSelectElement;
-
-    if (!value) {
-      setData(orders);
-    } else {
-      const matchedOrders = orders.filter(
-        (order) => order.status === value.toUpperCase()
-      );
-      setData(matchedOrders);
-    }
+    changeURL("status", value);
   };
 
   const normalize = (amount: number) => {
@@ -74,8 +93,14 @@ const Order: React.FC<Props> = () => {
         <option value="pending">Pending</option>
         <option value="success">Success</option>
       </Select>
+      <Pagination
+        page={page}
+        nextPage={nextPage}
+        prevPage={prevPage}
+        totalPages={totalPages}
+      />
 
-      <Table variant="simple" bg="#fff" w="max-content">
+      <Table variant="simple" bg="#fff">
         <Thead>
           <Tr>
             <Th>#</Th>
@@ -90,7 +115,7 @@ const Order: React.FC<Props> = () => {
           {data.map(({ status, createdAt, total_amount, _id }, i) => (
             <CSSTransition key={_id} timeout={500} classNames="item">
               <Tr key={i}>
-                <Td>{i + 1}</Td>
+                <Td>{i + 1 + limit * (page - 1)}</Td>
                 <Td>{format(new Date(createdAt), "hh:mm | dd-MM-yyyy")}</Td>
                 <Td>${normalize(total_amount)}</Td>
                 <Td>

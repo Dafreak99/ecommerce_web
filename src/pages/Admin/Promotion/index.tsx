@@ -14,14 +14,16 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useHistory } from "react-router-dom";
 
 import {
+  getPromotions,
   promotionSelector,
   removePromotion,
 } from "../../../features/promotions/promotionSlice";
-import { format, parseISO } from "date-fns";
-import { AiFillEdit, AiOutlinePlus } from "react-icons/ai";
+import { format } from "date-fns";
+import { AiOutlinePlus } from "react-icons/ai";
 import AddPromotionModal from "./AddPromotionModal";
 import { FaTrash } from "react-icons/fa";
 import EditPromotionModal from "./EditPromotionModal";
+import { useEffect } from "react";
 
 interface Props {}
 
@@ -32,6 +34,9 @@ const Promotion: React.FC<Props> = () => {
 
   const promotions = useAppSelector(promotionSelector.selectAll);
 
+  useEffect(() => {
+    dispatch(getPromotions());
+  });
   const renderColorScheme = (status: boolean) => {
     if (status) {
       return "green";

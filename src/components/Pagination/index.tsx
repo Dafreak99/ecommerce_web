@@ -21,6 +21,7 @@ const Pagination: React.FC<Props> = ({
 
   const prev = () => {
     // use decodeURI to avoid price[lte] getting ugly encoded
+
     history.push(decodeURI(`${pathname}?page=${prevPage}${searchCondition()}`));
   };
   const next = () => {

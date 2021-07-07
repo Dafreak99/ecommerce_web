@@ -10,15 +10,25 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { useAppSelector } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import Pagination from "../../../components/Pagination";
+import { getBuyers } from "../../../features/buyers/buyersSlice";
 
 interface Props {}
 
 const Payment: React.FC<Props> = () => {
   const history = useHistory();
-  const buyers = useAppSelector((state) => state.buyers.allBuyers);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getBuyers(history.location.search.split("?")[1]));
+  }, [history.location]);
+
+  const { allBuyers, page, nextPage, prevPage, totalPages } = useAppSelector(
+    (state) => state.buyers
+  );
 
   return (
     <Box>
@@ -26,7 +36,14 @@ const Payment: React.FC<Props> = () => {
         <Heading color="gray.600">Payments</Heading>
       </Flex>
 
-      <Table variant="simple" bg="#fff" w="max-content">
+      <Pagination
+        page={page}
+        nextPage={nextPage}
+        prevPage={prevPage}
+        totalPages={totalPages}
+      />
+
+      <Table variant="simple" bg="#fff">
         <Thead>
           <Tr>
             <Th>#</Th>
@@ -39,25 +56,27 @@ const Payment: React.FC<Props> = () => {
           </Tr>
         </Thead>
         <TransitionGroup component="tbody">
-          {buyers.map(({ address, email, name, phone, postcode, _id }, i) => (
-            <CSSTransition key={_id} timeout={500} classNames="item">
-              <Tr key={i}>
-                <Td>{i + 1}</Td>
-                <Td>{name}</Td>
-                <Td>{address}</Td>
-                <Td>{phone}</Td>
-                <Td>{postcode}</Td>
-                <Td>
-                  <Button
-                    variant="ghost"
-                    onClick={() => history.push(`./payment/${_id}`)}
-                  >
-                    View Detail
-                  </Button>
-                </Td>
-              </Tr>
-            </CSSTransition>
-          ))}
+          {allBuyers.map(
+            ({ address, email, name, phone, postcode, _id }, i) => (
+              <CSSTransition key={_id} timeout={500} classNames="item">
+                <Tr key={i}>
+                  <Td>{i + 1}</Td>
+                  <Td>{name}</Td>
+                  <Td>{address}</Td>
+                  <Td>{phone}</Td>
+                  <Td>{postcode}</Td>
+                  <Td>
+                    <Button
+                      variant="ghost"
+                      onClick={() => history.push(`./payment/${_id}`)}
+                    >
+                      View Detail
+                    </Button>
+                  </Td>
+                </Tr>
+              </CSSTransition>
+            )
+          )}
         </TransitionGroup>
       </Table>
     </Box>

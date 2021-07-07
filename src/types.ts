@@ -1,5 +1,3 @@
-import { StripeCardElementChangeEvent } from "@stripe/stripe-js";
-
 export interface Product {
   title: string;
   desciption: string;
@@ -10,7 +8,7 @@ export interface Product {
   quantity: number;
   is_active: boolean;
   category: Category[];
-  promotion: null;
+  promotion: null | Promotion;
   specifications: {};
   _id: string;
   status: string;
@@ -22,6 +20,18 @@ export interface Product {
   is_commented: boolean;
   cartQuantity: number;
   quantity_order: number;
+}
+
+export interface Promotion {
+  _id: string;
+  desciption: string;
+  value: number;
+  is_active: boolean;
+  title: string;
+  start: string;
+  end: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CheckoutedProduct {
@@ -106,4 +116,18 @@ export interface Profile {
 export interface AdditionalState {
   status: string;
   error: string | null;
+}
+
+export interface ExtraState {
+  status: string;
+  error: null | string;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  limit: number;
+  nextPage: number;
+  page: number;
+  pagingCounter: number;
+  prevPage: null | number;
+  totalPages: number;
+  totalDocs: number;
 }

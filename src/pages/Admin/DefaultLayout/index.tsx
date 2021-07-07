@@ -13,24 +13,11 @@ import { getOrders } from "../../../features/orders/orderSlice";
 import { getPromotions } from "../../../features/promotions/promotionSlice";
 import { getBuyers } from "../../../features/buyers/buyersSlice";
 import { getOverview } from "../../../features/overview/overviewSlice";
+import { getProducts } from "../../../features/products/productSlice";
 
 interface Props {}
 
 const AdminLayout: React.FC<Props> = () => {
-  const dispatch = useAppDispatch();
-
-  const categoriesStatus = useAppSelector((state) => state.categories.status);
-
-  useEffect(() => {
-    if (categoriesStatus === "idle") dispatch(getCategories());
-
-    // Since these only getting dispatch once
-    dispatch(getOverview());
-    dispatch(getOrders());
-    dispatch(getPromotions());
-    dispatch(getBuyers());
-  }, []);
-
   return (
     <Flex>
       <Sidebar />
