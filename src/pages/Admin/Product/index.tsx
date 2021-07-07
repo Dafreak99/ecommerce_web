@@ -10,6 +10,8 @@ import {
   InputGroup,
   InputLeftElement,
   Select,
+  Skeleton,
+  Spinner,
 } from "@chakra-ui/react";
 import { AiFillEdit, AiOutlinePlus, AiOutlineSearch } from "react-icons/ai";
 import { Table, Thead, Tr, Th, Td, Image } from "@chakra-ui/react";
@@ -26,7 +28,8 @@ import {
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { categorySelectors } from "../../../features/categories/categoriesSlice";
-import Pagination from "./Pagination";
+import Pagination from "../../../components/Pagination";
+// import Pagination from "./Pagination";
 interface Props {}
 
 interface FormValues {
@@ -39,7 +42,9 @@ const Product: React.FC<Props> = () => {
   const products = useAppSelector(productSelectors.selectAll);
   const categories = useAppSelector(categorySelectors.selectAll);
 
-  const productState = useAppSelector((state) => state.products);
+  const { page, prevPage, nextPage, totalPages, status } = useAppSelector(
+    (state) => state.products
+  );
 
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -130,69 +135,83 @@ const Product: React.FC<Props> = () => {
           <option value="empty">Empty</option>
         </Select>
       </Flex>
-      <Table variant="simple" bg="#fff">
-        <Thead>
-          <Tr>
-            <Th>#</Th>
-            <Th>NAME</Th>
-            <Th>IMAGE</Th>
-            <Th isNumeric>PRICE</Th>
-            <Th isNumeric>QUANTITY</Th>
-            <Th>STATUS</Th>
-            <Th>ACTIVE</Th>
-            <Th></Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <TransitionGroup component="tbody">
-          {products.map(
-            ({ title, price, images, status, quantity, is_active, _id }, i) => (
-              <CSSTransition key={_id} timeout={500} classNames="item">
-                <Tr key={i}>
-                  <Td>{i + 1 + 5 * (productState.page - 1)}</Td>
-                  <Td>{title}</Td>
-                  <Td>
-                    <Image
-                      src={images[0]}
-                      w="50px"
-                      h="50px"
-                      objectFit="cover"
-                    />
-                  </Td>
-                  <Td isNumeric>${price}</Td>
-                  <Td isNumeric>{quantity}</Td>
-                  <Td>
-                    <Badge colorScheme="green">{status}</Badge>{" "}
-                  </Td>
-                  <Td>
-                    <Badge colorScheme="purple">{is_active.toString()}</Badge>{" "}
-                  </Td>
-                  <Td>
-                    <Icon
-                      as={AiFillEdit}
-                      cursor="pointer"
-                      onClick={() => history.push(`/admin/edit-product/${_id}`)}
-                    />
-                  </Td>
-                  <Td>
-                    <Icon
-                      as={FaTrash}
-                      cursor="pointer"
-                      onClick={() => onHandleDelete(_id)}
-                    />
-                  </Td>
-                </Tr>
-              </CSSTransition>
-            )
-          )}
-        </TransitionGroup>
-      </Table>
-      {productState.status === "succeeded" && (
-        <Pagination
-          prevPage={productState.prevPage}
-          nextPage={productState.nextPage}
-          page={productState.page}
-        />
+      {status === "succeeded" ? (
+        <>
+          <Pagination
+            prevPage={prevPage}
+            nextPage={nextPage}
+            page={page}
+            totalPages={totalPages}
+          />
+          <Table variant="simple" bg="#fff">
+            <Thead>
+              <Tr>
+                <Th>#</Th>
+                <Th>NAME</Th>
+                <Th>IMAGE</Th>
+                <Th isNumeric>PRICE</Th>
+                <Th isNumeric>QUANTITY</Th>
+                <Th>STATUS</Th>
+                <Th>ACTIVE</Th>
+                <Th></Th>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <TransitionGroup component="tbody">
+              {products.map(
+                (
+                  { title, price, images, status, quantity, is_active, _id },
+                  i
+                ) => (
+                  <CSSTransition key={_id} timeout={500} classNames="item">
+                    <Tr key={i}>
+                      <Td>{i + 1 + 5 * (page - 1)}</Td>
+                      <Td>{title}</Td>
+                      <Td>
+                        <Image
+                          src={images[0]}
+                          w="50px"
+                          h="50px"
+                          objectFit="cover"
+                        />
+                      </Td>
+                      <Td isNumeric>${price}</Td>
+                      <Td isNumeric>{quantity}</Td>
+                      <Td>
+                        <Badge colorScheme="green">{status}</Badge>{" "}
+                      </Td>
+                      <Td>
+                        <Badge colorScheme="purple">
+                          {is_active.toString()}
+                        </Badge>{" "}
+                      </Td>
+                      <Td>
+                        <Icon
+                          as={AiFillEdit}
+                          cursor="pointer"
+                          onClick={() =>
+                            history.push(`/admin/edit-product/${_id}`)
+                          }
+                        />
+                      </Td>
+                      <Td>
+                        <Icon
+                          as={FaTrash}
+                          cursor="pointer"
+                          onClick={() => onHandleDelete(_id)}
+                        />
+                      </Td>
+                    </Tr>
+                  </CSSTransition>
+                )
+              )}
+            </TransitionGroup>
+          </Table>
+        </>
+      ) : (
+        <Flex h="500px" bg="#fff" justify="center" alignItems="center">
+          <Spinner />
+        </Flex>
       )}
     </Box>
   );

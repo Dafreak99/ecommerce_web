@@ -131,7 +131,7 @@ const Comment: React.FC<Props> = () => {
             ))}
           </>
         ) : (
-          <Text mt="2rem">There is no review in this item yet</Text>
+          <Text mt="2rem">There is no review for this item yet</Text>
         )}
       </Box>
     </Box>

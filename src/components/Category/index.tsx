@@ -30,10 +30,7 @@ const Category: React.FC<Props> = () => {
       >
         {categories.reverse().map(({ name, _id }, i) => (
           <Link
-            to={{
-              pathname: `/${name.toLowerCase()}`,
-              state: _id,
-            }}
+            to={`/cat/${name.toLowerCase()}-${_id}`}
             className={styles.category}
           >
             <Image

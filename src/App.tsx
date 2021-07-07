@@ -28,10 +28,7 @@ const App: React.FC<Props> = () => {
         <Route path="/" exact component={Home} />
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
-        <Route
-          path={["/tv", "/camera", "/phone", "/computer"]}
-          component={Product}
-        />
+        <Route path="/cat/:slug" component={Product} />
         <Route path="/product/:id" component={ProductDetail} />
         <Route path="/search" component={Search} />
         <Route path="/cart" component={Cart} />

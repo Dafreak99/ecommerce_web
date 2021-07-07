@@ -84,10 +84,16 @@ export const deleteProduct = createAsyncThunk(
 
 export const getProductsByCategory = createAsyncThunk(
   "products/getProducts",
-  async (categoryId: string, thunkAPI) => {
+  async (
+    params: {
+      categoryId: string;
+      condition?: string;
+    },
+    thunkAPI
+  ) => {
     try {
-      let { data } = await Axios.get(
-        `/api/v1/products/list?category=${categoryId}`
+      const { data } = await Axios.get(
+        `/api/v1/products/list?category=${params.categoryId}&limit=4&${params.condition}`
       );
       return data;
     } catch (error) {
@@ -107,6 +113,7 @@ interface extraState {
   pagingCounter: number;
   prevPage: null | number;
   totalPages: number;
+  totalDocs: number;
 }
 
 const productsAdapter = createEntityAdapter<Product>({
@@ -198,6 +205,7 @@ const productSlice = createSlice({
           page,
           prevPage,
           totalPages,
+          totalDocs,
         } = payload;
 
         state.hasNextPage = hasNextPage;
@@ -206,6 +214,7 @@ const productSlice = createSlice({
         state.page = page;
         state.prevPage = prevPage;
         state.totalPages = totalPages;
+        state.totalDocs = totalDocs;
 
         state.status = "succeeded";
       }
