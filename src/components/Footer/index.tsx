@@ -6,7 +6,6 @@ import {
   Icon,
   List,
   ListItem,
-  Stack,
   Text,
 } from "@chakra-ui/react";
 import React from "react";
@@ -43,7 +42,7 @@ const Footer: React.FC<Props> = () => {
           </Flex>
           <List spacing={4} color="gray.500">
             {categories.reverse().map(({ name, _id }, i) => (
-              <ListItem>
+              <ListItem key={i}>
                 <Link to={`/cat/${name.toLowerCase()}-${_id}`}>
                   <Text fontWeight="semibold">{name}</Text>
                 </Link>

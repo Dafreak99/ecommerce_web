@@ -1,34 +1,33 @@
-import React, { useEffect } from "react";
-
 import {
   Box,
-  Icon,
   Button,
-  Input,
+  Flex,
   FormControl,
   FormLabel,
-  Radio,
-  RadioGroup,
   HStack,
-  Textarea,
-  Flex,
+  Icon,
+  Input,
   NumberInput,
   NumberInputField,
-  Text,
+  Radio,
+  RadioGroup,
   Select,
-  Stack,
   Skeleton,
+  Stack,
+  Text,
+  Textarea,
 } from "@chakra-ui/react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import React, { useEffect } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineCheck } from "react-icons/ai";
+import { useHistory, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import BackButton from "../../../components/BackButton";
+import { categorySelectors } from "../../../features/categories/categoriesSlice";
 import {
   editProduct,
   productSelectors,
 } from "../../../features/products/productSlice";
-import { useHistory, useParams } from "react-router-dom";
-import { categorySelectors } from "../../../features/categories/categoriesSlice";
-import BackButton from "../../../components/BackButton";
 import {
   getPromotionsByStatus,
   promotionSelector,
@@ -73,6 +72,7 @@ const EditProduct: React.FC<Props> = () => {
 
   useEffect(() => {
     dispatch(getPromotionsByStatus(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
@@ -263,6 +263,7 @@ const EditProduct: React.FC<Props> = () => {
                   placeholder="Specifications"
                   {...register("specifications", { required: true })}
                   defaultValue={Object.entries(product.specifications).map(
+                    // eslint-disable-next-line no-useless-concat
                     (spec) => `${spec[0]}` + ":" + `${spec[1]}\n`
                   )}
                 />

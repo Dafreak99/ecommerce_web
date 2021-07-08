@@ -57,7 +57,7 @@ const buyersSlice = createSlice({
   extraReducers: (builder) => {
     // GET BUYERS
 
-    builder.addCase(getBuyers.pending, (state, { payload }) => {
+    builder.addCase(getBuyers.pending, (state, _) => {
       state.status = "pending";
     });
 

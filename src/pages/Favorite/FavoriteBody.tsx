@@ -3,12 +3,12 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  Flex,
-  Text,
-  Image,
-  Heading,
   Button,
+  Flex,
   Grid,
+  Heading,
+  Image,
+  Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { useHistory } from "react-router-dom";
@@ -16,7 +16,6 @@ import { useAppSelector } from "../../app/hooks";
 import Product from "../../components/Product";
 import { useAuth } from "../../contexts/authContext";
 import { favoriteSelector } from "../../features/favorites/favoriteSlice";
-
 import login from "../../images/login.svg";
 
 interface Props {}
@@ -89,8 +88,8 @@ const FavoriteBody: React.FC<Props> = () => {
               Your wishlist
             </Heading>
             <Grid gridTemplateColumns="repeat(12,1fr)">
-              {favorites.map((favorite) => (
-                <Product product={favorite} isRenderAsFavorite />
+              {favorites.map((favorite, i) => (
+                <Product product={favorite} key={i} isRenderAsFavorite />
               ))}
             </Grid>
           </>

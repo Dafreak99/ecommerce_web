@@ -1,27 +1,27 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
-  Grid,
-  Text,
-  Spinner,
   Flex,
+  Grid,
   Icon,
-  Stack,
   Radio,
   RadioGroup,
+  Spinner,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { AiTwotoneFilter } from "react-icons/ai";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
+import Pagination from "../../components/Pagination";
+import ProductComponent from "../../components/Product";
 import {
   getProductsByCategory,
   productSelectors,
 } from "../../features/products/productSlice";
-import ProductComponent from "../../components/Product";
-import { AiTwotoneFilter } from "react-icons/ai";
-import Pagination from "../../components/Pagination";
 
 interface Props {}
 
@@ -138,12 +138,10 @@ const Product: React.FC<Props> = () => {
           <RadioGroup onChange={onFilter} value={value}>
             <Stack spacing={10} direction="row">
               {filterOptions.map(({ value, label }) => (
-                <Radio value={value}>{label}</Radio>
+                <Radio value={value} key={label}>
+                  {label}
+                </Radio>
               ))}
-              {/* <Radio value="">None</Radio>
-              <Radio value="price[gte]=0&price[lte]=100">$0 - $100</Radio>
-              <Radio value="price[gte]=100&price[lte]=200">$100 - $200</Radio>
-              <Radio value="price[gte]=200&price[lte]=300">$200 - $300</Radio> */}
             </Stack>
           </RadioGroup>
         </Flex>

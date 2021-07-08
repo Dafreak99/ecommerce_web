@@ -54,21 +54,19 @@ const Items: React.FC<Props> = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {cart.map(
-            ({ title, price, cartQuantity, quantity, images, _id }, i) => (
-              <Tr>
-                <Td>{i + 1}</Td>
-                <Td>{title}</Td>
-                <Td>
-                  <Image src={images[0]} h="100px" />
-                </Td>
-                <Td isNumeric>{cartQuantity}</Td>
-                <Td isNumeric>${price}</Td>
-                <Td isNumeric>${price * cartQuantity}</Td>
-                <Td></Td>
-              </Tr>
-            )
-          )}
+          {cart.map(({ title, price, cartQuantity, images }, i) => (
+            <Tr key={i}>
+              <Td>{i + 1}</Td>
+              <Td>{title}</Td>
+              <Td>
+                <Image src={images[0]} h="100px" />
+              </Td>
+              <Td isNumeric>{cartQuantity}</Td>
+              <Td isNumeric>${price}</Td>
+              <Td isNumeric>${price * cartQuantity}</Td>
+              <Td></Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </Box>

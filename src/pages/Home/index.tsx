@@ -1,17 +1,16 @@
-import React from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box } from "@chakra-ui/react";
-
-import Navbar from "../../components/Navbar";
-import Hero from "../../components/Hero";
+import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import Category from "../../components/Category";
 import Footer from "../../components/Footer";
-import Products from "../../features/products/Products";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getProducts } from "../../features/products/productSlice";
-import { getFavorite } from "../../features/favorites/favoriteSlice";
+import Hero from "../../components/Hero";
+import Navbar from "../../components/Navbar";
 import { useAuth } from "../../contexts/authContext";
 import { getCategories } from "../../features/categories/categoriesSlice";
+import { getFavorite } from "../../features/favorites/favoriteSlice";
+import Products from "../../features/products/Products";
+import { getProducts } from "../../features/products/productSlice";
 
 interface Props {}
 

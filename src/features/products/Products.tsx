@@ -1,9 +1,8 @@
-import { Box, Heading, Grid } from "@chakra-ui/react";
+import { Box, Grid, Heading } from "@chakra-ui/react";
 import React from "react";
-
 import { useAppSelector } from "../../app/hooks";
-import { productSelectors } from "./productSlice";
 import Product from "../../components/Product";
+import { productSelectors } from "./productSlice";
 
 interface Props {}
 

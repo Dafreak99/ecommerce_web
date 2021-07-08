@@ -1,16 +1,6 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Spinner,
-  Text,
-  Image,
-  Badge,
-  Icon,
-} from "@chakra-ui/react";
-import { format } from "date-fns";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { BsCalendar } from "react-icons/bs";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   getOrdersFromCustomerSide,
@@ -19,15 +9,6 @@ import {
 import OrderListItem from "./OrderListItem";
 
 interface Props {}
-
-interface Product {
-  amount: number;
-  current_price: number;
-  images: string[];
-  qty: number;
-  title: string;
-  _id: string;
-}
 
 const OrderBody: React.FC<Props> = () => {
   const dispatch = useAppDispatch();
@@ -60,7 +41,7 @@ const OrderBody: React.FC<Props> = () => {
       {orders.length > 0 ? (
         <>
           {orders.map((order, i) => (
-            <OrderListItem order={order} />
+            <OrderListItem key={i} order={order} />
           ))}
         </>
       ) : (

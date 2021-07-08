@@ -1,5 +1,5 @@
+import { Flex, Heading, Icon } from "@chakra-ui/react";
 import React from "react";
-import { Box, Flex, Grid, Heading, Icon } from "@chakra-ui/react";
 import { BsArrowLeft } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
 

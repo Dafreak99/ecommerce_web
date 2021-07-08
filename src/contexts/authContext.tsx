@@ -1,10 +1,6 @@
-import { useContext } from "react";
-import { useToast } from "@chakra-ui/react";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import Axios from "../helpers/axios";
 import { LoginFormValues } from "../pages/Login";
-import { RegisterFormValues } from "../pages/SignUp";
-import { useHistory } from "react-router-dom";
 interface ContextProps {
   token: string | null;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
@@ -33,10 +29,6 @@ export const AuthProvider: React.FC<{}> = ({ children }) => {
 const useProvideAuth = () => {
   const [token, setToken] = useState(TOKEN);
   const [adminToken, setAdminToken] = useState(ADMIN_TOKEN);
-
-  const [error, setError] = useState<string | null>(null);
-  const toast = useToast();
-  const history = useHistory();
 
   const isLoggedIn = () => !!token;
   const isAdminLoggedIn = () => !!adminToken;

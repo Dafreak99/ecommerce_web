@@ -1,38 +1,41 @@
-import React, { ChangeEvent } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
+  Badge,
   Box,
-  Flex,
   Button,
+  Flex,
   Heading,
   Icon,
-  Badge,
+  Image,
   Input,
   InputGroup,
   InputLeftElement,
   Select,
-  Skeleton,
   Spinner,
+  Table,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
+import React, { ChangeEvent, useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEdit, AiOutlinePlus, AiOutlineSearch } from "react-icons/ai";
-import { Table, Thead, Tr, Th, Td, Image } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { FaTrash } from "react-icons/fa";
 import { useHistory, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import Pagination from "../../../components/Pagination";
+import {
+  categorySelectors,
+  getCategories,
+} from "../../../features/categories/categoriesSlice";
 import {
   deleteProduct,
   getProducts,
   productSelectors,
 } from "../../../features/products/productSlice";
-import { useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  categorySelectors,
-  getCategories,
-} from "../../../features/categories/categoriesSlice";
-import Pagination from "../../../components/Pagination";
-// import Pagination from "./Pagination";
+
 interface Props {}
 
 interface FormValues {
@@ -123,8 +126,10 @@ const Product: React.FC<Props> = () => {
           onChange={onChange}
           name="category"
         >
-          {categories.map((category) => (
-            <option value={category._id}>{category.name}</option>
+          {categories.map((category, i) => (
+            <option value={category._id} key={i}>
+              {category.name}
+            </option>
           ))}
         </Select>
 

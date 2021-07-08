@@ -1,18 +1,15 @@
-import React from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Grid, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { useAppDispatch } from "../../app/hooks";
-import { useState } from "react";
-import { Product as ProductType } from "../../types";
-import Axios from "../../helpers/axios";
+import React, { useEffect, useState } from "react";
 import Product from "../../components/Product";
+import Axios from "../../helpers/axios";
+import { Product as ProductType } from "../../types";
 
 interface Props {
   categoryId: string | undefined;
 }
 
 const RelatedProducts: React.FC<Props> = ({ categoryId }) => {
-  const dispatch = useAppDispatch();
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
     if (categoryId) fetchData();

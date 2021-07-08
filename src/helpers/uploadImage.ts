@@ -1,7 +1,4 @@
 const uploadImage = async (files: File[], fileUrls: string[]) => {
-  console.log(files);
-  console.log(fileUrls);
-
   // Loop through each image then upload
   let urls: string[] = [];
 

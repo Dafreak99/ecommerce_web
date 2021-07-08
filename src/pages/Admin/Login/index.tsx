@@ -1,21 +1,21 @@
-import React, { useState } from "react";
 import {
   Box,
-  FormLabel,
-  FormControl,
-  Heading,
-  Input,
-  Flex,
   Button,
-  Text,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
   Icon,
+  Input,
+  Text,
   useToast,
 } from "@chakra-ui/react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Redirect } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
-import Axios from "../../../helpers/axios";
+import { Redirect } from "react-router-dom";
 import { useAuth } from "../../../contexts/authContext";
+import Axios from "../../../helpers/axios";
 
 interface Props {}
 
@@ -30,7 +30,6 @@ const AdminLogin: React.FC<Props> = () => {
     formState: { errors },
   } = useForm<FormValues>();
 
-  const [error] = useState<boolean>(false);
   const toast = useToast();
 
   const { setAdminToken, isAdminLoggedIn } = useAuth();

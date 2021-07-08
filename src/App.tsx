@@ -1,23 +1,21 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
-import AdminLogin from "./pages/Admin/Login";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AdminRoute from "./helpers/AdminRoute";
-
+import PrivateRoute from "./helpers/PrivateRoute";
 import {
-  Home,
   Admin,
+  Cart,
+  Checkout,
+  Favorite,
+  Home,
+  Login,
+  Order,
   Product,
   ProductDetail,
-  Cart,
   Search,
-  Login,
-  Favorite,
-  Checkout,
-  Order,
   SignUp,
 } from "./pages";
-import PrivateRoute from "./helpers/PrivateRoute";
+import AdminLogin from "./pages/Admin/Login";
 
 interface Props {}
 

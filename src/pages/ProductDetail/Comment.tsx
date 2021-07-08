@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Alert,
   AlertIcon,
@@ -10,18 +10,17 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import StarRatingComponent from "react-star-rating-component";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { format } from "date-fns";
+import React, { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import StarRatingComponent from "react-star-rating-component";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAuth } from "../../contexts/authContext";
 import {
   createComment,
   getComments,
 } from "../../features/comments/commentSlice";
-import { format } from "date-fns";
-import { unwrapResult } from "@reduxjs/toolkit";
-import { useAuth } from "../../contexts/authContext";
 
 interface Props {}
 

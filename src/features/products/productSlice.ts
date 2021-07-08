@@ -1,16 +1,15 @@
-import { RootState } from "./../../app/store";
 import {
-  createSlice,
   createAsyncThunk,
   createEntityAdapter,
-  PayloadAction,
+  createSlice,
   isAnyOf,
+  PayloadAction,
 } from "@reduxjs/toolkit";
-import Axios from "../../helpers/axios";
-import AdAxios from "../../helpers/adminAxios";
-
-import { ExtraState, Product } from "./../../types";
 import { compareDesc } from "date-fns";
+import AdAxios from "../../helpers/adminAxios";
+import Axios from "../../helpers/axios";
+import { RootState } from "./../../app/store";
+import { ExtraState, Product } from "./../../types";
 
 export const getProducts = createAsyncThunk(
   "products/getProducts",

@@ -17,7 +17,6 @@ import {
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { RiLockPasswordFill } from "react-icons/ri";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import Axios from "../../helpers/axios";
 
 interface Props {}
@@ -33,7 +32,6 @@ const ChangePasswordModal: React.FC<Props> = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const toast = useToast();
-  const { updateStatus } = useAppSelector((state) => state.profile);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {

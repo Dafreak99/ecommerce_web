@@ -1,26 +1,21 @@
-import React from "react";
 import {
   Box,
   Flex,
   Heading,
+  Spinner,
+  Stack,
   Table,
+  Text,
+  Th,
   Thead,
   Tr,
-  Th,
-  Td,
-  Tbody,
-  Stack,
-  Text,
-  Spinner,
-  Badge,
 } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-
 import BackButton from "../../../components/BackButton";
-import { useHistory, useParams } from "react-router-dom";
-import { useEffect } from "react";
 import { getBuyerDetail } from "../../../features/buyers/buyersSlice";
-import { format } from "date-fns";
+
 interface Props {}
 
 const PaymentDetail: React.FC<Props> = () => {
@@ -31,17 +26,8 @@ const PaymentDetail: React.FC<Props> = () => {
 
   useEffect(() => {
     dispatch(getBuyerDetail(params.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const renderColorScheme = (status: string) => {
-    if (status === "PENDING") {
-      return "gray";
-    } else if (status === "SUCCESS") {
-      return "green";
-    } else {
-      return "red";
-    }
-  };
 
   if (!buyerDetail) {
     return (

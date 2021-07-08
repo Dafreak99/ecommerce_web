@@ -1,8 +1,7 @@
-import { FormLabel, Input, Image, Flex, Box } from "@chakra-ui/react";
+import { Box, Flex, FormLabel, Image, Input } from "@chakra-ui/react";
 import React from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FiTrash } from "react-icons/fi";
-
 import styles from "./UploadPreview.module.css";
 
 /**
@@ -72,7 +71,7 @@ const UploadPreview: React.FC<Props> = ({
       />
       {fileUrls.length > 0 &&
         fileUrls.map((url, i) => (
-          <Box className={styles.uploadPreview}>
+          <Box className={styles.uploadPreview} key={i}>
             <Box className={styles.overlay} />
             <Image
               src={url}

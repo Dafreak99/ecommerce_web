@@ -1,34 +1,34 @@
-import React from "react";
 import {
-  Box,
-  Flex,
-  Button,
-  Heading,
   Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
   Icon,
+  Table,
+  Td,
+  Th,
+  Thead,
+  Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Table, Thead, Tr, Th, Td } from "@chakra-ui/react";
+import { format } from "date-fns";
+import React, { useEffect } from "react";
+import { AiOutlinePlus } from "react-icons/ai";
+import { FaTrash } from "react-icons/fa";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { useHistory } from "react-router-dom";
-
 import {
   getPromotions,
   promotionSelector,
   removePromotion,
 } from "../../../features/promotions/promotionSlice";
-import { format } from "date-fns";
-import { AiOutlinePlus } from "react-icons/ai";
 import AddPromotionModal from "./AddPromotionModal";
-import { FaTrash } from "react-icons/fa";
 import EditPromotionModal from "./EditPromotionModal";
-import { useEffect } from "react";
 
 interface Props {}
 
 const Promotion: React.FC<Props> = () => {
-  const history = useHistory();
   const dispatch = useAppDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 

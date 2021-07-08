@@ -1,12 +1,12 @@
-import { AdditionalState, Promotion } from "./../../types";
 import {
   createAsyncThunk,
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
 import { compareDesc } from "date-fns";
+import { RootState } from "../../app/store";
 import AdAxios from "../../helpers/adminAxios";
+import { AdditionalState, Promotion } from "./../../types";
 
 export const getPromotions = createAsyncThunk(
   "promotions/getPromotions",

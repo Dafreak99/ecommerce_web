@@ -1,20 +1,19 @@
-import React, { useState } from "react";
 import {
   Box,
-  FormLabel,
-  FormControl,
-  Heading,
-  Input,
-  Flex,
   Button,
-  Text,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
   Icon,
+  Input,
+  Text,
   useToast,
 } from "@chakra-ui/react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, Redirect, useHistory } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
-import axios from "axios";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
 import Axios from "../../helpers/axios";
 

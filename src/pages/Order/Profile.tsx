@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   Heading,
   Icon,
@@ -11,12 +10,11 @@ import {
 import React from "react";
 import { AiTwotonePhone } from "react-icons/ai";
 import { FaAddressBook } from "react-icons/fa";
-import { RiCharacterRecognitionFill } from "react-icons/ri";
 import { MdEmail } from "react-icons/md";
+import { RiCharacterRecognitionFill } from "react-icons/ri";
 import { useAppSelector } from "../../app/hooks";
-
-import EditProfileModal from "./EditProfileModal";
 import ChangePasswordModal from "./ChangePasswordModal";
+import EditProfileModal from "./EditProfileModal";
 
 interface Props {}
 

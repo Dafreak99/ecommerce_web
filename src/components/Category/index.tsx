@@ -1,14 +1,13 @@
+import { Box, Grid, Image, Text } from "@chakra-ui/react";
 import React from "react";
+import { Link } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
+import { categorySelectors } from "../../features/categories/categoriesSlice";
 import cate1 from "../../images/categories/category-1.png";
 import cate2 from "../../images/categories/category-2.png";
 import cate3 from "../../images/categories/category-3.png";
 import cate4 from "../../images/categories/category-4.png";
 import styles from "./Category.module.css";
-
-import { Grid, Box, Text, Image } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
-import { categorySelectors } from "../../features/categories/categoriesSlice";
 
 interface Props {}
 
@@ -30,6 +29,7 @@ const Category: React.FC<Props> = () => {
       >
         {categories.reverse().map(({ name, _id }, i) => (
           <Link
+            key={i}
             to={`/cat/${name.toLowerCase()}-${_id}`}
             className={styles.category}
           >

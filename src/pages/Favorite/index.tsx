@@ -1,5 +1,5 @@
-import React from "react";
-import { useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";

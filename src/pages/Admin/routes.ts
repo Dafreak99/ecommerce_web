@@ -1,13 +1,13 @@
 import Category from "./Category";
+import Order from "./Order";
+import OrderDetail from "./Order/OrderDetail";
+import Overview from "./Overview";
+import Payment from "./Payment";
+import PaymentDetail from "./Payment/PaymentDetail";
 import Product from "./Product";
 import AddProduct from "./Product/AddProduct";
 import EditProduct from "./Product/EditProduct";
-import Order from "./Order";
-import OrderDetail from "./Order/OrderDetail";
 import Promotion from "./Promotion";
-import Payment from "./Payment";
-import PaymentDetail from "./Payment/PaymentDetail";
-import Overview from "./Overview";
 
 const routes = [
   {

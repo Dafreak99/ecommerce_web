@@ -1,13 +1,13 @@
-import { AdditionalState, Category } from "./../../types";
 import {
   createAsyncThunk,
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import Axios from "../../helpers/axios";
-import { RootState } from "../../app/store";
 import { compareDesc } from "date-fns";
+import { RootState } from "../../app/store";
 import AdAxios from "../../helpers/adminAxios";
+import Axios from "../../helpers/axios";
+import { AdditionalState, Category } from "./../../types";
 
 export const getCategories = createAsyncThunk(
   "categories/getCategories",
@@ -83,7 +83,7 @@ const categoriesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     // GET CATEGORIES
-    builder.addCase(getCategories.pending, (state, action) => {
+    builder.addCase(getCategories.pending, (state) => {
       state.status = "loading";
     });
     builder.addCase(getCategories.fulfilled, (state, { payload }) => {

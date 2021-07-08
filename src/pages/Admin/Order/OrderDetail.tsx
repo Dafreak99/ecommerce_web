@@ -1,35 +1,34 @@
-import React from "react";
 import {
-  Box,
-  Flex,
-  Heading,
   Badge,
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  Image,
+  Spinner,
+  Stack,
   Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
   Thead,
   Tr,
-  Th,
-  Td,
-  Tbody,
-  Image,
-  Grid,
-  Stack,
-  Text,
-  Button,
-  Icon,
   useToast,
-  Spinner,
 } from "@chakra-ui/react";
+import { unwrapResult } from "@reduxjs/toolkit";
+import React from "react";
+import { BsCheck } from "react-icons/bs";
+import { useHistory, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-
+import BackButton from "../../../components/BackButton";
 import {
   checkOrderStatus,
   orderSelectors,
 } from "../../../features/orders/orderSlice";
 import { CheckoutedProduct } from "../../../types";
-import BackButton from "../../../components/BackButton";
-import { useHistory, useParams } from "react-router-dom";
-import { BsCheck } from "react-icons/bs";
-import { unwrapResult } from "@reduxjs/toolkit";
+
 interface Props {}
 
 const OrderDetail: React.FC<Props> = () => {
@@ -194,7 +193,7 @@ const OrderDetail: React.FC<Props> = () => {
                   { title, amount, qty, images }: CheckoutedProduct,
                   i: number
                 ) => (
-                  <Tr>
+                  <Tr key={i}>
                     <Td>{i + 1}</Td>
                     <Td>{title}</Td>
                     <Td>

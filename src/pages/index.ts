@@ -1,14 +1,14 @@
 import Admin from "./Admin";
-import Home from "./Home";
 import Cart from "./Cart";
+import Checkout from "./Checkout";
+import Favorite from "./Favorite";
+import Home from "./Home";
+import Login from "./Login";
+import Order from "./Order";
 import Product from "./Product";
 import ProductDetail from "./ProductDetail";
 import Search from "./Search";
-import Login from "./Login";
 import SignUp from "./SignUp";
-import Favorite from "./Favorite";
-import Checkout from "./Checkout";
-import Order from "./Order";
 
 export {
   Admin,

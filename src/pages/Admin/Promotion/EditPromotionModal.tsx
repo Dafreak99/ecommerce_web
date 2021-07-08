@@ -1,42 +1,37 @@
-import React, { useState } from "react";
-
-import vi from "date-fns/locale/vi";
-
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Button,
-  Input,
   FormControl,
   FormLabel,
-  NumberInputField,
-  NumberInput,
   Grid,
-  useToast,
   Icon,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  NumberInput,
+  NumberInputField,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { addDays, format } from "date-fns";
+import vi from "date-fns/locale/vi";
+import React, { useEffect, useState } from "react";
 import { DateRange } from "react-date-range";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-
-import { addDays, format } from "date-fns";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { AiFillEdit } from "react-icons/ai";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
   editPromotion,
   promotionSelector,
 } from "../../../features/promotions/promotionSlice";
-import { AiFillEdit } from "react-icons/ai";
-import { RootState } from "../../../app/store";
-import { useEffect } from "react";
 
 interface Props {
   id: string;
@@ -56,7 +51,7 @@ const EditPromotionModal: React.FC<Props> = ({ id }) => {
     promotionSelector.selectById(state, id)
   );
 
-  const { register, handleSubmit, reset, control } = useForm<FormValues>();
+  const { register, handleSubmit, reset } = useForm<FormValues>();
 
   const dispatch = useAppDispatch();
 

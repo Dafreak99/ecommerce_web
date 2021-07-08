@@ -1,9 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Flex, Grid, Spinner, Text } from "@chakra-ui/react";
 import { unwrapResult } from "@reduxjs/toolkit";
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import Product from "../../components/Product";
 import {
@@ -22,8 +21,6 @@ const SearchBody: React.FC<Props> = () => {
   const products = useAppSelector(productSelectors.selectAll);
 
   useEffect(() => {
-    console.log(location.search);
-
     dispatch(getProducts({ condition: location.search.slice(1) }))
       .then(unwrapResult)
       .then((data) => setIsLoading(false));

@@ -2,7 +2,7 @@ import { Badge, Box, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
 import React from "react";
 import { BsCalendar } from "react-icons/bs";
-import { CheckoutedProduct, Order } from "../../types";
+import { Order } from "../../types";
 
 interface Props {
   order: Order;
@@ -42,8 +42,8 @@ const OrderListItem: React.FC<Props> = ({ order }) => {
         </Badge>
       </Text>
 
-      {order.products.map((product: any) => (
-        <Flex>
+      {order.products.map((product: any, i) => (
+        <Flex key={i}>
           <Image src={product.images[0]} h="100px" w="100px" />
           <Box ml="2rem">
             <Text>{product.title}</Text>

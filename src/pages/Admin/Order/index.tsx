@@ -1,24 +1,25 @@
-import React, { useEffect } from "react";
 import {
-  Box,
-  Flex,
-  Button,
-  Heading,
   Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
   Select,
-  FormControl,
-  FormLabel,
   Spinner,
+  Table,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
-import { Table, Thead, Tr, Th, Td } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-
-import { getOrders, orderSelectors } from "../../../features/orders/orderSlice";
-import { useHistory } from "react-router-dom";
 import { format } from "date-fns";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import Pagination from "../../../components/Pagination";
+import { getOrders, orderSelectors } from "../../../features/orders/orderSlice";
+
 interface Props {}
 
 const Order: React.FC<Props> = () => {
@@ -37,6 +38,7 @@ const Order: React.FC<Props> = () => {
 
   useEffect(() => {
     dispatch(getOrders(history.location.search.split("?")[1]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history.location]);
 
   const renderColorScheme = (status: string) => {
@@ -114,7 +116,7 @@ const Order: React.FC<Props> = () => {
           <TransitionGroup component="tbody">
             {data.map(({ status, createdAt, total_amount, _id }, i) => (
               <CSSTransition key={_id} timeout={500} classNames="item">
-                <Tr key={i}>
+                <Tr>
                   <Td>{i + 1 + limit * (page - 1)}</Td>
                   <Td>{format(new Date(createdAt), "hh:mm | dd-MM-yyyy")}</Td>
                   <Td>${normalize(total_amount)}</Td>

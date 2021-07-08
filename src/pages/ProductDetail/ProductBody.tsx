@@ -4,6 +4,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
+  Button,
   Flex,
   Grid,
   Heading,
@@ -12,12 +13,11 @@ import {
   Table,
   Tbody,
   Td,
-  Th,
-  Tr,
   Text,
+  Th,
   Thead,
+  Tr,
   VStack,
-  Button,
 } from "@chakra-ui/react";
 import React from "react";
 import { AiFillHeart, AiOutlineShoppingCart } from "react-icons/ai";
@@ -130,8 +130,8 @@ const ProductBody: React.FC<Props> = () => {
                     </Thead>
 
                     <Tbody>
-                      {Object.entries(product.specifications).map((spec) => (
-                        <Tr>
+                      {Object.entries(product.specifications).map((spec, i) => (
+                        <Tr key={i}>
                           <Td>{spec[0] as string}</Td>
                           <Td>{spec[1] as string}</Td>
                         </Tr>

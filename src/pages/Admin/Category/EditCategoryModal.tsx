@@ -1,28 +1,27 @@
-import React from "react";
 import {
   Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Button,
-  Input,
   FormControl,
   FormLabel,
   Icon,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEdit } from "react-icons/ai";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
   categorySelectors,
   editCategory,
 } from "../../../features/categories/categoriesSlice";
-import { RootState } from "../../../app/store";
 
 interface Props {
   id: string;

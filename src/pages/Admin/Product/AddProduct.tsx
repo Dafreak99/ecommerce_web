@@ -1,41 +1,39 @@
-import React, { useState } from "react";
-
 import {
   Box,
-  Icon,
   Button,
-  Input,
+  Flex,
   FormControl,
   FormLabel,
-  Radio,
-  RadioGroup,
   HStack,
-  Textarea,
-  Flex,
+  Icon,
+  Input,
   NumberInput,
   NumberInputField,
-  Text,
+  Radio,
+  RadioGroup,
   Select,
   Spinner,
+  Text,
+  Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { AiOutlineCheck } from "react-icons/ai";
+import { useHistory } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { useEffect } from "react";
+import BackButton from "../../../components/BackButton";
+import UploadPreview from "../../../components/UploadPreview";
 import {
   categorySelectors,
   getCategories,
 } from "../../../features/categories/categoriesSlice";
-import { AiOutlineCheck } from "react-icons/ai";
 import { createProduct } from "../../../features/products/productSlice";
-import { useHistory } from "react-router-dom";
-import UploadPreview from "../../../components/UploadPreview";
-import BackButton from "../../../components/BackButton";
-import uploadImage from "../../../helpers/uploadImage";
 import {
   getPromotionsByStatus,
   promotionSelector,
 } from "../../../features/promotions/promotionSlice";
+import uploadImage from "../../../helpers/uploadImage";
 
 type FormValues = {
   title: string;
@@ -79,6 +77,7 @@ const AddProduct: React.FC<Props> = () => {
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getPromotionsByStatus(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {

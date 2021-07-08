@@ -1,26 +1,24 @@
-import React from "react";
-
 import {
+  Button,
+  Heading,
+  Image,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
-  Image,
-  Text,
-  Heading,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Table,
-  Thead,
-  Tr,
-  Th,
   Tbody,
   Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
-import { Product } from "../../types";
+import React from "react";
 import { useHistory } from "react-router-dom";
+import { Product } from "../../types";
 
 interface Props {
   isOpen: boolean;
@@ -58,8 +56,8 @@ const QuickReview: React.FC<Props> = ({ isOpen, onClose, product }) => {
             </Thead>
 
             <Tbody>
-              {Object.entries(product.specifications).map((spec) => (
-                <Tr>
+              {Object.entries(product.specifications).map((spec, i) => (
+                <Tr key={i}>
                   <Td>{spec[0] as string}</Td>
                   <Td>{spec[1] as string}</Td>
                 </Tr>

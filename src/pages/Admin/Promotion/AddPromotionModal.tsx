@@ -1,33 +1,29 @@
-import React, { useState } from "react";
-
-import vi from "date-fns/locale/vi";
-
 import {
   Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Button,
-  Input,
   FormControl,
   FormLabel,
-  NumberInputField,
-  NumberInput,
   Grid,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  NumberInput,
+  NumberInputField,
   useToast,
 } from "@chakra-ui/react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { addDays, format } from "date-fns";
+import vi from "date-fns/locale/vi";
+import React, { useState } from "react";
 import { DateRange } from "react-date-range";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-
-import { addDays, format } from "date-fns";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useAppDispatch } from "../../../app/hooks";
 import { createPromotion } from "../../../features/promotions/promotionSlice";
 
 interface Props {
@@ -51,7 +47,7 @@ const AddPromotionModal: React.FC<Props> = ({ isOpen, onClose }) => {
     },
   ]);
 
-  const { register, handleSubmit, reset, control } = useForm<FormValues>();
+  const { register, handleSubmit, reset } = useForm<FormValues>();
 
   const dispatch = useAppDispatch();
 

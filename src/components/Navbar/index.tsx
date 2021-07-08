@@ -1,32 +1,31 @@
-import React from "react";
 import {
   Box,
+  Flex,
   Heading,
   Icon,
-  Flex,
   Input,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   AiOutlineHeart,
   AiOutlineLogout,
   AiOutlineSafetyCertificate,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
-
 import { FaRegUserCircle } from "react-icons/fa";
-import { GrUserAdmin } from "react-icons/gr";
-import { useHistory } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useCart } from "../../contexts/cartContext";
-import { SiShopware } from "react-icons/si";
-import { useAuth } from "../../contexts/authContext";
-import { useAppSelector } from "../../app/hooks";
-import { favoriteSelector } from "../../features/favorites/favoriteSlice";
 import { FiPackage } from "react-icons/fi";
+import { GrUserAdmin } from "react-icons/gr";
+import { SiShopware } from "react-icons/si";
+import { useHistory } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
+import { useAuth } from "../../contexts/authContext";
+import { useCart } from "../../contexts/cartContext";
+import { favoriteSelector } from "../../features/favorites/favoriteSlice";
 
 interface Props {}
 
@@ -131,7 +130,7 @@ const Navbar: React.FC<Props> = () => {
           </Box>
 
           <Menu>
-            <MenuButton colorScheme="pink" ml="2rem">
+            <MenuButton ml="2rem">
               <Icon as={FaRegUserCircle} boxSize="1.5rem" />
             </MenuButton>
 
@@ -162,7 +161,7 @@ const Navbar: React.FC<Props> = () => {
           </Menu>
 
           <Menu>
-            <MenuButton colorScheme="pink" ml="2rem">
+            <MenuButton ml="2rem">
               <Icon as={GrUserAdmin} boxSize="1.5rem" />
             </MenuButton>
             <MenuList>

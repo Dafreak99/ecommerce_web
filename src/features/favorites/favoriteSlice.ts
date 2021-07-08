@@ -3,9 +3,9 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
 import Axios from "../../helpers/axios";
 import { Product } from "../../types";
-import { RootState } from "../../app/store";
 
 const favoriteAdapter = createEntityAdapter<Product>({
   selectId: (product) => product._id,
@@ -61,25 +61,25 @@ const favoriteSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     // GET FAVORITE
-    builder.addCase(getFavorite.pending, (state, action) => {});
+    builder.addCase(getFavorite.pending, (_state, _action) => {});
     builder.addCase(getFavorite.fulfilled, (state, action) => {
       favoriteAdapter.setAll(state, action.payload);
     });
-    builder.addCase(getFavorite.rejected, (state, action) => {});
+    builder.addCase(getFavorite.rejected, (_state, _action) => {});
 
     // ADD TO FAVORITE
-    builder.addCase(addToFavorite.pending, (state, action) => {});
+    builder.addCase(addToFavorite.pending, (_state, _action) => {});
     builder.addCase(addToFavorite.fulfilled, (state, action) => {
       favoriteAdapter.setOne(state, action.payload.product);
     });
-    builder.addCase(addToFavorite.rejected, (state, action) => {});
+    builder.addCase(addToFavorite.rejected, (_state, _action) => {});
 
     // REMOVE FROM FAVORITE
-    builder.addCase(removeFromFavorite.pending, (state, action) => {});
+    builder.addCase(removeFromFavorite.pending, (_state, _action) => {});
     builder.addCase(removeFromFavorite.fulfilled, (state, action) => {
       favoriteAdapter.removeOne(state, action.payload.id);
     });
-    builder.addCase(removeFromFavorite.rejected, (state, action) => {});
+    builder.addCase(removeFromFavorite.rejected, (_state, _action) => {});
   },
 });
 

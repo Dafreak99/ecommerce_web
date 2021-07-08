@@ -1,29 +1,26 @@
-import React, { useState, useEffect } from "react";
 import {
   Box,
+  Flex,
   Heading,
   Icon,
-  Flex,
   List,
   ListItem,
   Text,
 } from "@chakra-ui/react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { AiOutlineBarChart, AiOutlinePercentage } from "react-icons/ai";
 import {
   BsCardChecklist,
-  BsCardText,
   BsCreditCard,
   BsDisplay,
   BsListCheck,
 } from "react-icons/bs";
-
 import { FiLogOut } from "react-icons/fi";
-
-import styles from "./Sidebar.module.css";
-import { useAuth } from "../../../contexts/authContext";
 import { SiShopware } from "react-icons/si";
-import { GrOverview } from "react-icons/gr";
+import { Link, useHistory } from "react-router-dom";
+import { useAuth } from "../../../contexts/authContext";
+import styles from "./Sidebar.module.css";
+
 interface Props {}
 
 const Sidebar: React.FC<Props> = () => {
@@ -48,6 +45,8 @@ const Sidebar: React.FC<Props> = () => {
     const basePath = pathname.split("/")[2];
 
     setIndex(routes[basePath]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderClassName = (input: number) => {

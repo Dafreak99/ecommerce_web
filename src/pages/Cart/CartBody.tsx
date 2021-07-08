@@ -3,30 +3,28 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  Flex,
-  Text,
-  Image,
-  Heading,
   Button,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
+  Flex,
+  Heading,
+  Icon,
+  Image,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Icon,
+  Table,
+  Td,
+  Text,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
 import React from "react";
 import { FaTrash } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-
 import { useCart } from "../../contexts/cartContext";
 import empty from "../../images/empty.svg";
 

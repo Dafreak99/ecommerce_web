@@ -1,26 +1,29 @@
-import React from "react";
 import {
   Box,
-  Flex,
   Button,
+  Flex,
   Heading,
   Icon,
+  Table,
+  Td,
+  Th,
+  Thead,
+  Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import { AiFillEdit, AiOutlinePlus } from "react-icons/ai";
-import { Table, Thead, Tr, Th, Td, Image } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import React, { useEffect } from "react";
+import { AiOutlinePlus } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-
-import AddCategoryModal from "./AddCategoryModal";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
   categorySelectors,
   deleteCategory,
   getCategories,
 } from "../../../features/categories/categoriesSlice";
+import AddCategoryModal from "./AddCategoryModal";
 import EditCategoryModal from "./EditCategoryModal";
-import { useEffect } from "react";
+
 interface Props {}
 
 const Category: React.FC<Props> = () => {

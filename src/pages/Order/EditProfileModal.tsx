@@ -1,10 +1,7 @@
 import {
-  Box,
   Button,
   FormControl,
   FormLabel,
-  Grid,
-  Icon,
   Input,
   Modal,
   ModalBody,
@@ -15,7 +12,7 @@ import {
   ModalOverlay,
   Spinner,
   useDisclosure,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import { unwrapResult } from "@reduxjs/toolkit";
 import React from "react";
@@ -48,7 +45,7 @@ const EditProfileModal: React.FC<Props> = ({ profile }) => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     dispatch(updateProfile(data))
       .then(unwrapResult)
-      .then((data) => {
+      .then(() => {
         toast({
           status: "success",
           title: "Success",
@@ -57,7 +54,7 @@ const EditProfileModal: React.FC<Props> = ({ profile }) => {
           isClosable: true,
         });
       })
-      .catch((err) => {
+      .catch(() => {
         toast({
           status: "error",
           title: "Error",

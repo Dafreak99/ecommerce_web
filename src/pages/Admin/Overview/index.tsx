@@ -1,7 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Flex, Grid, Heading, Icon, Select, Text } from "@chakra-ui/react";
-import React, { useEffect } from "react";
-import { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   AiOutlineLaptop,
@@ -10,9 +9,9 @@ import {
 } from "react-icons/ai";
 import { MdAttachMoney } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { orderSelectors } from "../../../features/orders/orderSlice";
 import { getOverview } from "../../../features/overview/overviewSlice";
 import { getProducts } from "../../../features/products/productSlice";
+
 interface Props {}
 
 const options = {
@@ -33,8 +32,6 @@ const Overview: React.FC<Props> = () => {
   );
 
   const productsQuantity = useAppSelector((state) => state.products.totalDocs);
-  const ordersQuantity = useAppSelector((state) => state.orders.totalDocs);
-  const orders = useAppSelector(orderSelectors.selectAll);
 
   const dispatch = useAppDispatch();
 
@@ -94,8 +91,9 @@ const Overview: React.FC<Props> = () => {
           gridTemplateColumns="repeat(12,1fr)"
           gridGap="2rem"
         >
-          {boxes.map(({ icon, name, value }) => (
+          {boxes.map(({ icon, name, value }, i) => (
             <Box
+              key={i}
               gridColumn="span 6"
               p="2rem 3rem"
               bg="#fff"

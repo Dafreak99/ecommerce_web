@@ -1,19 +1,9 @@
-import React from "react";
 import { Box, Flex } from "@chakra-ui/react";
-import Sidebar from "./Sidebar";
+import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-
 // routes config
 import routes from "../routes";
-
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { getCategories } from "../../../features/categories/categoriesSlice";
-import { getOrders } from "../../../features/orders/orderSlice";
-import { getPromotions } from "../../../features/promotions/promotionSlice";
-import { getBuyers } from "../../../features/buyers/buyersSlice";
-import { getOverview } from "../../../features/overview/overviewSlice";
-import { getProducts } from "../../../features/products/productSlice";
+import Sidebar from "./Sidebar";
 
 interface Props {}
 

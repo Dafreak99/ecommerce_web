@@ -1,8 +1,7 @@
-import React from "react";
-
-import { CardElement } from "@stripe/react-stripe-js";
-import "./style.css";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { CardElement } from "@stripe/react-stripe-js";
+import React from "react";
+import "./style.css";
 
 interface Props {
   register: any;
@@ -27,7 +26,7 @@ const CARD_ELEMENT_OPTIONS = {
   },
 };
 
-const CardSection: React.FC<Props> = ({ register, errors }) => (
+const CardSection: React.FC<Props> = ({ register }) => (
   <>
     <FormControl>
       <FormLabel>Name</FormLabel>
