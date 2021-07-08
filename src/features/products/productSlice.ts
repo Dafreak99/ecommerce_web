@@ -62,6 +62,7 @@ export const editProduct = createAsyncThunk(
         changes: params.newObj,
       };
     } catch (error) {
+      console.log(error.response.data);
       return thunkAPI.rejectWithValue({ error: error.message });
     }
   }

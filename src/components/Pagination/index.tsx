@@ -19,26 +19,23 @@ const Pagination: React.FC<Props> = ({
   const history = useHistory();
   const { search, pathname } = useLocation();
 
-  const prev = () => {
-    // use decodeURI to avoid price[lte] getting ugly encoded
+  const prev = () => navigate(prevPage);
 
-    history.push(decodeURI(`${pathname}?page=${prevPage}${searchCondition()}`));
-  };
-  const next = () => {
-    history.push(decodeURI(`${pathname}?page=${nextPage}${searchCondition()}`));
-  };
+  const next = () => navigate(nextPage);
 
-  const searchCondition = () => {
+  const navigate = (page: number | null) => {
     const params = new URLSearchParams(search);
 
-    // Since ?page is a fixture param, delete params to avoid ?page=1&page=2
-    if (params.has("page")) params.delete("page");
+    page === 1
+      ? params.delete("page")
+      : params.set("page", page?.toString() as string);
 
-    return params.toString() ? `&${params.toString()}` : "";
+    // use decodeURI to avoid price[lte] getting ugly encoded
+    history.push(decodeURI(`${pathname}?${params.toString()}`));
   };
 
   return (
-    <Flex bg="#fff" p="1rem 2rem" alignItems="center">
+    <Flex bg="#fff" p="1rem 2rem" justify="flex-end" alignItems="center">
       <Text mr="1rem">{`${page} / ${totalPages}`}</Text>
       <Box>
         <Button mr="1rem" disabled={!prevPage} onClick={prev}>

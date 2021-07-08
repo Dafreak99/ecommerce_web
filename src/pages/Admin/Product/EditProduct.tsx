@@ -12,7 +12,6 @@ import {
   HStack,
   Textarea,
   Flex,
-  Heading,
   NumberInput,
   NumberInputField,
   Text,
@@ -28,7 +27,6 @@ import {
   productSelectors,
 } from "../../../features/products/productSlice";
 import { useHistory, useParams } from "react-router-dom";
-import { RootState } from "../../../app/store";
 import { categorySelectors } from "../../../features/categories/categoriesSlice";
 import BackButton from "../../../components/BackButton";
 import {
@@ -83,7 +81,8 @@ const EditProduct: React.FC<Props> = () => {
     data.category = [data.cat];
     data.specifications = cleanSpecs(data.specifications);
 
-    dispatch(editProduct({ id: params.id, newObj: data }));
+    const promotion = data.promotion === "" ? null : data.promotion;
+    dispatch(editProduct({ id: params.id, newObj: { ...data, promotion } }));
     history.goBack();
   };
 
@@ -93,8 +92,11 @@ const EditProduct: React.FC<Props> = () => {
 
     for (let attribute of attributes) {
       let property = attribute.split(":");
+
+      if (property[0].charAt(0) === ",") property[0] = property[0].slice(1);
       specifications[property[0]] = property[1];
     }
+
     return specifications;
   };
 
@@ -209,7 +211,6 @@ const EditProduct: React.FC<Props> = () => {
                   <Controller
                     name="promotion"
                     control={control}
-                    rules={{ required: true }}
                     defaultValue={
                       product.promotion ? product.promotion!._id : ""
                     }
@@ -223,11 +224,6 @@ const EditProduct: React.FC<Props> = () => {
                       </Select>
                     )}
                   />
-                )}
-                {errors.promotion?.type === "required" && (
-                  <Text color="red.600" fontStyle="italic" mt="0.5rem">
-                    Category is required
-                  </Text>
                 )}
               </FormControl>
             </Box>
@@ -267,7 +263,7 @@ const EditProduct: React.FC<Props> = () => {
                   placeholder="Specifications"
                   {...register("specifications", { required: true })}
                   defaultValue={Object.entries(product.specifications).map(
-                    (spec) => `${spec[0]}` + ": " + `${spec[1]}`
+                    (spec) => `${spec[0]}` + ":" + `${spec[1]}\n`
                   )}
                 />
               </FormControl>

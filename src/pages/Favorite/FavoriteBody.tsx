@@ -29,7 +29,7 @@ const FavoriteBody: React.FC<Props> = () => {
   const favorites = useAppSelector(favoriteSelector.selectAll);
 
   return (
-    <Box minH="calc(100vh - 160px)">
+    <Box minH="calc(100vh - 80px)">
       <Box bg="gray.100">
         <Breadcrumb p="1rem 0" className="container">
           <BreadcrumbItem onClick={() => history.push("/")}>
@@ -78,7 +78,7 @@ const FavoriteBody: React.FC<Props> = () => {
               color="#fff"
               mt="2rem"
               size="lg"
-              onClick={() => history.push("/product")}
+              onClick={() => history.push("/")}
             >
               Go to Product
             </Button>

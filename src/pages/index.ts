@@ -5,7 +5,7 @@ import Product from "./Product";
 import ProductDetail from "./ProductDetail";
 import Search from "./Search";
 import Login from "./Login";
-import Register from "./Register";
+import SignUp from "./SignUp";
 import Favorite from "./Favorite";
 import Checkout from "./Checkout";
 import Order from "./Order";
@@ -18,7 +18,7 @@ export {
   ProductDetail,
   Search,
   Login,
-  Register,
+  SignUp,
   Favorite,
   Checkout,
   Order,

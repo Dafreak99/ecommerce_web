@@ -46,17 +46,17 @@ const Login: React.FC<Props> = () => {
         status: "success",
         description: "Succesfully login",
         duration: 2000,
-        position: "top-right",
+        position: "top",
       });
 
       setToken(res.data.token);
     } catch (error) {
       toast({
         title: "Error.",
-        description: error.response.data.message[0].msg,
+        description: error.response.data.msg,
         status: "error",
         duration: 2000,
-        position: "top-right",
+        position: "top",
         isClosable: true,
       });
     }
@@ -77,7 +77,12 @@ const Login: React.FC<Props> = () => {
       bg="primary"
       flexDirection="column"
     >
-      <Flex alignItems="center" mb="2rem">
+      <Flex
+        alignItems="center"
+        mb="2rem"
+        cursor="pointer"
+        onClick={() => history.push("/")}
+      >
         <Icon as={SiShopware} boxSize="3rem" color="gray.100" mr="1rem" />
         <Heading color="gray.100">Ecommerce</Heading>
       </Flex>

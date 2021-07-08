@@ -28,7 +28,7 @@ export interface RegisterFormValues {
   phone: string;
   confirmPassword: string;
 }
-const Register: React.FC<Props> = () => {
+const SignUp: React.FC<Props> = () => {
   const history = useHistory();
 
   const {
@@ -41,6 +41,17 @@ const Register: React.FC<Props> = () => {
   const toast = useToast();
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
+    if (data.password !== data.confirmPassword) {
+      toast({
+        title: "Error.",
+        description: "Password doesn't match",
+        status: "error",
+        duration: 2000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
+
     try {
       const res = await Axios.post("/api/v2/public/auth/register", data);
       toast({
@@ -81,13 +92,18 @@ const Register: React.FC<Props> = () => {
       bg="primary"
       flexDirection="column"
     >
-      <Flex alignItems="center" mb="2rem">
+      <Flex
+        alignItems="center"
+        mb="2rem"
+        cursor="pointer"
+        onClick={() => history.push("/")}
+      >
         <Icon as={SiShopware} boxSize="3rem" color="gray.100" mr="1rem" />
         <Heading color="gray.100">Ecommerce</Heading>
       </Flex>
       <Box bg="#fff" boxShadow="0 10px 30px rgba(0,0,0,.1)" p="3rem 5rem">
         <Heading mb="2rem" textAlign="center">
-          Register
+          Signup
         </Heading>
 
         <Box
@@ -146,7 +162,7 @@ const Register: React.FC<Props> = () => {
             />
             {errors.first_name?.type === "required" && (
               <Text color="red.600" fontStyle="italic" mt="5px">
-                Username is required
+                Firstname is required
               </Text>
             )}
           </FormControl>
@@ -157,7 +173,7 @@ const Register: React.FC<Props> = () => {
             <Input type="text" {...register("last_name", { required: true })} />
             {errors.last_name?.type === "required" && (
               <Text color="red.600" fontStyle="italic" mt="5px">
-                Username is required
+                Lastname is required
               </Text>
             )}
           </FormControl>
@@ -167,24 +183,24 @@ const Register: React.FC<Props> = () => {
             <Input type="text" {...register("address", { required: true })} />
             {errors.address?.type === "required" && (
               <Text color="red.600" fontStyle="italic" mt="5px">
-                Username is required
+                Address is required
               </Text>
             )}
           </FormControl>
           <FormControl>
             <FormLabel>Phone</FormLabel>
 
-            <Input type="text" {...register("phone", { required: true })} />
+            <Input type="number" {...register("phone", { required: true })} />
             {errors.phone?.type === "required" && (
               <Text color="red.600" fontStyle="italic" mt="5px">
-                Username is required
+                Phone is required
               </Text>
             )}
           </FormControl>
 
           <FormControl mt="2rem" gridColumn="span 2">
             <Button w="100%" colorScheme="teal" type="submit">
-              Sign In
+              Sign Up
             </Button>
           </FormControl>
 
@@ -205,4 +221,4 @@ const Register: React.FC<Props> = () => {
   );
 };
 
-export default Register;
+export default SignUp;

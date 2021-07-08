@@ -16,7 +16,7 @@ const Category: React.FC<Props> = () => {
   const categories = useAppSelector(categorySelectors.selectAll);
 
   const data = [
-    { src: cate4, name: "Camera" },
+    { src: cate4, name: "Tablet2" },
     { src: cate3, name: "TV" },
     { src: cate2, name: "Phone" },
     { src: cate1, name: "Computer" },

@@ -22,7 +22,9 @@ const SearchBody: React.FC<Props> = () => {
   const products = useAppSelector(productSelectors.selectAll);
 
   useEffect(() => {
-    dispatch(getProducts({ condition: location.search }))
+    console.log(location.search);
+
+    dispatch(getProducts({ condition: location.search.slice(1) }))
       .then(unwrapResult)
       .then((data) => setIsLoading(false));
   }, [location]);
@@ -34,7 +36,7 @@ const SearchBody: React.FC<Props> = () => {
         alignItems="center"
         p="5rem 0"
         className="container"
-        minH="calc(100vh - 160px)"
+        minH="calc(100vh - 80px)"
       >
         <Spinner />
       </Flex>
@@ -42,19 +44,19 @@ const SearchBody: React.FC<Props> = () => {
   }
 
   return (
-    <Box p="5rem 0" className="container" minH="calc(100vh - 160px)">
+    <Box p="5rem 0" className="container" minH="calc(100vh - 80px)">
       <Text mb="2rem" fontSize="xl">
         Found {products.length} items
       </Text>
       <Grid gridTemplateColumns="repeat(12,1fr)" gridGap="4rem">
         {products.length > 0 ? (
           <>
-            {products.map((product) => (
-              <Product product={product} />
+            {products.map((product, i) => (
+              <Product key={i} product={product} />
             ))}
           </>
         ) : (
-          <Box> No items </Box>
+          <Box gridColumn="span 3"> No item </Box>
         )}
       </Grid>
     </Box>

@@ -3,7 +3,7 @@ import { useToast } from "@chakra-ui/react";
 import { createContext, useEffect, useState } from "react";
 import Axios from "../helpers/axios";
 import { LoginFormValues } from "../pages/Login";
-import { RegisterFormValues } from "../pages/Register";
+import { RegisterFormValues } from "../pages/SignUp";
 import { useHistory } from "react-router-dom";
 interface ContextProps {
   token: string | null;

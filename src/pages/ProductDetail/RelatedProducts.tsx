@@ -2,10 +2,8 @@ import React from "react";
 import { Box, Grid, Heading } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useAppDispatch } from "../../app/hooks";
-import { getProductsByCategory } from "../../features/products/productSlice";
 import { useState } from "react";
 import { Product as ProductType } from "../../types";
-import axios from "axios";
 import Axios from "../../helpers/axios";
 import Product from "../../components/Product";
 
@@ -35,7 +33,7 @@ const RelatedProducts: React.FC<Props> = ({ categoryId }) => {
       </Heading>
       <Grid gridTemplateColumns="repeat(12,1fr)">
         {products.length > 0 &&
-          products.map((product) => <Product product={product} />)}
+          products.map((product, i) => <Product key={i} product={product} />)}
       </Grid>
     </Box>
   );

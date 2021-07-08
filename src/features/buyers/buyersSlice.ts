@@ -5,11 +5,12 @@ import { Buyer, ExtraState } from "../../types";
 interface InitialState {
   allBuyers: Buyer[];
   buyerDetail: Buyer;
-
   nextPage: number | null;
   page: number;
   prevPage: number | null;
   totalPages: number;
+  limit: number;
+  status: string;
 }
 
 const initialState: InitialState | ExtraState = {
@@ -19,6 +20,8 @@ const initialState: InitialState | ExtraState = {
   page: 1,
   prevPage: null,
   totalPages: 1,
+  limit: 1,
+  status: "idle",
 };
 
 export const getBuyers = createAsyncThunk(
@@ -53,14 +56,22 @@ const buyersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     // GET BUYERS
+
+    builder.addCase(getBuyers.pending, (state, { payload }) => {
+      state.status = "pending";
+    });
+
     builder.addCase(getBuyers.fulfilled, (state, { payload }) => {
-      const { docs, nextPage, prevPage, totalPages, page } = payload;
+      const { docs, nextPage, prevPage, totalPages, page, limit } = payload;
+
+      state.status = "succeeded";
 
       state.allBuyers = docs;
       state.nextPage = nextPage;
       state.prevPage = prevPage;
       state.totalPages = totalPages;
       state.page = page;
+      state.limit = limit;
     });
 
     // GET BUYER DETAIL

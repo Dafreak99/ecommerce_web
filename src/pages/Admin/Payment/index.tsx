@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   Heading,
+  Spinner,
   Table,
   Td,
   Th,
@@ -26,9 +27,8 @@ const Payment: React.FC<Props> = () => {
     dispatch(getBuyers(history.location.search.split("?")[1]));
   }, [history.location]);
 
-  const { allBuyers, page, nextPage, prevPage, totalPages } = useAppSelector(
-    (state) => state.buyers
-  );
+  const { allBuyers, page, nextPage, prevPage, totalPages, limit, status } =
+    useAppSelector((state) => state.buyers);
 
   return (
     <Box>
@@ -43,42 +43,48 @@ const Payment: React.FC<Props> = () => {
         totalPages={totalPages}
       />
 
-      <Table variant="simple" bg="#fff">
-        <Thead>
-          <Tr>
-            <Th>#</Th>
-            <Th>NAME</Th>
-            <Th>ADDRESS</Th>
-            <Th>PHONE</Th>
-            <Th>POSTCODE</Th>
-            <Th></Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <TransitionGroup component="tbody">
-          {allBuyers.map(
-            ({ address, email, name, phone, postcode, _id }, i) => (
-              <CSSTransition key={_id} timeout={500} classNames="item">
-                <Tr key={i}>
-                  <Td>{i + 1}</Td>
-                  <Td>{name}</Td>
-                  <Td>{address}</Td>
-                  <Td>{phone}</Td>
-                  <Td>{postcode}</Td>
-                  <Td>
-                    <Button
-                      variant="ghost"
-                      onClick={() => history.push(`./payment/${_id}`)}
-                    >
-                      View Detail
-                    </Button>
-                  </Td>
-                </Tr>
-              </CSSTransition>
-            )
-          )}
-        </TransitionGroup>
-      </Table>
+      {status === "succeeded" ? (
+        <Table variant="simple" bg="#fff">
+          <Thead>
+            <Tr>
+              <Th>#</Th>
+              <Th>NAME</Th>
+              <Th>ADDRESS</Th>
+              <Th>PHONE</Th>
+              <Th>POSTCODE</Th>
+              <Th></Th>
+              <Th></Th>
+            </Tr>
+          </Thead>
+          <TransitionGroup component="tbody">
+            {allBuyers.map(
+              ({ address, email, name, phone, postcode, _id }, i) => (
+                <CSSTransition key={_id} timeout={500} classNames="item">
+                  <Tr key={i}>
+                    <Td>{i + 1 + limit * (page - 1)}</Td>
+                    <Td>{name}</Td>
+                    <Td>{address}</Td>
+                    <Td>{phone}</Td>
+                    <Td>{postcode}</Td>
+                    <Td>
+                      <Button
+                        variant="ghost"
+                        onClick={() => history.push(`./payment/${_id}`)}
+                      >
+                        View Detail
+                      </Button>
+                    </Td>
+                  </Tr>
+                </CSSTransition>
+              )
+            )}
+          </TransitionGroup>
+        </Table>
+      ) : (
+        <Flex h="500px" bg="#fff" justify="center" alignItems="center">
+          <Spinner />
+        </Flex>
+      )}
     </Box>
   );
 };

@@ -15,7 +15,7 @@ import {
   Favorite,
   Checkout,
   Order,
-  Register,
+  SignUp,
 } from "./pages";
 import PrivateRoute from "./helpers/PrivateRoute";
 
@@ -27,7 +27,7 @@ const App: React.FC<Props> = () => {
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/login" exact component={Login} />
-        <Route path="/register" exact component={Register} />
+        <Route path="/signup" exact component={SignUp} />
         <Route path="/cat/:slug" component={Product} />
         <Route path="/product/:id" component={ProductDetail} />
         <Route path="/search" component={Search} />

@@ -8,6 +8,7 @@ import {
   Select,
   FormControl,
   FormLabel,
+  Spinner,
 } from "@chakra-ui/react";
 import { Table, Thead, Tr, Th, Td } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
@@ -24,11 +25,9 @@ const Order: React.FC<Props> = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const orders = useAppSelector(orderSelectors.selectAll);
-  const { page, nextPage, prevPage, totalPages, limit } = useAppSelector(
-    (state) => state.orders
-  );
+  const { page, nextPage, prevPage, totalPages, limit, status } =
+    useAppSelector((state) => state.orders);
   const [data, setData] = useState([] as any[]);
-  const [status, setStatus] = useState(null);
 
   useEffect(() => {
     if (orders.length > 0) {
@@ -100,43 +99,49 @@ const Order: React.FC<Props> = () => {
         totalPages={totalPages}
       />
 
-      <Table variant="simple" bg="#fff">
-        <Thead>
-          <Tr>
-            <Th>#</Th>
-            <Th>NAME</Th>
-            <Th>AMOUNT</Th>
-            <Th>STATUS</Th>
-            <Th></Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <TransitionGroup component="tbody">
-          {data.map(({ status, createdAt, total_amount, _id }, i) => (
-            <CSSTransition key={_id} timeout={500} classNames="item">
-              <Tr key={i}>
-                <Td>{i + 1 + limit * (page - 1)}</Td>
-                <Td>{format(new Date(createdAt), "hh:mm | dd-MM-yyyy")}</Td>
-                <Td>${normalize(total_amount)}</Td>
-                <Td>
-                  {" "}
-                  <Badge colorScheme={renderColorScheme(status)}>
-                    {status}
-                  </Badge>
-                </Td>
-                <Td>
-                  <Button
-                    variant="ghost"
-                    onClick={() => history.push(`./order/${_id}`)}
-                  >
-                    View Detail
-                  </Button>
-                </Td>
-              </Tr>
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
-      </Table>
+      {status === "succeeded" ? (
+        <Table variant="simple" bg="#fff">
+          <Thead>
+            <Tr>
+              <Th>#</Th>
+              <Th>NAME</Th>
+              <Th>AMOUNT</Th>
+              <Th>STATUS</Th>
+              <Th></Th>
+              <Th></Th>
+            </Tr>
+          </Thead>
+          <TransitionGroup component="tbody">
+            {data.map(({ status, createdAt, total_amount, _id }, i) => (
+              <CSSTransition key={_id} timeout={500} classNames="item">
+                <Tr key={i}>
+                  <Td>{i + 1 + limit * (page - 1)}</Td>
+                  <Td>{format(new Date(createdAt), "hh:mm | dd-MM-yyyy")}</Td>
+                  <Td>${normalize(total_amount)}</Td>
+                  <Td>
+                    {" "}
+                    <Badge colorScheme={renderColorScheme(status)}>
+                      {status}
+                    </Badge>
+                  </Td>
+                  <Td>
+                    <Button
+                      variant="ghost"
+                      onClick={() => history.push(`./order/${_id}`)}
+                    >
+                      View Detail
+                    </Button>
+                  </Td>
+                </Tr>
+              </CSSTransition>
+            ))}
+          </TransitionGroup>
+        </Table>
+      ) : (
+        <Flex h="500px" bg="#fff" justify="center" alignItems="center">
+          <Spinner />
+        </Flex>
+      )}
     </Box>
   );
 };

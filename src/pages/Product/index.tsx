@@ -4,10 +4,8 @@ import {
   Text,
   Spinner,
   Flex,
-  Select,
   Icon,
   Stack,
-  Checkbox,
   Radio,
   RadioGroup,
 } from "@chakra-ui/react";
@@ -22,9 +20,8 @@ import {
   productSelectors,
 } from "../../features/products/productSlice";
 import ProductComponent from "../../components/Product";
-import { categorySelectors } from "../../features/categories/categoriesSlice";
-import Pagination from "./Pagination";
 import { AiTwotoneFilter } from "react-icons/ai";
+import Pagination from "../../components/Pagination";
 
 interface Props {}
 
@@ -41,6 +38,21 @@ const Product: React.FC<Props> = () => {
     useAppSelector((state) => state.products);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+    });
+  }, []);
+
+  useEffect(() => {
+    const queryString = new URLSearchParams(location.search);
+
+    if (queryString.has("price[gte]") && queryString.has("price[lte]")) {
+      const gte = queryString.get("price[gte]");
+      const lte = queryString.get("price[lte]");
+      setValue(`price[gte]=${gte}&price[lte]=${lte}`);
+    }
+
     dispatch(
       getProductsByCategory({
         categoryId: params.slug.split("-")[1],
@@ -49,18 +61,29 @@ const Product: React.FC<Props> = () => {
     );
   }, [location]);
 
+  const filterOptions = [
+    { label: "None", value: "" },
+    { label: "< $100", value: "price[lte]=100" },
+    { label: "< $200", value: "price[lte]=200" },
+    { label: "< $300", value: "price[lte]=300" },
+    { label: "> $100", value: "price[gte]=100" },
+    { label: "> $200", value: "price[gte]=200" },
+    { label: "> $300", value: "price[gte]=300" },
+  ];
+
   const onFilter = (value: string) => {
     setValue(value);
     const { pathname, search } = location;
 
     const params = new URLSearchParams(search);
 
-    if (params.has("price[gte]") && params.has("price[lte]")) {
+    if (params.has("price[gte]")) {
       params.delete("price[gte]");
+    } else if (params.has("price[lte]")) {
       params.delete("price[lte]");
-    } else {
-      params.delete("page");
     }
+
+    params.delete("page");
 
     history.push(
       decodeURI(
@@ -81,7 +104,7 @@ const Product: React.FC<Props> = () => {
         <Navbar />
         <Box
           className="container"
-          minH="calc(100vh - 160px)"
+          minH="calc(100vh - 80px)"
           p="5rem 0"
           textAlign="center"
         >
@@ -95,7 +118,7 @@ const Product: React.FC<Props> = () => {
   return (
     <>
       <Navbar />
-      <Box className="container" minH="calc(100vh - 160px)" p="5rem 0">
+      <Box className="container" minH="calc(100vh - 80px)" p="5rem 0">
         <Flex justify="space-between" alignItems="center" mb="2rem">
           <Text fontSize="large" fontWeight="400">
             {totalDocs > 0 ? `Found ${totalDocs} items` : "Found 0 item"}
@@ -114,10 +137,13 @@ const Product: React.FC<Props> = () => {
           </Flex>
           <RadioGroup onChange={onFilter} value={value}>
             <Stack spacing={10} direction="row">
-              <Radio value="">None</Radio>
+              {filterOptions.map(({ value, label }) => (
+                <Radio value={value}>{label}</Radio>
+              ))}
+              {/* <Radio value="">None</Radio>
               <Radio value="price[gte]=0&price[lte]=100">$0 - $100</Radio>
               <Radio value="price[gte]=100&price[lte]=200">$100 - $200</Radio>
-              <Radio value="price[gte]=200&price[lte]=300">$200 - $300</Radio>
+              <Radio value="price[gte]=200&price[lte]=300">$200 - $300</Radio> */}
             </Stack>
           </RadioGroup>
         </Flex>
@@ -126,8 +152,8 @@ const Product: React.FC<Props> = () => {
           gridTemplateColumns="repeat(12,1fr)"
           gridGap={{ base: 0, md: "2rem", xl: "4rem" }}
         >
-          {products.map((product) => (
-            <ProductComponent product={product} />
+          {products.map((product, i) => (
+            <ProductComponent key={i} product={product} />
           ))}
         </Grid>
       </Box>

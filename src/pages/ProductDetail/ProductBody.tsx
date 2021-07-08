@@ -56,7 +56,7 @@ const ProductBody: React.FC<Props> = () => {
   };
 
   return (
-    <Box minH="calc(100vh - 160px)" borderBottom="1px solid #f3f3f3">
+    <Box minH="calc(100vh - 80px)" borderBottom="1px solid #f3f3f3">
       <Box bg="gray.100">
         <Breadcrumb p="1rem 0" className="container">
           <BreadcrumbItem onClick={() => history.push("/")}>

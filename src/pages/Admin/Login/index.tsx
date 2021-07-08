@@ -53,7 +53,7 @@ const AdminLogin: React.FC<Props> = () => {
   };
 
   if (isAdminLoggedIn()) {
-    return <Redirect to="/admin/product" />;
+    return <Redirect to="/admin/overview" />;
   }
 
   return (

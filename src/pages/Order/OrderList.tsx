@@ -41,7 +41,7 @@ const OrderBody: React.FC<Props> = () => {
   if (orderStatus === "loading") {
     return (
       <Flex
-        minH="calc(100vh - 160px)"
+        minH="calc(100vh - 80px)"
         p="5rem 0"
         justify="center"
         alignItems="center"

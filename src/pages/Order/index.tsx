@@ -18,7 +18,7 @@ const Order: React.FC<Props> = () => {
   return (
     <>
       <Navbar />
-      <Box minH="calc(100vh - 160px)" p="5rem 0" bg="#f3f3f3">
+      <Box minH="calc(100vh - 80px)" p="5rem 0" bg="#f3f3f3">
         <Box className="container">
           <Profile />
           <OrderList />

@@ -92,7 +92,7 @@ const Sidebar: React.FC<Props> = () => {
                 display="flex"
                 alignItems="center"
               >
-                <Icon as={icon} className={styles.icon} />
+                <Icon as={icon} className={styles.icon} fontSize="1.5rem" />
                 <Text display={{ base: "none", xl: "block" }}>{title}</Text>
               </ListItem>
             </Link>
